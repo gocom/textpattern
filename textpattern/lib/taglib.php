@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Taglib.
+ */
+
 $article_tags = array(
 	'permlink',
 	'posted',
@@ -125,5 +129,3 @@ $page_file_tags = array(
 	'file_download',
 	'file_download_link',
 );
-
-?>
