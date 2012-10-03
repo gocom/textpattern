@@ -1,12 +1,5 @@
 <?php
 
-	define("t","\t");
-	define("n","\n");
-	define("br","<br />");
-	define("sp","&#160;");
-	define("a","&#38;");
-
-
 /**
  * Render the admin-side theme's footer partial via the "admin_side" > "footer" pluggable UI.
  * and send the "admin_side" > "body_end" event.

@@ -5,6 +5,42 @@
  */
 
 /**
+ * Tab character.
+ */
+
+define('t', "\t");
+
+/**
+ * Linefeed character.
+ */
+
+define('n', "\n");
+
+/**
+ * HTML break.
+ *
+ * @package HTML
+ */
+
+define('br', "<br />");
+
+/**
+ * HTML non-breaking space entity.
+ *
+ * @package HTML
+ */
+
+define('sp', "&#160;");
+
+/**
+ * HTML ampersand entity.
+ *
+ * @package HTML
+ */
+
+define('a', "&#38;");
+
+/**
  * If set to TRUE, writes dump files to temporary directory
  * containing debug information.
  *
