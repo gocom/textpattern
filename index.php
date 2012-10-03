@@ -1,51 +1,53 @@
 <?php
 
-	// Make sure we display all errors that occur during initialization
-	error_reporting(E_ALL | E_STRICT);
-	@ini_set("display_errors","1");
+// Make sure we display all errors that occur during initialization
 
-	if (@ini_get('register_globals'))
-	{
-		die('Register_globals needs to be turned off.');
-	}
+error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', 1);
 
-	define("txpinterface", "public");
+if (@ini_get('register_globals'))
+{
+	die('Register_globals needs to be turned off.');
+}
 
-	if (!defined('txpath'))
-	{
-		define("txpath", dirname(__FILE__).'/textpattern');
-	}
+define('txpinterface', 'public');
 
-	// save server path to site root
-	if (!isset($here))
-	{
-		$here = dirname(__FILE__);
-	}
+if (!defined('txpath'))
+{
+	define('txpath', dirname(__FILE__).'/textpattern');
+}
 
-	// pull in config unless configuration data has already been provided (multi-headed use).
-	if (!isset($txpcfg['table_prefix']))
-	{
-		// Use buffering to ensure bogus whitespace in config.php is ignored
-		ob_start(NULL, 2048);
-		include txpath.'/config.php';
-		ob_end_clean();
-	}
+// save server path to site root
 
-	include txpath.'/lib/constants.php';
-	include txpath.'/lib/txplib_misc.php';
-	if (!isset($txpcfg['table_prefix']))
-	{
-		txp_status_header('503 Service Unavailable');
-		exit('config.php is missing or corrupt.  To install Textpattern, visit <a href="./textpattern/setup/">textpattern/setup/</a>');
-	}
+if (!isset($here))
+{
+	$here = dirname(__FILE__);
+}
 
-	// custom caches et cetera?
-	if (isset($txpcfg['pre_publish_script']))
-	{
-		require $txpcfg['pre_publish_script'];
-	}
+// pull in config unless configuration data has already been provided (multi-headed use).
 
-	include txpath.'/publish.php';
-	textpattern();
+if (!isset($txpcfg['table_prefix']))
+{
+	// Use buffering to ensure bogus whitespace in config.php is ignored
+	ob_start(NULL, 2048);
+	include txpath.'/config.php';
+	ob_end_clean();
+}
 
-?>
+include txpath.'/lib/constants.php';
+include txpath.'/lib/txplib_misc.php';
+
+if (!isset($txpcfg['table_prefix']))
+{
+	txp_status_header('503 Service Unavailable');
+	exit('config.php is missing or corrupt.  To install Textpattern, visit <a href="./textpattern/setup/">textpattern/setup/</a>');
+}
+
+// custom caches et cetera?
+if (isset($txpcfg['pre_publish_script']))
+{
+	require $txpcfg['pre_publish_script'];
+}
+
+include txpath.'/publish.php';
+textpattern();
