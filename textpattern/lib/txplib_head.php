@@ -1,11 +1,38 @@
 <?php
 
-// -------------------------------------------------------------
-	function pagetop($pagetitle,$message="")
+/**
+ * Used to generated admin-side headers.
+ *
+ * @package HTML
+ */
+
+/**
+ * Creates and outputs an admin-side header.
+ *
+ * The output will HTML head section, the main navigation. The results will
+ * be echoed instead of returned.
+ *
+ * This function offers a way to invoke modal activity messages
+ * and set the page's title.
+ *
+ * This function will automatically become silent on asynchronous
+ * script requests and responses that do need want HTML headers.
+ *
+ * @param  string       $pagetitle Sets the page's title
+ * @param  string|array $message   A message show to the user
+ * @example
+ * pagetop('Title', array('My error message', E_ERROR));
+ * echo 'My page contents.';
+ */
+
+	function pagetop($pagetitle, $message = '')
 	{
 		global $siteurl, $sitename, $txp_user, $event, $step, $app_mode, $theme;
 
-		if ($app_mode == 'async') return;
+		if ($app_mode == 'async')
+		{
+			return;
+		}
 
 		$area = gps('area');
 		$event = (!$event) ? 'article' : $event;
@@ -59,12 +86,13 @@
 		_txp_token: "'.txpspecialchars(form_token()).'",
 		ajax_timeout: '.txpspecialchars(AJAX_TIMEOUT).',
 		textarray: {},
-		do_spellcheck: "'.txpspecialchars(
-							get_pref('do_spellcheck', '#page-article #body, #page-article #title,'.
-													'#page-image #alt-text, #page-image #caption,'.
-													'#page-file #description,'.
-													'#page-link #link-title, #page-link #link-description')
-							).'"};'
+		do_spellcheck: "'.
+			txpspecialchars(get_pref('do_spellcheck', 
+				'#page-article #body, #page-article #title, '.
+				'#page-image #alt-text, #page-image #caption, '.
+				'#page-file #description, #page-link #link-title, '.
+				'#page-link #link-description'
+			)).'"};'
 	);
 	gTxtScript(array('form_submission_error', 'are_you_sure'));
 	?>
@@ -137,9 +165,20 @@
 		echo '</header><!-- /txp-header --><div role="main" id="txp-main" class="txp-body">';
 	}
 
-// -------------------------------------------------------------
-// Is this used any more?
-	function areatab($label,$event,$tarea,$area)
+/**
+ * Creates an area tab.
+ *
+ * This can be used to create table based navigation bars.
+ *
+ * @param      string $label
+ * @param      string $event
+ * @param      string $tarea
+ * @param      string $area
+ * @return     string HTML table column
+ * @deprecated ?
+ */
+
+	function areatab($label, $event, $tarea, $area)
 	{
 		$tc = ($area == $event) ? 'tabup' : 'tabdown';
 		$atts=' class="'.$tc.'"';
@@ -147,15 +186,35 @@
 		return tda(tag($label,'a',$hatts),$atts);
 	}
 
-// -------------------------------------------------------------
-	function tabber($label,$tabevent,$event)
+/**
+ * Creates a secondary area tab.
+ *
+ * This can be used to create table based navigation bars.
+ *
+ * @param      string $label
+ * @param      string $tabevent
+ * @param      string $event
+ * @return     string HTML table column
+ * @deprecated ?
+ */
+
+	function tabber($label, $tabevent, $event)
 	{
-		$tc = ($event==$tabevent) ? 'tabup' : 'tabdown2';
+		$tc = ($event == $tabevent) ? 'tabup' : 'tabdown2';
 		$out = '<td class="'.$tc.'"><a href="?event='.$tabevent.'">'.$label.'</a></td>';
 		return $out;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Creates a table based navigation bar row.
+ *
+ * This can be used to create table based navigation bars.
+ *
+ * @param      string $area
+ * @param      string $event
+ * @return     string HTML table columns
+ * @deprecated ?
+ */
 
 	function tabsort($area, $event)
 	{
@@ -179,7 +238,12 @@
 		return '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets main menu structure as an array.
+ *
+ * @return array
+ */
+
 	function areas()
 	{
 		global $privs, $plugin_areas;
@@ -218,12 +282,19 @@
 		);
 
 		if (is_array($plugin_areas))
+		{
 			$areas = array_merge_recursive($areas, $plugin_areas);
+		}
 
 		return $areas;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Creates an admin-side dropdown menu.
+ *
+ * @param  mixed  $inline Is not used.
+ * @return string A HTML form with a select field
+ */
 
 	function navPop($inline = '')
 	{
@@ -265,10 +336,15 @@
 		}
 	}
 
-// -------------------------------------------------------------
-	# DEPRECATED?? Has this ever been used?
-	function button($label,$link)
+/**
+ * Generates a button link
+ *
+ * @param      string $label
+ * @param      string $link
+ * @deprecated ?
+ */
+
+	function button($label, $link)
 	{
 		return '<span style="margin-right:2em"><a href="?event='.$link.'">'.$label.'</a></span>';
 	}
-?>
