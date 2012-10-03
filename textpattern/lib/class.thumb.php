@@ -637,8 +637,6 @@ function UnsharpMask($img, $amount, $radius, $threshold)
 	if ($radius == 0)
 	{
 		return $img;
-		imagedestroy($img);
-		break;
 	}
 
 	$w = imagesx($img);
