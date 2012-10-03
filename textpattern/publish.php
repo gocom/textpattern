@@ -1,10 +1,14 @@
 <?php
 
-/**
+/*
  * Textpattern
  * Copyright 2005 by Dean Allen
  * All rights reserved.
  * Use of this software denotes acceptance of the Textpattern license agreement
+ */
+
+/**
+ * Handles page routing.
  */
 
 	if (!defined("txpinterface"))
