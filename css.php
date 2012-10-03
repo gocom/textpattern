@@ -1,8 +1,4 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
 
 if (@ini_get('register_globals')) {
 	if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) {
@@ -59,5 +55,5 @@ include txpath.'/publish.php';
 $s = gps('s');
 $n = gps('n');
 output_css($s,$n);
-?>
 
+?>

@@ -1,22 +1,11 @@
 <?php
-/*
-            _______________________________________
-   ________|                                       |_________
-  \        |                                       |        /
-   \       |              Textpattern              |       /
-    \      |                                       |      /
-    /      |_______________________________________|      \
-   /___________)                               (___________\
 
-	Copyright 2005 by Dean Allen
-	All rights reserved.
-
-	Use of this software denotes acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
-*/
+/**
+ * Textpattern
+ * Copyright 2005 by Dean Allen
+ * All rights reserved.
+ * Use of this software denotes acceptance of the Textpattern license agreement
+ */
 
 	if (!defined('txpath'))
 		define("txpath", dirname(__FILE__));

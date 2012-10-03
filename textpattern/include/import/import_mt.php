@@ -1,8 +1,5 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
+
 
 //Long live zem!
 

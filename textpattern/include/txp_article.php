@@ -5,10 +5,6 @@
 	All rights reserved.
 
 	Use of this software indicates acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
 */
 
 if (!defined('txpinterface')) die('txpinterface is undefined.');

@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 /**
  * Misc tools.
  *

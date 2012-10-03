@@ -5,10 +5,6 @@
 	Copyright 2005 by Dean Allen - all rights reserved.
 
 	Use of this software denotes acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
 */
 
 

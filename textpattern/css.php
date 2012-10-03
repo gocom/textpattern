@@ -1,11 +1,8 @@
 <?php
-/*
-@deprecated
-@see ../css.php
-
-$HeadURL$
-$LastChangedRevision$
-*/
+/**
+ * @deprecated
+ * @see ../css.php
+ */
 
 if (!defined("txpath"))
 {

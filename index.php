@@ -1,8 +1,4 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
 
 	// Make sure we display all errors that occur during initialization
 	error_reporting(E_ALL | E_STRICT);

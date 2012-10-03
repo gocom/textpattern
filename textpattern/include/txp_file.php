@@ -1,22 +1,16 @@
 <?php
-/*
-            _______________________________________
-   ________|            Textpattern                |________
-   \       |          Mod File Upload              |       /
-    \      |   Michael Manfre (http://manfre.net)  |      /
-    /      |_______________________________________|      \
-   /___________)                               (___________\
 
-	Textpattern Copyright 2004 by Dean Allen. All rights reserved.
-	Use of this software denotes acceptance of the Textpattern license agreement
-
-	"Mod File Upload" Copyright 2004 by Michael Manfre. All rights reserved.
-	Use of this mod denotes acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
-*/
+/**
+ * Textpattern
+ * Mod File Upload
+ * Michael Manfre (http://manfre.net)
+ *
+ * Textpattern Copyright 2004 by Dean Allen. All rights reserved.
+ * Use of this software denotes acceptance of the Textpattern license agreement
+ *
+ * "Mod File Upload" Copyright 2004 by Michael Manfre. All rights reserved.
+ * Use of this mod denotes acceptance of the Textpattern license agreement
+ */
 
 	if (!defined('txpinterface')) die('txpinterface is undefined.');
 

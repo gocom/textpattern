@@ -1,8 +1,5 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
+
 	if (!defined('TXP_UPDATE'))
 		exit("Nothing here. You can't access this file directly.");
 	global $txpcfg, $thisversion, $dbversion, $txp_using_svn, $dbupdatetime;

@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 $article_tags = array(
 	'permlink',
 	'posted',

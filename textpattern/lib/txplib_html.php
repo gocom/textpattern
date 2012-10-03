@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 	define("t","\t");
 	define("n","\n");
 	define("br","<br />");

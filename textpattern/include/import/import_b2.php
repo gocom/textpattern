@@ -1,8 +1,5 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
+
 
 	//Absolutely untested. Any volunteer with a b2 db dump to collaborate?
 

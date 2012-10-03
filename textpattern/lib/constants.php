@@ -1,8 +1,4 @@
 <?php
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
 
 /**
  * Constants

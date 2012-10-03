@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 if (!defined ('THEME')) define('THEME', 'theme/');
 
 class theme

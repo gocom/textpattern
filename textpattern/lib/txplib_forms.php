@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 /**
  * HTML form widgets.
  *

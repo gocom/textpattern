@@ -1,19 +1,15 @@
 <?php
 
-/*
-This is Textpattern
-
-Copyright 2012 The Textpattern Development Team
-textpattern.com
-All rights reserved.
-
-Use of this software indicates acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
-@since 4.6.0
-*/
+/**
+ * This is Textpattern
+ *
+ * Copyright 2012 The Textpattern Development Team
+ * textpattern.com
+ * All rights reserved.
+ *
+ * Use of this software indicates acceptance of the Textpattern license agreement
+ * @since 4.6.0
+ */
 
 if (!defined('txpinterface')) die('txpinterface is undefined.');
 

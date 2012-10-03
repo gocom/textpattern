@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 //-------------------------------------------------------------
 function install_language_from_file($lang)
 {

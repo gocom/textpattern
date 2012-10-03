@@ -1,19 +1,8 @@
 <?php
 
-/*
-This is Textpattern
-
-Copyright 2012 The Textpattern Development Team
-textpattern.com
-All rights reserved.
-
-Use of this software indicates acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-
-@since 4.5.0
-*/
+/**
+ * @since 4.5.0
+ */
 
 /**
  * Build a query qualifier to remove non-frontpage articles from the result set

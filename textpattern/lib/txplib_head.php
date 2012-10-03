@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 // -------------------------------------------------------------
 	function pagetop($pagetitle,$message="")
 	{

@@ -1,10 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
-
 //-------------------------------------------------------------
 
 	function send_password($RealName, $name, $email, $password)

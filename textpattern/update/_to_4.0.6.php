@@ -1,9 +1,5 @@
 <?php
 
-/*
-$HeadURL$
-$LastChangedRevision$
-*/
 
 	if (!defined('TXP_UPDATE'))
 	{

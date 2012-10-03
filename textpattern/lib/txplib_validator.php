@@ -1,18 +1,5 @@
 <?php
 
-/*
-This is Textpattern
-
-Copyright 2012 The Textpattern Development Team
-textpattern.com
-All rights reserved.
-
-Use of this software indicates acceptance of the Textpattern license agreement
-
-$HeadURL$
-$LastChangedRevision$
-*/
-
 /**
  * Validator
  *
