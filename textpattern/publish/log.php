@@ -44,9 +44,9 @@
 	function logit($r = '', $status = 200)
 	{
 		global $siteurl, $prefs, $pretext;
-		$mydomain = str_replace('www.','',preg_quote($siteurl,"/"));
+		$mydomain = str_replace('www.', '', preg_quote($siteurl, '/'));
 		$out['uri'] = @$pretext['request_uri'];
-		$out['ref'] = clean_url(str_replace("http://","",serverSet('HTTP_REFERER')));
+		$out['ref'] = clean_url(str_replace('http://', '', serverSet('HTTP_REFERER')));
 		$ip = remote_addr();
 		$host = $ip;
 
@@ -79,7 +79,7 @@
 
 		if ($r == 'refer')
 		{
-			if (trim($out['ref']) != "")
+			if (trim($out['ref']))
 			{
 				insert_logit($out);
 			}
