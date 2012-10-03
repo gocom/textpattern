@@ -5,53 +5,102 @@ $HeadURL$
 $LastChangedRevision$
 */
 
-// -------------------------------------------------------------
+/**
+ * Misc tools.
+ *
+ * @package Misc
+ */
+
+/**
+ * Strips NULL bytes.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function deNull($in)
 	{
 		return (is_array($in) ? doArray($in, 'deNull') : strtr($in, array("\0" => '')));
 	}
 
-// -------------------------------------------------------------
+/**
+ * Strips carriage return and linefeeds.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function deCRLF($in)
 	{
 		return (is_array($in) ? doArray($in, 'deCRLF') : strtr($in, array("\n" => '', "\r" => '')));
 	}
 
-// -------------------------------------------------------------
-	function doArray($in,$function)
+/**
+ * Applies a callback to a given string or an array.
+ *
+ * @param  string|array $in       An array or a string to run through the callback function
+ * @param  callback     $function The callback function
+ * @return mixed
+ */
+
+	function doArray($in, $function)
 	{
-		if(is_array($in))
+		if (is_array($in))
 		{
 			return array_map($function, $in);
 		}
-		
-		if(is_array($function))
+
+		if (is_array($function))
 		{
 			return call_user_func($function, $in);
 		}
-		
+
 		return $function($in);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Un-quotes a quoted string or an array.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function doStrip($in)
 	{
 		return is_array($in) ? doArray($in, 'doStrip') : doArray($in, 'stripslashes');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Strip HTML and PHP tags from a string or an array.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function doStripTags($in)
 	{
-		return is_array($in) ? doArray($in, 'doStripTags') : doArray($in,'strip_tags');
+		return is_array($in) ? doArray($in, 'doStripTags') : doArray($in, 'strip_tags');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts entity escaped brackets back to characters.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function doDeEnt($in)
 	{
-		return doArray($in,'deEntBrackets');
+		return doArray($in, 'deEntBrackets');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts entity escaped brackets back to characters.
+ *
+ * @param  string $in The input value
+ * @return string
+ */
+
 	function deEntBrackets($in)
 	{
 		$array = array(
@@ -63,29 +112,46 @@ $LastChangedRevision$
 			'&#x3E;' => '>'
 		);
 
-		foreach($array as $k=>$v){
-			$in = preg_replace("/".preg_quote($k)."/i",$v, $in);
+		foreach($array as $k => $v)
+		{
+			$in = preg_replace("/".preg_quote($k)."/i", $v, $in);
 		}
+
 		return $in;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Escapes special characters for use in an SQL statement.
+ *
+ * Always use this function when dealing with user-defined values
+ * in SQL statements. If this function is not used to escape
+ * user-defined data in a statement, the query is vulnerable to
+ * SQL injection attacks.
+ *
+ * @param   string|array $in The input value
+ * @return  mixed        An array of escaped values or a string depending on $in
+ * @package DB
+ * @example
+ * echo safe_field('column', 'table', "color='" . doSlash(gps('color')) . "'");
+ */
+
 	function doSlash($in)
 	{
-		return doArray($in,'safe_escape');
+		return doArray($in, 'safe_escape');
 	}
 
-	/**
-	 * A shell for htmlspecialchars() with $flags defaulting to ENT_QUOTES
-	 *
-	 * @param string $string 	The string being converted.
-	 * @param int $flags 		A bitmask of one or more flags. The default is ENT_QUOTES
-	 * @param string $encoding 	Defines encoding used in conversion. The default is UTF-8.
-	 * @param bool $double_encode When double_encode is turned off PHP will not encode existing html entities, the default is to convert everything.
-	 * @return string
-	 * @see http://www.php.net/manual/function.htmlspecialchars.php
-	 * @since 4.5.0
-	 */
+/**
+ * A shell for htmlspecialchars() with $flags defaulting to ENT_QUOTES.
+ *
+ * @param  string $string The string being converted
+ * @param  int    $flags A bitmask of one or more flags. The default is ENT_QUOTES
+ * @param  string $encoding Defines encoding used in conversion. The default is UTF-8
+ * @param  bool   $double_encode When double_encode is turned off PHP will not encode existing html entities, the default is to convert everything
+ * @return string
+ * @see    http://www.php.net/manual/function.htmlspecialchars.php
+ * @since  4.5.0
+ */
+ 
 	function txpspecialchars($string, $flags = ENT_QUOTES, $encoding = 'UTF-8', $double_encode = true)
 	{
 //		Ignore ENT_HTML5 and ENT_XHTML for now.
@@ -103,24 +169,53 @@ $LastChangedRevision$
 		return htmlspecialchars($string, $flags, $encoding, $double_encode);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts special characters to HTML entities.
+ *
+ * @param   array|string $in The input value
+ * @return  mixed        The array or string with HTML syntax characters escaped.
+ * @package Filter
+ */
+
 	function doSpecial($in)
 	{
-		return doArray($in,'txpspecialchars');
+		return doArray($in, 'txpspecialchars');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts given value to NULL
+ *
+ * @param   mixed $a The input value
+ * @return  null
+ * @package Filter
+ */
+
 	function _null($a)
 	{
 		return NULL;
 	}
-// -------------------------------------------------------------
+
+/**
+ * Converts an array's values to NULL.
+ *
+ * @param   array $in The array
+ * @return  array
+ * @package Filter
+ */
+
 	function array_null($in)
 	{
 		return array_map('_null', $in);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Escapes a page title. Converts &lt;, &gt;, ', " characters to HTML entities.
+ *
+ * @param   string $title The input string
+ * @return  string The string escaped
+ * @package Filter
+ */
+
 	function escape_title($title)
 	{
 		return strtr($title,
@@ -136,26 +231,43 @@ $LastChangedRevision$
 /**
  * Escape special string characters like \n or \\ for JavaScript.
  *
- * @param string $js JavaScript input
- * @return	string	Escaped JavaScript
- * @since 4.4
+ * @param   string $js JavaScript input
+ * @return  string Escaped JavaScript
+ * @since   4.4.0
+ * @package Filter
  */
 
-function escape_js($js)
-{
-	return addcslashes($js, "\\\'\"\n\r");
-}
+	function escape_js($js)
+	{
+		return addcslashes($js, "\\\'\"\n\r");
+	}
 
-// -------------------------------------------------------------
-// deprecated in 4.2.0
+/**
+ * A shell for htmlspecialchars() with $flags defaulting to ENT_QUOTES.
+ *
+ * @param      string $str The input string
+ * @return     string
+ * @deprecated in 4.2.0
+ * @see        txpspecialchars()
+ * @package    Filter
+ */
+
 	function escape_output($str)
 	{
 		trigger_error(gTxt('deprecated_function_with', array('{name}' => __FUNCTION__, '{with}' => 'txpspecialchars')), E_USER_NOTICE);
 		return txpspecialchars($str);
 	}
 
-// -------------------------------------------------------------
-// deprecated in 4.2.0
+/**
+ * Replaces < and > characters with entities
+ *
+ * @param      string $str The input string
+ * @return     string
+ * @deprecated in 4.2.0
+ * @see        txpspecialchars()
+ * @package    Filter
+ */
+
 	function escape_tags($str)
 	{
 		trigger_error(gTxt('deprecated_function', array('{name}' => __FUNCTION__)), E_USER_NOTICE);
@@ -167,84 +279,124 @@ function escape_js($js)
 		);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Escapes CDATA section for a XML document.
+ *
+ * @param   string $str The string
+ * @return  string XML representation wrapped in CDATA tags
+ * @package XML
+ */
+
 	function escape_cdata($str)
 	{
 		return '<![CDATA['.str_replace(']]>', ']]]><![CDATA[]>', $str).']]>';
 	}
 
-//-------------------------------------------------------------
-	function gTxt($var, $atts=array(), $escape='html')
+/**
+ * Returns a localization string.
+ *
+ * @param   string $var    String's name
+ * @param   array  $atts   Replacement pairs
+ * @param   string $escape Convert special characters to HTML entities. Either "html" or ""
+ * @return  string A localization string
+ * @package i18n
+ */
+
+	function gTxt($var, $atts = array(), $escape = 'html')
 	{
 		global $textarray;
 
-		if (!is_array($atts)) {
+		if (!is_array($atts))
+		{
 			$atts = array();
 		}
 
 		if ($escape == 'html')
 		{
-			foreach ($atts as $key => $value)
-			{
-				$atts[$key] = txpspecialchars($value);
-			}
+			$atts = doSpecial($atts);
 		}
 
 		$v = strtolower($var);
-		if (isset($textarray[$v])) {
-			$out = $textarray[$v];
-			if ($out !== '') return strtr($out, $atts);
+
+		if (isset($textarray[$v]) && $textarray[$v] !== '')
+		{
+			return strtr($textarray[$v], $atts);
 		}
 
 		if ($atts)
+		{
 			return $var.': '.join(', ', $atts);
+		}
+
 		return $var;
 	}
 
-//-------------------------------------------------------------
 /**
- * Localize client scripts
+ * Localize client scripts.
  *
- * @param string|array $var scalar or array of string keys
- * @param array $atts array or array of arrays of variable substitution pairs
- * @since 4.5.0
+ * @param   string|array $var  Scalar or array of string keys
+ * @param   array        $atts Array or array of arrays of variable substitution pairs
+ * @since   4.5.0
+ * @package i18n
  */
+
 	function gTxtScript($var, $atts = array())
 	{
 		global $textarray_script;
 
-		if (!is_array($textarray_script)) {
+		if (!is_array($textarray_script))
+		{
 			$textarray_script = array();
 		}
 
-		$data = (is_array($var) ? array_map('gTxt', $var, $atts) : (array)gTxt($var, $atts));
-		$textarray_script = $textarray_script + array_combine((array)$var, $data);
+		$data = (is_array($var) ? array_map('gTxt', $var, $atts) : (array) gTxt($var, $atts));
+		$textarray_script = $textarray_script + array_combine((array) $var, $data);
 	}
 
-//-------------------------------------------------------------
+/**
+ * Returns given timestamp in a format of 01 Jan 2001 15:19:16.
+ *
+ * @param   int    $timestamp The UNIX timestamp
+ * @return  string A formatted date
+ * @access  private
+ * @see     safe_stftime()
+ * @package DateTime
+ */
+
 	function gTime($timestamp)
 	{
 		return safe_strftime('%d&#160;%b&#160;%Y %X', $timestamp);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Cretes a dumpfile from a backtrace, and outputs given parameters.
+ *
+ * @package Debug
+ */
+
 	function dmp()
 	{
 		static $f = FALSE;
 
-		if(defined('txpdmpfile'))
+		if (defined('txpdmpfile'))
 		{
 			global $prefs;
 
-			if(!$f) $f = fopen($prefs['tempdir'].'/'.txpdmpfile, 'a');
+			if (!$f)
+			{
+				$f = fopen($prefs['tempdir'].'/'.txpdmpfile, 'a');
+			}
 
 			$stack = get_caller();
-			fwrite($f, "\n[".$stack[0].t.safe_strftime('iso8601')."]\n");
+			fwrite($f, n."[".$stack[0].t.safe_strftime('iso8601')."]".n);
 		}
 
 		$a = func_get_args();
 
-		if(!$f) echo "<pre>".n;
+		if (!$f)
+		{
+			echo "<pre>".n;
+		}
 
 		foreach ($a as $thing)
 		{
@@ -252,7 +404,7 @@ function escape_js($js)
 
 			if ($f)
 			{
-				fwrite($f, $out."\n");
+				fwrite($f, $out.n);
 			}
 			else
 			{
@@ -260,10 +412,20 @@ function escape_js($js)
 			}
 		}
 
-		if(!$f) echo "</pre>".n;
+		if (!$f)
+		{
+			echo "</pre>".n;
+		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Loads a given language's translation strings from the database.
+ *
+ * @param   string $lang The language
+ * @return  array
+ * @package i18n
+ */
+
 	function load_lang($lang)
 	{
 		foreach(array($lang, 'en-gb') as $lang_code)
@@ -272,7 +434,10 @@ function escape_js($js)
 				? safe_rows('name, data','txp_lang',"lang='".doSlash($lang_code)."'")
 				: safe_rows('name, data','txp_lang',"lang='".doSlash($lang_code)."' AND ( event='public' OR event='common')");
 
-			if (!empty($rs)) break;
+			if (!empty($rs))
+			{
+				break;
+			}
 		}
 
 		$out = array();
@@ -281,24 +446,32 @@ function escape_js($js)
 		{
 			foreach ($rs as $a)
 			{
-				if (!empty($a['name'])) {
+				if (!empty($a['name']))
+				{
 					$out[$a['name']] = $a['data'];
 				}
 			}
-		}else{
+		}
+		else
+		{
 			#backward compatibility stuff. Remove when necessary.
 			$filename = is_file(txpath.'/lang/'.$lang.'.txt')
-			?	txpath.'/lang/'.$lang.'.txt'
-			:	txpath.'/lang/en-gb.txt';
+			? txpath.'/lang/'.$lang.'.txt'
+			: txpath.'/lang/en-gb.txt';
 
 			$file = @fopen($filename, "r");
-			if ($file) {
-				while (!feof($file)) {
+			if ($file)
+			{
+				while (!feof($file))
+				{
 					$line = fgets($file, 4096);
-				if($line[0]=='#') continue;
-				@list($name,$val) = explode(' => ',trim($line));
-				$out[$name] = $val;
-			 }
+					if ($line[0] == '#')
+					{
+						continue;
+					}
+					@list($name,$val) = explode(' => ',trim($line));
+					$out[$name] = $val;
+				}
 				@fclose($filename);
 			}
 		}
@@ -306,7 +479,14 @@ function escape_js($js)
 		return $out;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Loads date definitions from a localization file.
+ *
+ * @param   string $lang The language
+ * @access  private
+ * @package i18n
+ */
+
 	function load_lang_dates($lang)
 	{
 		$filename = is_file(txpath.'/lang/'.$lang.'_dates.txt')?
@@ -323,7 +503,14 @@ function escape_js($js)
 		}
 		return false;
 	}
-// -------------------------------------------------------------
+
+/**
+ * Gets current language's strings for a given event.
+ *
+ * @param   string       $event The event to get, e.g. "common", "admin", "public"
+ * @return  array|string Array of string on success, or an empty string when no strings were found
+ * @package i18n
+ */
 
 	function load_lang_event($event)
 	{
@@ -347,8 +534,14 @@ function escape_js($js)
 		return ($out) ? $out : '';
 	}
 
-// -------------------------------------------------------------
-// deprecated in 4.3.0
+/**
+ * Requires privileges from a user.
+ *
+ * @deprecated in 4.3.0
+ * @see        require_privs()
+ * @package    User
+ */
+
 	function check_privs()
 	{
 		trigger_error(gTxt('deprecated_function_with', array('{name}' => __FUNCTION__, '{with}' => 'require_privs')), E_USER_NOTICE);
@@ -361,24 +554,44 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
-	function add_privs($res, $perm = '1') // perm = '1,2,3'
+/**
+ * Grants privileges to user-groups.
+ *
+ * This function will not let you to override existing privs.
+ *
+ * @param   string $res  The resource
+ * @param   string $perm List of user-groups, e.g. '1,2,3'
+ * @package User
+ */
+
+	function add_privs($res, $perm = '1')
 	{
 		global $txp_permissions;
-		// Don't let them override privs that exist
+
 		if (!isset($txp_permissions[$res]))
+		{
 			$txp_permissions[$res] = $perm;
+		}
 	}
 
-// -------------------------------------------------------------
-	function has_privs($res, $user='')
+/**
+ * Checks if a users has priviliges to the given resource.
+ *
+ * @param   string $res  The resource
+ * @param   string $user The user. If no user name is supplied, assume the current logged in user
+ * @return  bool
+ * @package User
+ */
+
+	function has_privs($res, $user = '')
 	{
 		global $txp_user, $txp_permissions;
 		static $privs;
 
-		// If no user name is supplied, assume the current login name
 		if (empty($user))
+		{
 			$user = $txp_user;
+		}
 
 		if (!isset($privs[$user]))
 		{
@@ -396,91 +609,110 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
-	function require_privs($res, $user='')
+/**
+ * Require privileges from a user to the given resource.
+ *
+ * Terminates the script if user doesn't have required privileges.
+ *
+ * @param   string $res  The resource
+ * @param   string $user The user. If no user name is supplied, assume the current logged in user
+ * @package User
+ */
+
+	function require_privs($res, $user = '')
 	{
 		if (!has_privs($res, $user))
+		{
 			exit(pageTop('Restricted').'<p class="restricted-area">'.
 				gTxt('restricted_area').'</p>');
-	}
-
-	/**
-	 * Get list of users having access to a resource
-	 *
-	 * @param string $res	resource, e.g. 'article.edit.published'
-	 * @return array
-	 * @since 4.5.0
-	 */
-	function the_privileged($res)
-	{
-		global $txp_permissions;
-		if (isset($txp_permissions[$res])) {
-			return safe_column('name', 'txp_users', "FIND_IN_SET(privs, '{$txp_permissions[$res]}') order by name asc");
-		} else {
-			return array();
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets list of users having access to a resource.
+ *
+ * @param   string $res The resource, e.g. 'article.edit.published'
+ * @return  array  A list of usernames
+ * @since   4.5.0
+ * @package User
+ */
+
+	function the_privileged($res)
+	{
+		global $txp_permissions;
+
+		if (isset($txp_permissions[$res]))
+		{
+			return safe_column('name', 'txp_users', "FIND_IN_SET(privs, '{$txp_permissions[$res]}') order by name asc");
+		}
+
+		return array();
+	}
+
+/**
+ * Gets list of user groups.
+ *
+ * @return  array
+ * @package User
+ */
+
 	function get_groups()
 	{
 		global $txp_groups;
 		return doArray($txp_groups, 'gTxt');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets the dimensions of an image for a HTML img tag.
+ *
+ * @param   string      $name The filename
+ * @return  string|bool height="100" width="40" or FALSE on failure
+ * @package Image
+ */
+
 	function sizeImage($name)
 	{
 		$size = @getimagesize($name);
 		return(is_array($size)) ? $size[3] : false;
 	}
 
-// -------------------------------------------------------------
-	function gps($thing) // checks GET and POST for a named variable, or creates it blank
+/**
+ * Gets a HTTP GET or POST parameter.
+ *
+ * This function internally handles and normalizes MAGIC_QUOTES_GPC,
+ * strips CRLF from GET parameters and removes NULL bytes.
+ *
+ * @param   string       $thing The parameter to get
+ * @return  string|array The value of $thing, or an empty string
+ * @package Network
+ */
+
+	function gps($thing)
 	{
 		$out = '';
-		if (isset($_GET[$thing])) {
-			if (MAGIC_QUOTES_GPC) {
+
+		if (isset($_GET[$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				$out = doStrip($_GET[$thing]);
-			} else {
+			}
+			else
+			{
 				$out = $_GET[$thing];
 			}
 
-			$out = doArray( $out, 'deCRLF' ); # Remove CRLF from Get parameters
-		} elseif (isset($_POST[$thing])) {
-			if (MAGIC_QUOTES_GPC) {
-				$out = doStrip($_POST[$thing]);
-			} else {
-				$out = $_POST[$thing]; # CRLF ok in posted vars
-			}
+			$out = doArray($out, 'deCRLF');
 		}
 
-		$out = doArray($out, 'deNull'); # Remove Nulls to avoid string truncations in C calls (ie. All the filesystem routines)
-
-		return $out;
-	}
-
-// -------------------------------------------------------------
-	function gpsa($array) // performs gps() on an array of variable names
-	{
-		if(is_array($array)) {
-			$out = array();
-			foreach($array as $a) {
-				$out[$a] = gps($a);
-			}
-			return $out;
-		}
-		return false;
-	}
-
-// -------------------------------------------------------------
-	function ps($thing) // checks POST for a named variable, or creates it blank
-	{
-		$out = '';
-		if (isset($_POST[$thing])) {
-			if (MAGIC_QUOTES_GPC) {
+		elseif (isset($_POST[$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				$out = doStrip($_POST[$thing]);
-			} else {
+			}
+			else
+			{
 				$out = $_POST[$thing];
 			}
 		}
@@ -490,111 +722,273 @@ function escape_js($js)
 		return $out;
 	}
 
-// -------------------------------------------------------------
-	function psa($array) // performs ps on an array of variable names
+/**
+ * Gets an array of HTTP GET or POST parameters.
+ *
+ * @param   array $array The parameters to extract
+ * @return  array
+ * @package Network
+ * @example
+ * extract(gpsa(array('color', 'roses'));
+ * if ($color == 'blue' && $roses == 'red')
+ * {
+ * 	echo 'Roses are red.';
+ * }
+ */
+
+	function gpsa($array)
 	{
-		foreach($array as $a) {
+		if (is_array($array))
+		{
+			$out = array();
+			foreach ($array as $a)
+			{
+				$out[$a] = gps($a);
+			}
+			return $out;
+		}
+		return false;
+	}
+
+/**
+ * Gets a HTTP POST parameter.
+ *
+ * This function internally handles and normalizes MAGIC_QUOTES_GPC,
+ * and removes NULL bytes.
+ *
+ * @param   string       $thing	The parameter to get
+ * @return  string|array The value of $thing, or an empty string
+ * @package Network
+ */
+ 
+	function ps($thing)
+	{
+		$out = '';
+		if (isset($_POST[$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
+				$out = doStrip($_POST[$thing]);
+			}
+			else
+			{
+				$out = $_POST[$thing];
+			}
+		}
+
+		$out = doArray($out, 'deNull');
+
+		return $out;
+	}
+
+/**
+ * Gets an array of HTTP POST parameters.
+ *
+ * @param   array $array The parameters to extract
+ * @return  array
+ * @package Network
+ */
+
+	function psa($array)
+	{
+		foreach($array as $a)
+		{
 			$out[$a] = ps($a);
 		}
 		return $out;
 	}
 
-// -------------------------------------------------------------
-	function psas($array) // same as above, but does strip_tags on post values
+/**
+ * Gets an array of HTTP POST parameters and strips HTML and PHP tags from the output.
+ *
+ * @param   array $array The parameters to extract
+ * @return  array
+ * @package Network
+ */
+
+	function psas($array)
 	{
-		foreach($array as $a) {
+		foreach($array as $a)
+		{
 			$out[$a] = doStripTags(ps($a));
 		}
 		return $out;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets all received HTTP POST parameters.
+ *
+ * @return  array
+ * @package Network
+ */
+
 	function stripPost()
 	{
-		if (isset($_POST)) {
-			if (MAGIC_QUOTES_GPC) {
+		if (isset($_POST))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				return doStrip($_POST);
-			} else {
+			}
+			else
+			{
 				return $_POST;
 			}
 		}
 		return '';
 	}
 
-// -------------------------------------------------------------
-	function serverSet($thing) // Get a var from $_SERVER global array, or create it
+/**
+ * Gets a var from $_SERVER global array, or create it.
+ *
+ * @param   mixed $thing The variable
+ * @return  mixed
+ * @package System
+ */
+
+	function serverSet($thing)
 	{
 		return (isset($_SERVER[$thing])) ? $_SERVER[$thing] : '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets client's IP address.
+ *
+ * @return  string
+ * @package Network
+ */
+
 	function remote_addr()
 	{
 		$ip = serverSet('REMOTE_ADDR');
-		if (($ip == '127.0.0.1' || $ip == '::1' || $ip == '::ffff:127.0.0.1' || $ip == serverSet('SERVER_ADDR')) && serverSet('HTTP_X_FORWARDED_FOR')) {
+		if (($ip == '127.0.0.1' || $ip == '::1' || $ip == '::ffff:127.0.0.1' || $ip == serverSet('SERVER_ADDR')) && serverSet('HTTP_X_FORWARDED_FOR'))
+		{
 			$ips = explode(', ', serverSet('HTTP_X_FORWARDED_FOR'));
 			$ip = $ips[0];
 		}
 		return $ip;
 	}
 
-// -------------------------------------------------------------
- 	function pcs($thing) //	Get a var from POST or COOKIE; if not, create it
+/**
+ * Gets a variable from HTTP POST or prefixed COOKIE.
+ *
+ * @param   string       $thing The variable
+ * @return  array|string The variable or an empty string
+ * @package Network
+ */
+
+ 	function pcs($thing)
 	{
-		if (isset($_COOKIE["txp_".$thing])) {
-			if (MAGIC_QUOTES_GPC) {
+		if (isset($_COOKIE["txp_".$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				return doStrip($_COOKIE["txp_".$thing]);
-			} else return $_COOKIE["txp_".$thing];
-		} elseif (isset($_POST[$thing])) {
-			if (MAGIC_QUOTES_GPC) {
+			}
+			else
+			{
+				return $_COOKIE["txp_".$thing];
+			}
+		}
+		elseif (isset($_POST[$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				return doStrip($_POST[$thing]);
-			} else return $_POST[$thing];
+			}
+			else
+			{
+				return $_POST[$thing];
+			}
 		}
 		return '';
 	}
 
-// -------------------------------------------------------------
- 	function cs($thing) //	Get a var from COOKIE; if not, create it
+/**
+ * Gets a HTTP cookie.
+ *
+ * This function internally normalizes MAGIC_QUOTES_GPC.
+ *
+ * @param   string $thing The cookie
+ * @return  string The cookie or an empty string
+ * @package Network
+ */
+
+ 	function cs($thing)
 	{
-		if (isset($_COOKIE[$thing])) {
-			if (MAGIC_QUOTES_GPC) {
+		if (isset($_COOKIE[$thing]))
+		{
+			if (MAGIC_QUOTES_GPC)
+			{
 				return doStrip($_COOKIE[$thing]);
-			} else return $_COOKIE[$thing];
+			}
+			else
+			{
+				return $_COOKIE[$thing];
+			}
 		}
 		return '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts a boolean to a localized "Yes" or "No" string.
+ *
+ * @param   bool   $status The boolean. Ignores type and as such can also take a string or an integer
+ * @return  string No if FALSE, Yes otherwise
+ * @package i18n
+ */
+
 	function yes_no($status)
 	{
-		return ($status==0) ? (gTxt('no')) : (gTxt('yes'));
+		return ($status==0) ? gTxt('no') : gTxt('yes');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets Unix timestamp with microseconds.
+ *
+ * @return  float
+ * @package DateTime
+ */
+
 	function getmicrotime()
 	{
 		list($usec, $sec) = explode(" ",microtime());
 		return ((float)$usec + (float)$sec);
 	}
 
-// -------------------------------------------------------------
-	function load_plugin($name, $force=false)
+/**
+ * Loads the given plugin or checks if it was loaded.
+ *
+ * @param  string $name  The plugin
+ * @param  bool   $force If TRUE loads the plugin even if it's disabled
+ * @return bool   TRUE if the plugin is loaded
+ */
+
+	function load_plugin($name, $force = false)
 	{
 		global $plugins, $plugins_ver, $prefs, $txp_current_plugin;
 
-		if (is_array($plugins) and in_array($name,$plugins)) {
+		if (is_array($plugins) and in_array($name, $plugins))
+		{
 			return true;
 		}
 
-		if (!empty($prefs['plugin_cache_dir'])) {
+		if (!empty($prefs['plugin_cache_dir']))
+		{
 			$dir = rtrim($prefs['plugin_cache_dir'], '/') . '/';
-			# in case it's a relative path
+			// in case it's a relative path
 			if (!is_dir($dir))
+			{
 				$dir = rtrim(realpath(txpath.'/'.$dir), '/') . '/';
-			if (is_file($dir . $name . '.php')) {
+			}
+			if (is_file($dir . $name . '.php'))
+			{
 				$plugins[] = $name;
 				set_error_handler("pluginErrorHandler");
-				if (isset($txp_current_plugin)) $txp_parent_plugin = $txp_current_plugin;
+				if (isset($txp_current_plugin))
+				{
+					$txp_parent_plugin = $txp_current_plugin;
+				}
 				$txp_current_plugin = $name;
 				include($dir . $name . '.php');
 				$txp_current_plugin = (isset($txp_parent_plugin) ? $txp_parent_plugin : NULL);
@@ -604,13 +998,17 @@ function escape_js($js)
 			}
 		}
 
-		$rs = safe_row("name,code,version","txp_plugin", ($force ? '' : 'status = 1 AND '). "name='".doSlash($name)."'");
-		if ($rs) {
+		$rs = safe_row("name, code, version", "txp_plugin", ($force ? '' : 'status = 1 AND '). "name='".doSlash($name)."'");
+		if ($rs)
+		{
 			$plugins[] = $rs['name'];
 			$plugins_ver[$rs['name']] = $rs['version'];
 
 			set_error_handler("pluginErrorHandler");
-			if (isset($txp_current_plugin)) $txp_parent_plugin = $txp_current_plugin;
+			if (isset($txp_current_plugin))
+			{
+				$txp_parent_plugin = $txp_current_plugin;
+			}
 			$txp_current_plugin = $rs['name'];
 			eval($rs['code']);
 			$txp_current_plugin = (isset($txp_parent_plugin) ? $txp_parent_plugin : NULL);
@@ -622,106 +1020,208 @@ function escape_js($js)
 		return false;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Loads a plugin.
+ *
+ * Identical to load_plugin() except upon failure it issues an E_USER_ERROR.
+ *
+ * @param  string $name The plugin
+ * @return bool
+ * @see    load_plugin()
+ */
+
 	function require_plugin($name)
 	{
-		if (!load_plugin($name)) {
-			trigger_error("Unable to include required plugin \"{$name}\"",E_USER_ERROR);
+		if (!load_plugin($name))
+		{
+			trigger_error("Unable to include required plugin \"{$name}\"", E_USER_ERROR);
 			return false;
 		}
 		return true;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Loads a plugin.
+ *
+ * Identical to load_plugin() except upon failure it issues an E_USER_WARNING.
+ *
+ * @param  string $name The plugin
+ * @return bool
+ * @see    load_plugin()
+ */
+
 	function include_plugin($name)
 	{
-		if (!load_plugin($name)) {
-			trigger_error("Unable to include plugin \"{$name}\"",E_USER_WARNING);
+		if (!load_plugin($name))
+		{
+			trigger_error("Unable to include plugin \"{$name}\"", E_USER_WARNING);
 			return false;
 		}
 		return true;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Error handler for plugins.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function pluginErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		global $production_status;
 
-		$error = array( E_WARNING => "Warning", E_NOTICE => "Notice", E_RECOVERABLE_ERROR => "Catchable fatal error",
-                        E_USER_ERROR => "User_Error", E_USER_WARNING => "User_Warning", E_USER_NOTICE => "User_Notice");
+		$error = array(
+			E_WARNING => "Warning",
+			E_NOTICE => "Notice",
+			E_RECOVERABLE_ERROR => "Catchable fatal error",
+			E_USER_ERROR => "User_Error",
+			E_USER_WARNING => "User_Warning",
+			E_USER_NOTICE => "User_Notice"
+		);
 
-		if (!($errno & error_reporting())) return;
-		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE)) return;
+		if (!($errno & error_reporting()))
+		{
+			return;
+		}
+		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE))
+		{
+			return;
+		}
 
 		global $txp_current_plugin, $production_status;
-		printf ("<pre>".gTxt('plugin_load_error').' <b>%s</b> -> <b>%s: %s on line %s</b></pre>',
+		printf("<pre>".gTxt('plugin_load_error').' <b>%s</b> -> <b>%s: %s on line %s</b></pre>',
 				$txp_current_plugin, $error[$errno], $errstr, $errline);
 		if ($production_status == 'debug')
-			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join("\n", get_caller(10)))."</code></pre>";
+		{
+			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join(n, get_caller(10)))."</code></pre>";
+		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Error handler for page templates.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function tagErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		global $production_status;
 
-		$error = array( E_WARNING => "Warning", E_NOTICE => "Notice", E_RECOVERABLE_ERROR => "Textpattern Catchable fatal error",
-                        E_USER_ERROR => "Textpattern Error", E_USER_WARNING => "Textpattern Warning", E_USER_NOTICE => "Textpattern Notice");
+		$error = array(
+			E_WARNING => "Warning",
+			E_NOTICE => "Notice",
+			E_RECOVERABLE_ERROR => "Textpattern Catchable fatal error",
+			E_USER_ERROR => "Textpattern Error",
+			E_USER_WARNING => "Textpattern Warning",
+			E_USER_NOTICE => "Textpattern Notice"
+		);
 
-		if (!($errno & error_reporting())) return;
-		if ($production_status == 'live') return;
+		if (!($errno & error_reporting()))
+		{
+			return;
+		}
+		if ($production_status == 'live')
+		{
+			return;
+		}
 
 		global $txp_current_tag, $txp_current_form, $pretext;
 		$page = (empty($pretext['page']) ? gTxt('none') : $pretext['page']);
-		if (!isset($txp_current_form)) $txp_current_form = gTxt('none');
+
+		if (!isset($txp_current_form))
+		{
+			$txp_current_form = gTxt('none');
+		}
 		$locus = gTxt('while_parsing_page_form', array('{page}' => txpspecialchars($page), '{form}' => txpspecialchars($txp_current_form)));
 
 		printf ("<pre>".gTxt('tag_error').' <b>%s</b> -> <b> %s: %s %s</b></pre>',
 				txpspecialchars($txp_current_tag), $error[$errno], $errstr, $locus );
 		if ($production_status == 'debug')
-			{
-			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join("\n", get_caller(10)))."</code></pre>";
+		{
+			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join(n, get_caller(10)))."</code></pre>";
 
 			$trace_msg = gTxt('tag_error').' '.$txp_current_tag.' -> '.$error[$errno].': '.$errstr.' '.$locus;
-			trace_add( $trace_msg );
-			}
+			trace_add($trace_msg);
+		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Error handler for XML feeds.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function feedErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		global $production_status;
 
-		if ($production_status != 'debug') return;
+		if ($production_status != 'debug')
+		{
+			return;
+		}
 
 		return tagErrorHandler($errno, $errstr, $errfile, $errline);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Error handler for admin-side.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function adminErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		global $production_status, $theme, $event, $step;
 
-		if (!error_reporting()) return;
+		if (!error_reporting())
+		{
+			return;
+		}
 
 		// When even a minimum environment is missing...
-		if (!isset($production_status)) {
+		if (!isset($production_status))
+		{
 			echo '<pre>'.gTxt('internal_error').' "'.$errstr.'"'.n."in $errfile at line $errline".'</pre>';
 			return;
 		}
 
-		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE)) {
+		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE))
+		{
 			$backtrace = $msg = '';
-		} else {
+		}
+		else {
 			$backtrace = '';
 			$msg = gTxt('internal_error');
 
-			if (has_privs('debug.verbose')) {
+			if (has_privs('debug.verbose'))
+			{
 				$msg .= ' "'.$errstr.'"';
-			};
+			}
 
-			if (($production_status == 'debug')) {
-				if (has_privs('debug.backtrace')) {
+			if (($production_status == 'debug'))
+			{
+				if (has_privs('debug.backtrace'))
+				{
 					$msg .= n."in $errfile at line $errline";
 					$backtrace = join(n, get_caller(5,1));
 				}
@@ -731,68 +1231,115 @@ function escape_js($js)
 		$httpstatus = in_array($errno, array(E_ERROR, E_USER_ERROR)) ? '500' : '200';
 		$out = "$msg.\n$backtrace";
 
-		if (http_accept_format('html')) {
-			if (!empty($backtrace)) {
+		if (http_accept_format('html'))
+		{
+			if (!empty($backtrace))
+			{
 				echo "<pre>$msg.</pre>".
 					n.'<pre style="padding-left: 2em;" class="backtrace"><code>'.
 					txpspecialchars($backtrace).'</code></pre>';
-			} elseif (!empty($msg)) {
+			}
+			elseif (!empty($msg))
+			{
 				echo is_object($theme) ? $theme->announce(array($out, E_ERROR), true) : "<pre>$out</pre>";
 			}
 			$c = array('in' => '', 'out' => '');
-		} elseif (http_accept_format('js')) {
+		}
+		elseif (http_accept_format('js'))
+		{
 			send_script_response(
 				is_object($theme) && !empty($msg) ?
 				$theme->announce_async(array($out, E_ERROR), true) :
 				"/* $out */"
 			);
 			$c = array('in' => '/* ', 'out' => ' */');
-		} elseif (http_accept_format('xml')) {
+		}
+		elseif (http_accept_format('xml'))
+		{
 			send_xml_response(array('http-status' => $httpstatus, 'internal_error' => "$out"));
 			$c = array('in' => '<!-- ', 'out' => ' -->');
-		} else {
+		}
+		else
+		{
 			txp_die($msg, 500);
 		}
 
-		if ($production_status != 'live' && in_array($errno, array(E_ERROR, E_USER_ERROR))) {
+		if ($production_status != 'live' && in_array($errno, array(E_ERROR, E_USER_ERROR)))
+		{
 			die($c['in'].gTxt('get_off_my_lawn', array('{event}' => $event, '{step}' => $step)).$c['out']);
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Error handler for public-side.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function publicErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		global $production_status;
 
-		$error = array( E_WARNING => "Warning", E_NOTICE => "Notice", E_USER_ERROR => "Textpattern Error",
-		                E_USER_WARNING => "Textpattern Warning", E_USER_NOTICE => "Textpattern Notice");
+		$error = array(
+			E_WARNING => "Warning",
+			E_NOTICE => "Notice",
+			E_USER_ERROR => "Textpattern Error",
+			E_USER_WARNING => "Textpattern Warning",
+			E_USER_NOTICE => "Textpattern Notice",
+		);
 
-		if (!($errno & error_reporting())) return;
-		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE)) return;
+		if (!($errno & error_reporting()))
+		{
+			return;
+		}
+		if ($production_status == 'live' || ($production_status != 'debug' && $errno == E_USER_NOTICE))
+		{
+			return;
+		}
 
 		global $production_status;
 		printf ("<pre>".gTxt('general_error').' <b>%s: %s on line %s</b></pre>',
 			$error[$errno], $errstr, $errline);
 		if ($production_status == 'debug')
-			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join("\n", get_caller(10)))."</code></pre>";
+		{
+			print "\n<pre style=\"padding-left: 2em;\" class=\"backtrace\"><code>".txpspecialchars(join(n, get_caller(10)))."</code></pre>";
+		}
 	}
 
-// -------------------------------------------------------------
-	function load_plugins($type=0)
+/**
+ * Loads plugins.
+ *
+ * @param bool $type If TRUE loads admin-side plugins, otherwise public
+ */
+
+	function load_plugins($type = false)
 	{
 		global $prefs, $plugins, $plugins_ver, $app_mode;
 
-		if (!is_array($plugins)) $plugins = array();
+		if (!is_array($plugins))
+		{
+			$plugins = array();
+		}
 
-		if (!empty($prefs['plugin_cache_dir'])) {
+		if (!empty($prefs['plugin_cache_dir']))
+		{
 			$dir = rtrim($prefs['plugin_cache_dir'], '/') . '/';
 			// in case it's a relative path
 			if (!is_dir($dir))
+			{
 				$dir = rtrim(realpath(txpath.'/'.$dir), '/') . '/';
+			}
 			$files = glob($dir.'*.php');
-			if ($files) {
+			if ($files)
+			{
 				natsort($files);
-				foreach ($files as $f) {
+				foreach ($files as $f)
+				{
 					trace_add("[Loading plugin from cache dir '$f']");
 					load_plugin(basename($f, '.php'));
 				}
@@ -803,17 +1350,22 @@ function escape_js($js)
 		$where = 'status = 1 AND type IN ('.($type ? $admin : '0,1,5').')';
 
 		$rs = safe_rows("name, code, version", "txp_plugin", $where.' order by load_order');
-		if ($rs) {
+		if ($rs)
+		{
 			$old_error_handler = set_error_handler("pluginErrorHandler");
-			foreach($rs as $a) {
-				if (!in_array($a['name'],$plugins)) {
+			foreach ($rs as $a)
+			{
+				if (!in_array($a['name'], $plugins))
+				{
 					$plugins[] = $a['name'];
 					$plugins_ver[$a['name']] = $a['version'];
 					$GLOBALS['txp_current_plugin'] = $a['name'];
 					trace_add("[Loading plugin '{$a['name']}' version '{$a['version']}']");
 					$eval_ok = eval($a['code']);
 					if ($eval_ok === FALSE)
+					{
 						echo gTxt('plugin_load_error_above').strong($a['name']).n.br;
+					}
 					unset($GLOBALS['txp_current_plugin']);
 				}
 			}
@@ -821,28 +1373,60 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
-	function register_callback($func, $event, $step='', $pre=0)
+/**
+ * Attachs a function to a callback event.
+ *
+ * @param   callback $func  The callback function
+ * @param   string   $event The callback event
+ * @param   string   $step  The callback step
+ * @param   bool     $pre   Before or after. Works only with selected callback events
+ * @package Callback
+ */
+
+	function register_callback($func, $event, $step = '', $pre = false)
 	{
 		global $plugin_callback;
 
-		$plugin_callback[] = array('function'=>$func, 'event'=>$event, 'step'=>$step, 'pre'=>$pre);
+		$plugin_callback[] = array('function' => $func, 'event' => $event, 'step' => $step, 'pre' => $pre);
 	}
 
-// -------------------------------------------------------------
-	function register_page_extension($func, $event, $step='', $top=0)
+/**
+ * Registers an admin-side extension page.
+ *
+ * For now this just does the same as register_callback()
+ *
+ * @param   callback $func  The callback function
+ * @param   string   $event The callback event
+ * @param   string   $step  The callback step
+ * @param   bool     $top   The top or the bottom of the page
+ * @access  private
+ * @see     register_callback()
+ * @package Callback
+ */
+
+	function register_page_extension($func, $event, $step = '', $top = false)
 	{
-		# For now this just does the same as register_callback
 		register_callback($func, $event, $step, $top);
 	}
 
-// -------------------------------------------------------------
-	function callback_event($event, $step='', $pre=0)
+/**
+ * Call an event's callback.
+ *
+ * @param   string $event The callback event
+ * @param   string $step  Additional callback step
+ * @param   bool   $pre   Allows two callbacks, a prepending and an appending, with same event and step
+ * @return  mixed  The value returned by the attached callback functions, or an empty string
+ * @package Callback
+ */
+
+	function callback_event($event, $step = '', $pre = false)
 	{
 		global $plugin_callback, $production_status;
 
 		if (!is_array($plugin_callback))
+		{
 			return '';
+		}
 
 		$return_value = '';
 
@@ -850,11 +1434,16 @@ function escape_js($js)
 		$argv = func_get_args();
 		$argv = (count($argv) > 3) ? array_slice($argv, 3) : array();
 
-		foreach ($plugin_callback as $c) {
-			if ($c['event'] == $event and (empty($c['step']) or $c['step'] == $step) and $c['pre'] == $pre) {
-				if (is_callable($c['function'])) {
+		foreach ($plugin_callback as $c)
+		{
+			if ($c['event'] == $event and (empty($c['step']) or $c['step'] == $step) and $c['pre'] == $pre)
+			{
+				if (is_callable($c['function']))
+				{
 					$return_value .= call_user_func_array($c['function'], array('event' => $event, 'step' => $step) + $argv);
-				} elseif ($production_status == 'debug') {
+				}
+				elseif ($production_status == 'debug')
+				{
 					trigger_error(gTxt('unknown_callback_function', array('{function}' => callback_tostring($c['function']))), E_USER_WARNING);
 				}
 			}
@@ -862,34 +1451,42 @@ function escape_js($js)
 		return $return_value;
 	}
 
-
-// -------------------------------------------------------------
 /**
- * Call an event's callback with two optional byref parameters
- * @param string $event
- * @param string $step
- * @param boolean $pre 0|1
- * @param mixed $data optional arguments for event handlers
- * @param mixed $options optional arguments for event handlers
- * @return array collection of return values from event handlers
- * @since 4.5.0
+ * Call an event's callback with two optional byref parameters.
+ *
+ * @param   string $event   The callback event
+ * @param   string $step    Optional callback step
+ * @param   bool   $pre     Allows two callbacks, a prepending and an appending, with same event and step
+ * @param   mixed  $data    Optional arguments for event handlers
+ * @param   mixed  $options Optional arguments for event handlers
+ * @return  array  Collection of return values from event handlers
+ * @since   4.5.0
+ * @package Callback
  */
- 	function callback_event_ref($event, $step='', $pre=0, &$data=null, &$options=null)
+
+ 	function callback_event_ref($event, $step = '', $pre = false, &$data = null, &$options = null)
 	{
 		global $plugin_callback, $production_status;
 
 		if (!is_array($plugin_callback))
+		{
 			return array();
+		}
 
 		$return_value = array();
 
-		foreach ($plugin_callback as $c) {
-			if ($c['event'] == $event and (empty($c['step']) or $c['step'] == $step) and $c['pre'] == $pre) {
-				if (is_callable($c['function'])) {
+		foreach ($plugin_callback as $c)
+		{
+			if ($c['event'] == $event and (empty($c['step']) or $c['step'] == $step) and $c['pre'] == $pre)
+			{
+				if (is_callable($c['function']))
+				{
 					// cannot call event handler via call_user_func() as this would dereference all arguments.
 					// side effect: callback handler *must* be ordinary function, *must not* be class method in PHP <5.4 (@see https://bugs.php.net/bug.php?id=47160)
 					$return_value[] = $c['function']($event, $step, $data, $options);
-				} elseif ($production_status == 'debug') {
+				}
+				elseif ($production_status == 'debug')
+				{
 					trigger_error(gTxt('unknown_callback_function', array('{function}' => callback_tostring($c['function']))), E_USER_WARNING);
 				}
 			}
@@ -898,22 +1495,36 @@ function escape_js($js)
 	}
 
 /**
- * @param string|array $callback a PHP "callback"
- * @return string $callback as a human-readable string
- * @since 4.5.0
+ * Converts callable to a string presentation.
+ *
+ * @param   callback $callback The PHP "callback"
+ * @return  string   The $callback as a human-readable string
+ * @since   4.5.0
+ * @package Callback
  */
+
 	function callback_tostring($callback)
 	{
-		if (is_array($callback)) {
+		if (is_array($callback))
+		{
 			return join('::', array_filter($callback, 'is_scalar'));
 		}
-		elseif (!is_scalar($callback)) {
+		elseif (!is_scalar($callback))
+		{
 			return '';
 		}
 		return $callback;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Registers a new admin-side panel and adds a navigation link to the menu.
+ *
+ * @param   string $area  The menu the panel appears in, e.g. "home", "content", "presentation", "admin", "extensions"
+ * @param   string $event The panel's event
+ * @param   string $title The menu item's label
+ * @package Callback
+ */
+
 	function register_tab($area, $event, $title)
 	{
 		global $plugin_areas;
@@ -924,38 +1535,75 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
-	function pluggable_ui($event, $element, $default='')
+/**
+ * Call an event's pluggable UI function.
+ *
+ * @param   string $event   The event
+ * @param   string $element The element selector
+ * @param   string $default The default interface markup
+ * @return  mixed  Returned value from a callback handler, or $default if no custom UI was provided
+ * @package Callback
+ */
+
+	function pluggable_ui($event, $element, $default = '')
 	{
 		$argv = func_get_args();
 		$argv = array_slice($argv, 2);
 		// custom user interface, anyone?
 		// signature for called functions:
 		// string my_called_func(string $event, string $step, string $default_markup[, mixed $context_data...])
-		$ui = call_user_func_array('callback_event', array('event' => $event, 'step' => $element, 'pre' => 0) + $argv);
+		$ui = call_user_func_array('callback_event', array('event' => $event, 'step' => $element, 'pre' => false) + $argv);
 		// either plugins provided a user interface, or we render our own
-		return ($ui === '')? $default : $ui;
+		return ($ui === '') ? $default : $ui;
 	}
 
-// -------------------------------------------------------------
-	// deprecated in 4.2.0
-	function getAtt($name, $default=NULL)
+/**
+ * Gets an attribute from the $theatts global.
+ *
+ * @param      string $name
+ * @param      string $default
+ * @return     string
+ * @deprecated in 4.2.0
+ * @see        lAtts()
+ * @package    TagParser
+ */
+
+	function getAtt($name, $default = NULL)
 	{
 		trigger_error(gTxt('deprecated_function_with', array('{name}' => __FUNCTION__, '{with}' => 'lAtts')), E_USER_NOTICE);
 		global $theseatts;
 		return isset($theseatts[$name]) ? $theseatts[$name] : $default;
 	}
 
-// -------------------------------------------------------------
-	// deprecated in 4.2.0
-	function gAtt(&$atts, $name, $default=NULL)
+/**
+ * Gets an attribute from the given array.
+ *
+ * @param      array  $atts
+ * @param      string $name
+ * @param      string $default
+ * @return     string
+ * @deprecated in 4.2.0
+ * @see        lAtts()
+ * @package    TagParser
+ */
+
+	function gAtt(&$atts, $name, $default = NULL)
 	{
 		trigger_error(gTxt('deprecated_function_with', array('{name}' => __FUNCTION__, '{with}' => 'lAtts')), E_USER_NOTICE);
 		return isset($atts[$name]) ? $atts[$name] : $default;
 	}
 
-// -------------------------------------------------------------
-	function lAtts($pairs, $atts, $warn=1)
+/**
+ * Merge the second array into the first array.
+ *
+ * @param   array $pairs The first array
+ * @param   array $atts  The second array
+ * @param   bool  $warn  If TRUE triggers errors if second array contains values that are not in the first
+ * @return  array The two arrays merged
+ * @package TagParser
+ */
+
+	function lAtts($pairs, $atts, $warn = true)
 	{
 		global $production_status;
 
@@ -974,8 +1622,15 @@ function escape_js($js)
 		return ($pairs) ? $pairs : false;
 	}
 
-// -------------------------------------------------------------
-	// deprecated in 4.5.0
+/**
+ * Generates All, None and Range selection buttons.
+ *
+ * @return     string HTML
+ * @deprecated in 4.5.0
+ * @see        multi_edit()
+ * @package    Form
+ */
+
 	function select_buttons()
 	{
 		return
@@ -985,27 +1640,47 @@ function escape_js($js)
 		n.fInput('button','selrange',gTxt('range'),'','select range','selectrange();');
 	}
 
-// -------------------------------------------------------------
-	function stripSpace($text, $force=0)
+/**
+ * Sanitizes a string for use in an article's URL title.
+ *
+ * @param   string $text  The title or an URL
+ * @param   bool   $force Force sanitization
+ * @return  string|null
+ * @package URL
+ */
+
+	function stripSpace($text, $force = false)
 	{
 		global $prefs;
 		if ($force or !empty($prefs['attach_titles_to_permalinks']))
 		{
 			$text = trim(sanitizeForUrl($text), '-');
-			if ($prefs['permalink_title_format']) {
-				return (function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text));
-			} else {
-				return str_replace('-','',$text);
+			if ($prefs['permalink_title_format'])
+			{
+				return function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
+			}
+			else
+			{
+				return str_replace('-', '', $text);
 			}
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sanitizes a string for use in a URL.
+ *
+ * @param  string $text The string
+ * @return string
+ * @package URL
+ */
+
 	function sanitizeForUrl($text)
 	{
-		// any overrides?
-		$out = callback_event('sanitize_for_url', '', 0, $text);
-		if ($out !== '') return $out;
+		$out = callback_event('sanitize_for_url', '', false, $text);
+		if ($out !== '')
+		{
+			return $out;
+		}
 
 		$in = $text;
 		// Remove names entities and tags
@@ -1025,12 +1700,21 @@ function escape_js($js)
 		return $text;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sanitizes a string for use in a filename.
+ *
+ * @param   string $text The string
+ * @return  string
+ * @package File
+ */
+
 	function sanitizeForFile($text)
 	{
-		// any overrides?
-		$out = callback_event('sanitize_for_file', '', 0, $text);
-		if ($out !== '') return $out;
+		$out = callback_event('sanitize_for_file', '', false, $text);
+		if ($out !== '')
+		{
+			return $out;
+		}
 
 		// Remove control characters and " * \ : < > ? / |
 		$text = preg_replace('/[\x00-\x1f\x22\x2a\x2f\x3a\x3c\x3e\x3f\x5c\x7c\x7f]+/', '', $text);
@@ -1039,21 +1723,42 @@ function escape_js($js)
 		return $text;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sanitizes a string for use in a page template's name.
+ *
+ * @param   string $text The string
+ * @return  string
+ * @package Filter
+ * @access  private
+ */
+
 	function sanitizeForPage($text)
 	{
-		// any overrides?
-		$out = callback_event('sanitize_for_page', '', 0, $text);
-		if ($out !== '') return $out;
+		$out = callback_event('sanitize_for_page', '', false, $text);
+		if ($out !== '')
+		{
+			return $out;
+		}
 
 		return trim(preg_replace('/[<>&"\']/', '', $text));
 	}
 
-// -------------------------------------------------------------
-	function dumbDown($str, $lang=LANG)
+/**
+ * Transliterates a string to ASCII.
+ *
+ * This function is used to generate RFC 3986 compliant and pretty ASCII-only URLs.
+ *
+ * @param   string $str  The string to convert
+ * @param   string $lang The language which translation table is used
+ * @see     sanitizeForUrl()
+ * @package i18n
+ */
+
+	function dumbDown($str, $lang = LANG)
 	{
 		static $array;
-		if (empty($array[$lang])) {
+		if (empty($array[$lang]))
+		{
 			$array[$lang] = array( // nasty, huh?.
 				'&#192;'=>'A','&Agrave;'=>'A','&#193;'=>'A','&Aacute;'=>'A','&#194;'=>'A','&Acirc;'=>'A',
 				'&#195;'=>'A','&Atilde;'=>'A','&#196;'=>'Ae','&Auml;'=>'A','&#197;'=>'A','&Aring;'=>'A',
@@ -1134,45 +1839,77 @@ function escape_js($js)
 			);
 
 
-			if (is_file(txpath.'/lib/i18n-ascii.txt')) {
+			if (is_file(txpath.'/lib/i18n-ascii.txt'))
+			{
 				$i18n = parse_ini_file(txpath.'/lib/i18n-ascii.txt', true);
-				# load the global map
-				if (isset($i18n['default']) && is_array($i18n['default'])) {
+				// load the global map
+				if (isset($i18n['default']) && is_array($i18n['default']))
+				{
 					$array[$lang] = array_merge($array[$lang], $i18n['default']);
-					# base language overrides: 'de-AT' applies the 'de' section
-					if (preg_match('/([a-zA-Z]+)-.+/', $lang, $m)) {
+					// base language overrides: 'de-AT' applies the 'de' section
+					if (preg_match('/([a-zA-Z]+)-.+/', $lang, $m))
+					{
 						if (isset($i18n[$m[1]]) && is_array($i18n[$m[1]]))
+						{
 							$array[$lang] = array_merge($array[$lang], $i18n[$m[1]]);
-					};
-					# regional language overrides: 'de-AT' applies the 'de-AT' section
+						}
+					}
+					// regional language overrides: 'de-AT' applies the 'de-AT' section
 					if (isset($i18n[$lang]) && is_array($i18n[$lang]))
+					{
 						$array[$lang] = array_merge($array[$lang], $i18n[$lang]);
+					}
 				}
-				# load an old file (no sections) just in case
+				// load an old file (no sections) just in case
 				else
+				{
 					$array[$lang] = array_merge($array[$lang], $i18n);
+				}
 			}
 		}
 
 		return strtr($str, $array[$lang]);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Cleans a URL.
+ *
+ * @param   string $url The URL
+ * @return  string
+ * @access  private
+ * @package URL
+ */
+
 	function clean_url($url)
 	{
-		return preg_replace("/\"|'|(?:\s.*$)/",'',$url);
+		return preg_replace("/\"|'|(?:\s.*$)/", '', $url);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Replace the last space with a &#160;, non-break spacing.
+ *
+ * @param   string $str The string
+ * @return  string
+ */
+
 	function noWidow($str)
 	{
-		// replace the last space with a nbsp
 		if (REGEXP_UTF8 == 1)
+		{
 			return preg_replace('@[ ]+([[:punct:]]?[\p{L}\p{N}\p{Pc}]+[[:punct:]]?)$@u', '&#160;$1', rtrim($str));
+		}
 		return preg_replace('@[ ]+([[:punct:]]?\w+[[:punct:]]?)$@', '&#160;$1', rtrim($str));
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if an IP is on a spam blacklist.
+ *
+ * @param   string  $ip     The IP address
+ * @param   string  $checks The checked lists. Defaults to $prefs['spam_blacklists']
+ * @return  string|bool     The lists the IP is on or FALSE
+ * @package Comment
+ */
+
 	function is_blacklisted($ip, $checks = '')
 	{
 		global $prefs;
@@ -1208,7 +1945,19 @@ function escape_js($js)
 		return (!empty($listed)) ? join(', ', $listed) : false;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if the user is authenticated on the public-side.
+ *
+ * @param   string     $user The checked username. If not provided, any user is accepted
+ * @return  array|bool An array containing details about the user; name, RealName, email, privs. FALSE when the user hasn't authenticated.
+ * @package User
+ * @example
+ * if ($user = is_logged_in())
+ * {
+ * 	echo "Logged in as {$user['RealName']}";
+ * }
+ */
+
 	function is_logged_in($user = '')
 	{
 		$name = substr(cs('txp_login_public'), 10);
@@ -1231,19 +1980,37 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Updates the path to the site.
+ *
+ * @param   string $here The path
+ * @access  private
+ * @package Pref
+ */
+
 	function updateSitePath($here)
 	{
 		$here = doSlash($here);
-		$rs = safe_field ("name",'txp_prefs',"name = 'path_to_site'");
-		if (!$rs) {
-			safe_insert("txp_prefs","prefs_id=1,name='path_to_site',val='$here'");
-		} else {
-			safe_update('txp_prefs',"val='$here'","name='path_to_site'");
+		$rs = safe_field("name", 'txp_prefs', "name='path_to_site'");
+		if (!$rs)
+		{
+			safe_insert("txp_prefs","prefs_id=1, name='path_to_site', val='$here'");
+		}
+		else
+		{
+			safe_update("txp_prefs", "val='$here'", "name='path_to_site'");
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Converts Textpattern tag's attribute list to an array.
+ *
+ * @param   string  $text The attribute list, e.g. foobar="1" barfoo="0"
+ * @return  array   Array of attributes
+ * @access  private
+ * @package TagParser
+ */
+
 	function splat($text)
 	{
 		$atts  = array();
@@ -1282,8 +2049,15 @@ function escape_js($js)
 		return $atts;
 	}
 
-// -------------------------------------------------------------
-	function maxMemUsage($message = 'none', $returnit = 0)
+/**
+ * Gets the peak memory usage.
+ *
+ * @param   string $message  The message associated with the logged memory usage
+ * @param   bool   $returnit Return the usage wrapped in a HTML comment
+ * @package Debug
+ */
+
+	function maxMemUsage($message = 'none', $returnit = false)
 	{
 		static $memory_top = 0;
 		static $memory_message;
@@ -1298,7 +2072,7 @@ function escape_js($js)
 			}
 		}
 
-		if ($returnit != 0)
+		if ($returnit)
 		{
 			if (is_callable('memory_get_usage'))
 				return n.comment(sprintf('Memory: %sKb, %s',
@@ -1308,26 +2082,47 @@ function escape_js($js)
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Replaces CRLF with two spaces.
+ *
+ * @param   string $str The string
+ * @return  string
+ * @package Email
+ */
+
 	function strip_rn($str)
 	{
 		return strtr($str, "\r\n", '  ');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Validates a string as an email address.
+ *
+ * @param   string $address The email address
+ * @return  bool
+ * @package Email
+ */
 
 	function is_valid_email($address)
 	{
 		return preg_match('/^[a-z0-9](\.?[a-z0-9_+%-])*@([a-z0-9](-*[a-z0-9])*\.)+[a-z]{2,6}$/i', $address);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sends an email.
+ *
+ * @param   string $to_address The receiver
+ * @param   string $subject    The subject
+ * @param   string $body       The message
+ * @param   string $reply_to   The reply to address
+ * @return  bool   Returns FALSE when sending failed
+ * @package Email
+ */
 
 	function txpMail($to_address, $subject, $body, $reply_to = null)
 	{
 		global $txp_user, $prefs;
 
-		// if mailing isn't possible, don't even try
 		if (is_disabled('mail'))
 		{
 			return false;
@@ -1336,11 +2131,14 @@ function escape_js($js)
 		// Likely sending passwords
 		if (isset($txp_user))
 		{
-			if (is_valid_email($prefs['publisher_email'])) {
+			if (is_valid_email($prefs['publisher_email']))
+			{
 				// explicit publisher email address preferred
 				$RealName = safe_field('RealName', 'txp_users', "name = '".doSlash($txp_user)."'");
 				$email = $prefs['publisher_email'];
-			} else {
+			}
+			else
+			{
 				// default: current user invites new users using her personal email address
 				extract(safe_row('RealName, email', 'txp_users', "name = '".doSlash($txp_user)."'"));
 			}
@@ -1403,54 +2201,73 @@ function escape_js($js)
 		return mail($to_address, $subject, $body, $headers);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Encodes a string for use in a email header.
+ *
+ * @param   string $string The string
+ * @param   string $type   The type of header, either "text" or "phrase"
+ * @return  string
+ * @package Email
+ */
+
 	function encode_mailheader($string, $type)
 	{
 		global $prefs;
-		if (!strstr($string,'=?') and !preg_match('/[\x00-\x1F\x7F-\xFF]/', $string)) {
-			if ("phrase" == $type) {
-				if (preg_match('/[][()<>@,;:".\x5C]/', $string)) {
+		if (!strstr($string,'=?') and !preg_match('/[\x00-\x1F\x7F-\xFF]/', $string))
+		{
+			if ("phrase" == $type)
+			{
+				if (preg_match('/[][()<>@,;:".\x5C]/', $string))
+				{
 					$string = '"'. strtr($string, array("\\" => "\\\\", '"' => '\"')) . '"';
 				}
 			}
-			elseif ( "text" != $type) {
+			elseif ("text" != $type)
+			{
 				trigger_error( 'Unknown encode_mailheader type', E_USER_WARNING);
 			}
 			return $string;
 		}
-		if ($prefs['override_emailcharset'] and is_callable('utf8_decode')) {
+		if ($prefs['override_emailcharset'] and is_callable('utf8_decode'))
+		{
 			$start = '=?ISO-8859-1?B?';
 			$pcre  = '/.{1,42}/s';
 		}
-		else {
+		else
+		{
 			$start = '=?UTF-8?B?';
 			$pcre  = '/.{1,45}(?=[\x00-\x7F\xC0-\xFF]|$)/s';
 		}
 		$end = '?=';
 		$sep = IS_WIN ? "\r\n" : "\n";
 		preg_match_all($pcre, $string, $matches);
-		return $start . join($end.$sep.' '.$start, array_map('base64_encode',$matches[0])) . $end;
+		return $start . join($end.$sep.' '.$start, array_map('base64_encode', $matches[0])) . $end;
 	}
-
-// -------------------------------------------------------------
-	function stripPHP($in)
-	{
-		return preg_replace("/".chr(60)."\?(?:php)?|\?".chr(62)."/i",'',$in);
-	}
-
-// -------------------------------------------------------------
 
 /**
- * PEDRO:
- * Helper functions for common textpattern event files actions.
- * Code refactoring from original files. Intended to do easy and less error
- * prone the future build of new textpattern extensions, and to add new
- * events to multiedit forms.
+ * Strips PHP tags from a string.
+ *
+ * @param  string $in The input
+ * @return string
+ */
+
+	function stripPHP($in)
+	{
+		return preg_replace("/".chr(60)."\?(?:php)?|\?".chr(62)."/i", '', $in);
+	}
+
+/**
+ * Gets a HTML select field containing all categories, or sub-categories.
+ *
+ * @param   string $name Return specified parent category's sub-categories
+ * @param   string $cat  The selected category option
+ * @param   string $id   The HTML ID
+ * @return  string|bool  HTML select field or FALSE on error
+ * @package Form
  */
 
  	function event_category_popup($name, $cat = '', $id = '')
 	{
-		$arr = array('');
 		$rs = getTree('root', $name);
 
 		if ($rs)
@@ -1461,7 +2278,15 @@ function escape_js($js)
 		return false;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Updates a list's per page number.
+ *
+ * Gets the per page number from a "qty" HTTP POST/GET parameter and
+ * creates a user-specific preference value "$name_list_pageby".
+ *
+ * @param string $name The name of the list
+ */
+
  	function event_change_pageby($name)
 	{
 		global $event;
@@ -1475,8 +2300,21 @@ function escape_js($js)
 		return;
 	}
 
-// -------------------------------------------------------------
-// DEPRECATED in v4.5.0: use multi_edit() instead
+/**
+ * Generates a multi-edit widget.
+ *
+ * @param      string $name
+ * @param      array  $methods
+ * @param      int    $page
+ * @param      string $sort
+ * @param      string $dir
+ * @param      string $crit
+ * @param      string $search_method
+ * @deprecated in 4.5.0
+ * @see        multi_edit()
+ * @package    Form
+ */
+
 	function event_multiedit_form($name, $methods = null, $page, $sort, $dir, $crit, $search_method)
 	{
 		$method = ps('edit_method');
@@ -1498,7 +2336,17 @@ function escape_js($js)
 			n.fInput('submit', '', gTxt('go'));
 	}
 
-// -------------------------------------------------------------
+/**
+ * Generic multi edit form's edit handler shared across panels.
+ *
+ * Receives an action from a multi edit form and runs it
+ * in the given database table.
+ *
+ * @param  string $table  The database table
+ * @param  string $id_key The database column selected items match to. Column should be integer type
+ * @return string Comma-separated list of affected items
+ * @see    multi_edit()
+ */
 
 	function event_multi_edit($table, $id_key)
 	{
@@ -1526,157 +2374,266 @@ function escape_js($js)
 		return '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets a "since days ago" date format from a given UNIX timestamp.
+ *
+ * @param   int    $stamp UNIX timestamp
+ * @return  string "n days ago"
+ * @package DateTime
+ */
+
 	function since($stamp)
 	{
 		$diff = (time() - $stamp);
-		if ($diff <= 3600) {
+		if ($diff <= 3600)
+		{
 			$mins = round($diff / 60);
 			$since = ($mins <= 1)
-			?	($mins==1)
-				?	'1 '.gTxt('minute')
-				:	gTxt('a_few_seconds')
-			:	"$mins ".gTxt('minutes');
-		} else if (($diff <= 86400) && ($diff > 3600)) {
+			? ($mins==1)
+				? '1 '.gTxt('minute')
+				: gTxt('a_few_seconds')
+			: "$mins ".gTxt('minutes');
+		}
+		else if (($diff <= 86400) && ($diff > 3600))
+		{
 			$hours = round($diff / 3600);
 			$since = ($hours <= 1) ? '1 '.gTxt('hour') : "$hours ".gTxt('hours');
-		} else if ($diff >= 86400) {
+		}
+		else if ($diff >= 86400)
+		{
 			$days = round($diff / 86400);
 			$since = ($days <= 1) ? "1 ".gTxt('day') : "$days ".gTxt('days');
 		}
 		return $since.' '.gTxt('ago'); // sorry, this needs to be hacked until a truly multilingual version is done
 	}
 
-// -------------------------------------------------------------
-// Calculate the offset between the server local time and the
-// user's selected time zone at a given point in time
+/**
+ * Calculates a timezone offset.
+ *
+ * This function calculates the offset between the server local time
+ * and the user's selected time zone at a given point in time.
+ *
+ * @param   int $timestamp The timestamp. Defaults to time()
+ * @return  int The offset in seconds
+ * @package DateTime
+ */
+
 	function tz_offset($timestamp = NULL)
 	{
 		global $gmtoffset, $timezone_key;
 
-		if (is_null($timestamp)) $timestamp = time();
+		if (is_null($timestamp))
+		{
+			$timestamp = time();
+		}
 
 		extract(getdate($timestamp));
-		$serveroffset = gmmktime($hours,$minutes,0,$mon,$mday,$year) - mktime($hours,$minutes,0,$mon,$mday,$year);
+		$serveroffset = gmmktime($hours, $minutes, 0, $mon, $mday, $year) - mktime($hours, $minutes, 0, $mon, $mday, $year);
 
 		$real_dst = timezone::is_dst($timestamp, $timezone_key);
 		return $gmtoffset - $serveroffset + ($real_dst ? 3600 : 0);
 	}
 
-// -------------------------------------------------------------
-// Format a time, respecting the locale and local time zone,
-// and make sure the output string is safe for UTF-8
-	function safe_strftime($format, $time='', $gmt=0, $override_locale='')
+/**
+ * Format a time.
+ *
+ * This function respects the locale and local time zone,
+ * and makes sure the output string is encoded in UTF-8.
+ *
+ * @param   string $format          The date format
+ * @param   int    $time            UNIX timestamp. Defaults to time()
+ * @param   bool	  $gmt             Return GMT time
+ * @param   string $override_locale Override the locale
+ * @return  string Formatted date
+ * @package DateTime
+ */
+
+	function safe_strftime($format, $time = 0, $gmt = false, $override_locale = '')
 	{
 		global $locale;
 		$old_locale = $locale;
 
 		if (!$time)
+		{
 			$time = time();
-
-		# we could add some other formats here
-		if ($format == 'iso8601' or $format == 'w3cdtf') {
-			$format = '%Y-%m-%dT%H:%M:%SZ';
-			$gmt = 1;
 		}
-		elseif ($format == 'rfc822') {
+
+		if ($format == 'iso8601' or $format == 'w3cdtf')
+		{
+			$format = '%Y-%m-%dT%H:%M:%SZ';
+			$gmt = true;
+		}
+		elseif ($format == 'rfc822')
+		{
 			$format = '%a, %d %b %Y %H:%M:%S GMT';
-			$gmt = 1;
+			$gmt = true;
 			$override_locale = 'en-gb';
 		}
 
 		if ($override_locale)
+		{
 			getlocale($override_locale);
+		}
 
 		if ($format == 'since')
+		{
 			$str = since($time);
+		}
 		elseif ($gmt)
+		{
 			$str = gmstrftime($format, $time);
+		}
 		else
+		{
 			$str = strftime($format, $time + tz_offset($time));
+		}
 
 		@list($lang, $charset) = explode('.', $locale);
 		if (empty($charset))
+		{
 			$charset = 'ISO-8859-1';
+		}
 		elseif (IS_WIN and is_numeric($charset))
-			// Score -1 for consistent naming conventions
+		{
 			$charset = 'Windows-'.$charset;
-
-		if ($charset != 'UTF-8' and $format != 'since') {
-			$new = '';
-			if (is_callable('iconv'))
-				$new = @iconv($charset, 'UTF-8', $str);
-
-			if ($new)
-				$str = $new;
-			elseif (is_callable('utf8_encode'))
-				$str = utf8_encode($str);
 		}
 
-		# revert to the old locale
+		if ($charset != 'UTF-8' and $format != 'since')
+		{
+			$new = '';
+			if (is_callable('iconv'))
+			{
+				$new = @iconv($charset, 'UTF-8', $str);
+			}
+			if ($new)
+			{
+				$str = $new;
+			}
+			elseif (is_callable('utf8_encode'))
+			{
+				$str = utf8_encode($str);
+			}
+		}
+
+		// revert to the old locale
 		if ($override_locale)
+		{
 			$locale = setlocale(LC_ALL, $old_locale);
+		}
 
 		return $str;
 	}
 
-// -------------------------------------------------------------
-// Convert a time string from the Textpattern time zone to GMT
+/**
+ * Convert a time string from the Textpattern time zone to GMT.
+ *
+ * @param   string $time_str The time string
+ * @return  int    UNIX timestamp
+ * @package DateTime
+ */
+
 	function safe_strtotime($time_str)
 	{
 		$ts = strtotime($time_str);
 		return strtotime($time_str, time() + tz_offset($ts)) - tz_offset($ts);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Generic error handler.
+ *
+ * @param   int    $errno
+ * @param   string $errstr
+ * @param   string $errfile
+ * @param   int    $errline
+ * @access  private
+ * @package Debug
+ */
+
 	function myErrorHandler($errno, $errstr, $errfile, $errline)
 	{
-		# error_reporting() returns 0 when the '@' suppression
-		# operator is used
+		// error_reporting() returns 0 when the '@' suppression
+		// operator is used
 		if (!error_reporting())
+		{
 			return;
+		}
 
 		echo '<pre>'.n.n."$errno: $errstr in $errfile at line $errline\n";
-		# Requires PHP 4.3
-		if (is_callable('debug_backtrace')) {
+
+		if (is_callable('debug_backtrace'))
+		{
 			echo "Backtrace:\n";
 			$trace = debug_backtrace();
-			foreach($trace as $ent) {
-				if(isset($ent['file'])) echo $ent['file'].':';
-				if(isset($ent['function'])) {
+			foreach ($trace as $ent)
+			{
+				if (isset($ent['file']))
+				{
+					echo $ent['file'].':';
+				}
+				if (isset($ent['function']))
+				{
 					echo $ent['function'].'(';
-					if(isset($ent['args'])) {
+					if (isset($ent['args']))
+					{
 						$args='';
-						foreach($ent['args'] as $arg) { $args.=$arg.','; }
+						foreach ($ent['args'] as $arg)
+						{
+							$args.=$arg.',';
+						}
 						echo rtrim($args,',');
 					}
 					echo ') ';
 				}
-				if(isset($ent['line'])) echo 'at line '.$ent['line'].' ';
-				if(isset($ent['file'])) echo 'in '.$ent['file'];
-				echo "\n";
+				if (isset($ent['line']))
+				{
+					echo 'at line '.$ent['line'].' ';
+				}
+				if (isset($ent['file']))
+				{
+					echo 'in '.$ent['file'];
+				}
+				echo n;
 			}
 		}
 		echo "</pre>";
 	}
 
-// -------------------------------------------------------------
+/**
+ * Looks up a temporary directory.
+ *
+ * @return  string|bool Path to temp directory or FALSE on error
+ * @package File
+ */
+
 	function find_temp_dir()
 	{
 		global $path_to_site, $img_dir;
 
-		if (IS_WIN) {
+		if (IS_WIN)
+		{
 			$guess = array(txpath.DS.'tmp', getenv('TMP'), getenv('TEMP'), getenv('SystemRoot').DS.'Temp', 'C:'.DS.'Temp', $path_to_site.DS.$img_dir);
-			foreach ($guess as $k=>$v)
-				if (empty($v)) unset($guess[$k]);
+			foreach ($guess as $k => $v)
+			{
+				if (empty($v))
+				{
+					unset($guess[$k]);
+				}
+			}
 		}
 		else
+		{
 			$guess = array(txpath.DS.'tmp', '', DS.'tmp', $path_to_site.DS.$img_dir);
+		}
 
-		foreach ($guess as $dir) {
+		foreach ($guess as $dir)
+		{
 			$tf = @tempnam($dir, 'txp_');
-			if ($tf) $tf = realpath($tf);
-			if ($tf and file_exists($tf)) {
+			if ($tf)
+			{
+				$tf = realpath($tf);
+			}
+			if ($tf and file_exists($tf))
+			{
 				unlink($tf);
 				return dirname($tf);
 			}
@@ -1685,62 +2642,105 @@ function escape_js($js)
 		return false;
 	}
 
-// -------------------------------------------------------------
-	function get_uploaded_file($f, $dest='')
+/**
+ * Moves an uploaded file and returns its new location.
+ *
+ * @param   string      $f    The filename of the uploaded file
+ * @param   string      $dest The destination of the moved file. If omitted, the file is moved to the temp directory
+ * @return  string|bool The new path or FALSE on error
+ * @package File
+ */
+
+	function get_uploaded_file($f, $dest = '')
 	{
 		global $tempdir;
 
 		if (!is_uploaded_file($f))
+		{
 			return false;
+		}
 
-		if ($dest) {
+		if ($dest)
+		{
 			$newfile = $dest;
 		}
-		else {
+		else
+		{
 			$newfile = tempnam($tempdir, 'txp_');
 			if (!$newfile)
+			{
 				return false;
+			}
 		}
 
-		# $newfile is created by tempnam(), but move_uploaded_file
-		# will overwrite it
 		if (move_uploaded_file($f, $newfile))
+		{
 			return $newfile;
+		}
+
+		return false;
 	}
 
-// --------------------------------------------------------------
+/**
+ * Sets error reporting level.
+ *
+ * @param   string $level The level. Either "debug", "live" or "testing"
+ * @package Debug
+ */
+
 	function set_error_level($level)
 	{
-
-		if ($level == 'debug') {
+		if ($level == 'debug')
+		{
 			error_reporting(E_ALL | E_STRICT);
 		}
-		elseif ($level == 'live') {
+		elseif ($level == 'live')
+		{
 			// don't show errors on screen
 			$suppress = E_NOTICE | E_USER_NOTICE | E_WARNING | E_STRICT | (defined('E_DEPRECATED') ? E_DEPRECATED : 0);
 			error_reporting(E_ALL ^ $suppress);
-			@ini_set("display_errors","1");
+			@ini_set("display_errors", "1");
 		}
-		else {
+		else
+		{
 			// default is 'testing': display everything except notices
 			error_reporting((E_ALL | E_STRICT) ^ (E_NOTICE | E_USER_NOTICE));
 		}
 	}
 
+/**
+ * Moves a file.
+ *
+ * @param   string $f    The file to move
+ * @param   string $dest The destination
+ * @return  bool
+ * @package File
+ */
 
-// -------------------------------------------------------------
 	function shift_uploaded_file($f, $dest)
 	{
-		// Rename might not work, but it's worth a try
 		if (@rename($f, $dest))
+		{
 			return true;
+		}
 
-		if (@copy($f, $dest)) {
+		if (@copy($f, $dest))
+		{
 			unlink($f);
 			return true;
 		}
+
+		return false;
 	}
-// -------------------------------------------------------------
+
+/**
+ * Translates upload error code to a localized error message.
+ *
+ * @param   int    $err_code The error code
+ * @return  string The $err_code as a message
+ * @package File
+ */
+
 	function upload_get_errormsg($err_code)
 	{
 		$msg = '';
@@ -1767,15 +2767,16 @@ function escape_js($js)
 	}
 
 /**
- * Formats a file size
+ * Formats a file size.
  *
- * @param	int		$bytes		Size in bytes
- * @param	int		$decimals	Number of decimals
- * @param	string	$format		The format the size is represented
- * @return	string				Formatted file size
+ * @param   int    $bytes    Size in bytes
+ * @param   int    $decimals Number of decimals
+ * @param   string $format   The format the size is represented
+ * @return  string Formatted file size
+ * @package File
  */
 
-	function format_filesize($bytes, $decimals=2, $format='')
+	function format_filesize($bytes, $decimals = 2, $format = '')
 	{
 		$units = array('b', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y');
 
@@ -1798,26 +2799,61 @@ function escape_js($js)
 		return number_format($bytes, $decimals, $sep_dec, $sep_thous) . gTxt('units_' . $units[$pow]);
 	}
 
-// -------------------------------------------------------------
-	// for b/c only
+/**
+ * Checks if the system is Windows.
+ *
+ * Exists for backwards compatibility.
+ *
+ * @return  bool
+ * @access  private
+ * @see     IS_WIN
+ * @package System
+ */
+
 	function is_windows()
 	{
 		return IS_WIN;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if PHP is run as CGI.
+ *
+ * Exists for backwards compatibility.
+ *
+ * @return  bool
+ * @access  private
+ * @see     IS_CGI
+ * @package System
+ */
+
 	function is_cgi()
 	{
 		return IS_CGI;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if PHP is run as Apache module.
+ *
+ * Exists for backwards compatibility.
+ *
+ * @return  bool
+ * @access  private
+ * @see     IS_APACHE
+ * @package System
+ */
+
 	function is_mod_php()
 	{
 		return IS_APACHE;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if a function is disabled.
+ *
+ * @param   string $function The function name
+ * @return  bool   TRUE if the function is disabled
+ * @package System
+ */
 
 	function is_disabled($function)
 	{
@@ -1831,49 +2867,91 @@ function escape_js($js)
 		return in_array($function, $disabled);
 	}
 
-// --------------------------------------------------------------
-	function build_file_path($base,$path)
+/**
+ * Joins two strings to form a single filesystem path.
+ *
+ * @param   string $base The base directory
+ * @param   string $path The second path, a relative filename
+ * @return  string A path to a file
+ * @package File
+ */
+
+	function build_file_path($base, $path)
 	{
-		$base = rtrim($base,'/\\');
-		$path = ltrim($path,'/\\');
+		$base = rtrim($base, '/\\');
+		$path = ltrim($path, '/\\');
 
 		return $base.DIRECTORY_SEPARATOR.$path;
 	}
 
-// --------------------------------------------------------------
+/**
+ * Gets a user's real name.
+ *
+ * @param   string $name The username
+ * @return  string A real name, or username if empty
+ * @package User
+ */
+
 	function get_author_name($name)
 	{
 		static $authors = array();
 
 		if (isset($authors[$name]))
+		{
 			return $authors[$name];
+		}
 
-		$realname = fetch('RealName','txp_users','name',doSlash($name));
+		$realname = fetch('RealName', 'txp_users', 'name', $name);
 		$authors[$name] = $realname;
 		return ($realname) ? $realname : $name;
 	}
 
-// --------------------------------------------------------------
+/**
+ * Gets a user's email address.
+ *
+ * @param   string $name The username
+ * @return  string
+ * @package User
+ */
+ 
 	function get_author_email($name)
 	{
 		static $authors = array();
 
 		if (isset($authors[$name]))
+		{
 			return $authors[$name];
+		}
 
-		$email = fetch('email','txp_users','name',doSlash($name));
+		$email = fetch('email', 'txp_users', 'name', $name);
 		$authors[$name] = $email;
 		return $email;
 	}
 
-// --------------------------------------------------------------
-	function has_single_author($table, $col='author')
+/**
+ * Checks if a database table contains items just from a one user.
+ *
+ * @param   string $table The database table
+ * @param   string $col   The column
+ * @return  bool
+ * @package User
+ */
+
+	function has_single_author($table, $col = 'author')
 	{
 		return (safe_field('COUNT(name)', 'txp_users', '1=1') <= 1) &&
 			(safe_field('COUNT(DISTINCT('.doSlash($col).'))', doSlash($table), '1=1') <= 1);
 	}
 
-// --------------------------------------------------------------
+/**
+ * Extracts a statement from a if/else condition.
+ *
+ * @param   string  $thing     Statement in Textpattern tag markup presentation
+ * @param   bool    $condition TRUE to return if statement, FALSE to else
+ * @return  string  Either if or else statement
+ * @package TagParser
+ */
+
 	function EvalElse($thing, $condition)
 	{
 		global $txp_current_tag;
@@ -1933,16 +3011,27 @@ function escape_js($js)
 		return $condition ? $thing : '';
 	}
 
-// --------------------------------------------------------------
+/**
+ * Gets a form template's contents.
+ *
+ * @param   string $name The form
+ * @return  string
+ * @package TagParser
+ */
+
 	function fetch_form($name)
 	{
 		static $forms = array();
 
 		if (isset($forms[$name]))
+		{
 			$f = $forms[$name];
-		else {
-			$row = safe_row('Form', 'txp_form',"name='".doSlash($name)."'");
-			if (!$row) {
+		}
+		else
+		{
+			$row = safe_row('Form', 'txp_form', "name='".doSlash($name)."'");
+			if (!$row)
+			{
 				trigger_error(gTxt('form_not_found').': '.$name);
 				return;
 			}
@@ -1954,15 +3043,24 @@ function escape_js($js)
 		return $f;
 	}
 
-// --------------------------------------------------------------
+/**
+ * Parses a form template.
+ *
+ * @param   string      $name The form
+ * @return  string|null The parsed contents, NULL when form is empty or missing
+ * @package TagParser
+ */
+
 	function parse_form($name)
 	{
 		global $txp_current_form;
 		static $stack = array();
 
 		$f = fetch_form($name);
-		if ($f) {
-			if (in_array($name, $stack)) {
+		if ($f)
+		{
+			if (in_array($name, $stack))
+			{
 				trigger_error(gTxt('form_circular_reference', array('{name}' => $name)));
 				return;
 			}
@@ -1975,27 +3073,42 @@ function escape_js($js)
 		}
 	}
 
-// --------------------------------------------------------------
-	function fetch_category_title($name, $type='article')
+/**
+ * Gets a category's title.
+ *
+ * @param  string      $name The category
+ * @param  string      $type Category's type. Either "article", "file", "image" or "link"
+ * @return string|bool The title or FALSE on error
+ */
+
+	function fetch_category_title($name, $type = 'article')
 	{
 		static $cattitles = array();
 		global $thiscategory;
 
 		if (isset($cattitles[$type][$name]))
+		{
 			return $cattitles[$type][$name];
+		}
 
-		if(!empty($thiscategory['title']) && $thiscategory['name'] == $name && $thiscategory['type'] == $type)
+		if (!empty($thiscategory['title']) && $thiscategory['name'] == $name && $thiscategory['type'] == $type)
 		{
 			$cattitles[$type][$name] = $thiscategory['title'];
 			return $thiscategory['title'];
 		}
 
-		$f = safe_field('title','txp_category',"name='".doSlash($name)."' and type='".doSlash($type)."'");
+		$f = safe_field('title', 'txp_category', "name='".doSlash($name)."' and type='".doSlash($type)."'");
 		$cattitles[$type][$name] = $f;
 		return $f;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets a section's title.
+ *
+ * @param  string      $name The section
+ * @return string|bool The title or FALSE on error
+ */
+
 	function fetch_section_title($name)
 	{
 		static $sectitles = array();
@@ -2003,52 +3116,81 @@ function escape_js($js)
 
 		// try cache
 		if (isset($sectitles[$name]))
+		{
 			return $sectitles[$name];
+		}
 
 		// try global set by section_list()
-		if(!empty($thissection['title']) && $thissection['name'] == $name)
+		if (!empty($thissection['title']) && $thissection['name'] == $name)
 		{
 			$sectitles[$name] = $thissection['title'];
 			return $thissection['title'];
 		}
 
-		if($name == 'default' or empty($name))
+		if ($name == 'default' or empty($name))
+		{
 			return '';
+		}
 
-		$f = safe_field('title','txp_section',"name='".doSlash($name)."'");
+		$f = safe_field('title', 'txp_section', "name='".doSlash($name)."'");
 		$sectitles[$name] = $f;
 		return $f;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Updates an article's comment count.
+ *
+ * @param   int $id The article
+ * @return  bool
+ * @package Comment
+ */
+
 	function update_comments_count($id)
 	{
 		$id = assert_int($id);
-		$thecount = safe_field('count(*)','txp_discuss','parentid='.$id.' and visible='.VISIBLE);
+		$thecount = safe_field('count(*)', 'txp_discuss', 'parentid='.$id.' and visible='.VISIBLE);
 		$thecount = assert_int($thecount);
-		$updated = safe_update('textpattern','comments_count='.$thecount,'ID='.$id);
+		$updated = safe_update('textpattern', 'comments_count='.$thecount, 'ID='.$id);
 		return ($updated) ? true : false;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Recalculates and updates comment counts.
+ *
+ * @param   array $parentids List of articles to update
+ * @package Comment
+ */
+
 	function clean_comment_counts($parentids)
 	{
-		$parentids = array_map('assert_int',$parentids);
-		$rs = safe_rows_start('parentid, count(*) as thecount','txp_discuss','parentid IN ('.implode(',',$parentids).') AND visible='.VISIBLE.' group by parentid');
-		if (!$rs) return;
+		$parentids = array_map('assert_int', $parentids);
+		$rs = safe_rows_start('parentid, count(*) as thecount', 'txp_discuss', 'parentid IN ('.implode(',',$parentids).') AND visible='.VISIBLE.' group by parentid');
+		if (!$rs)
+		{
+			return;
+		}
 
 		$updated = array();
-		while($a = nextRow($rs)) {
-			safe_update('textpattern',"comments_count=".$a['thecount'],"ID=".$a['parentid']);
+		while($a = nextRow($rs))
+		{
+			safe_update('textpattern', "comments_count=".$a['thecount'], "ID=".$a['parentid']);
 			$updated[] = $a['parentid'];
 		}
 		// We still need to update all those, that have zero comments left.
 		$leftover = array_diff($parentids, $updated);
 		if ($leftover)
-			safe_update('textpattern',"comments_count=0","ID IN (".implode(',',$leftover).")");
+		{
+			safe_update('textpattern', "comments_count=0", "ID IN (".implode(',', $leftover).")");
+		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Parses and formats comment message using Textile.
+ *
+ * @param   string $msg The comment message
+ * @return  string HTML markup
+ * @package Comment
+ */
 
 	function markup_comment($msg)
 	{
@@ -2066,37 +3208,58 @@ function escape_js($js)
 		return $textile->TextileRestricted($msg, $lite, $disallow_images, $rel);
 	}
 
-//-------------------------------------------------------------
+/**
+ * Updates site's last modification date.
+ */
+
 	function update_lastmod() {
 		safe_upsert("txp_prefs", "val = now()", "name = 'lastmod'");
 	}
 
-//-------------------------------------------------------------
-	function get_lastmod($unix_ts=NULL) {
+/**
+ * Gets the site's last modification date.
+ *
+ * @param  int $unix_ts UNIX timestamp
+ * @return int UNIX timestamp
+ */
+
+	function get_lastmod($unix_ts = NULL)
+	{
 		global $prefs;
 
 		if ($unix_ts === NULL)
+		{
 			$unix_ts = @strtotime($prefs['lastmod']);
+		}
 
-		# check for future articles that are now visible
-		if ($max_article = safe_field('unix_timestamp(Posted)', 'textpattern', "Posted <= now() and Status >= 4 order by Posted desc limit 1")) {
+		// check for future articles that are now visible
+		if ($max_article = safe_field('unix_timestamp(Posted)', 'textpattern', "Posted <= now() and Status >= 4 order by Posted desc limit 1"))
+		{
 			$unix_ts = max($unix_ts, $max_article);
 		}
 
 		return $unix_ts;
 	}
 
-//-------------------------------------------------------------
-	function handle_lastmod($unix_ts=NULL, $exit=1) {
+/**
+ * Sends and handles a lastmod header.
+ *
+ * @param  int|null $unix_ts The last modification date as a UNIX timestamp
+ * @param  bool     $exit    If TRUE, terminates the script
+ * @return array    Array of sent HTTP status and the lastmod header
+ */
+
+	function handle_lastmod($unix_ts = NULL, $exit = true) {
 		global $prefs;
 		extract($prefs);
 
-		if($send_lastmod and $production_status == 'live') {
+		if ($send_lastmod and $production_status == 'live')
+		{
 			$unix_ts = get_lastmod($unix_ts);
 
-			# make sure lastmod isn't in the future
+			// make sure lastmod isn't in the future
 			$unix_ts = min($unix_ts, time());
-			# or too far in the past (7 days)
+			// or too far in the past (7 days)
 			$unix_ts = max($unix_ts, time() - 3600*24*7);
 
 			$last = safe_strftime('rfc822', $unix_ts, 1);
@@ -2104,42 +3267,66 @@ function escape_js($js)
 			header('Cache-Control: no-cache');
 
 			$hims = serverset('HTTP_IF_MODIFIED_SINCE');
-			if ($hims and @strtotime($hims) >= $unix_ts) {
+			if ($hims and @strtotime($hims) >= $unix_ts)
+			{
 				log_hit('304');
 				if (!$exit)
+				{
 					return array('304', $last);
+				}
 				txp_status_header('304 Not Modified');
-				# some mod_deflate versions have a bug that breaks subsequent
-				# requests when keepalive is used.  dropping the connection
-				# is the only reliable way to fix this.
+				// some mod_deflate versions have a bug that breaks subsequent
+				// requests when keepalive is used.  dropping the connection
+				// is the only reliable way to fix this.
 				if (empty($lastmod_keepalive))
+				{
 					header('Connection: close');
+				}
 				header('Content-Length: 0');
-				# discard all output
+				// discard all output
 				while (@ob_end_clean());
 				exit;
 			}
 
 			if (!$exit)
+			{
 				return array('200', $last);
+			}
 		}
 	}
 
-//-------------------------------------------------------------
-	function set_pref($name, $val, $event='publish',  $type=0, $html='text_input', $position=0, $is_private=PREF_GLOBAL)
+/**
+ * Creates or updates a preference.
+ *
+ * @param   string $name       The name
+ * @param   string $val        The value
+ * @param   string $event      The section the preference appears in
+ * @param   int    $type       The type. Can be either PREF_BASIC, PREF_ADVANCED, PREF_HIDDEN
+ * @param   string $html       The HTML control type the field uses. Can take a custom function name
+ * @param   int    $position   Used to sort the field on the Preferences panel
+ * @param   bool   $is_private If PREF_PRIVATE, is created as a user pref
+ * @return  bool
+ * @package Pref
+ */
+
+	function set_pref($name, $val, $event = 'publish',  $type = PREF_BASIC, $html = 'text_input', $position = 0, $is_private = PREF_GLOBAL)
 	{
 		global $txp_user;
 		extract(doSlash(func_get_args()));
 
 		$user_name = '';
-		if ($is_private == PREF_PRIVATE) {
+		if ($is_private == PREF_PRIVATE)
+		{
 			if (empty($txp_user))
+			{
 				return false;
+			}
 
 			$user_name = 'user_name = \''.doSlash($txp_user).'\'';
 		}
 
-		if (!safe_row('name', 'txp_prefs', "name = '$name'" . ($user_name ? " AND $user_name" : ''))) {
+		if (!safe_row('name', 'txp_prefs', "name = '$name'" . ($user_name ? " AND $user_name" : '')))
+		{
 			$user_name = ($user_name ? "$user_name," : '');
 			return safe_insert('txp_prefs', "
 				name  = '$name',
@@ -2151,13 +3338,24 @@ function escape_js($js)
 				$user_name
 				prefs_id = 1"
 			);
-    	} else {
+		}
+    	else
+    	{
         	return safe_update('txp_prefs', "val = '$val'","name like '$name'" . ($user_name ? " AND $user_name" : ''));
     	}
 	}
 
-//-------------------------------------------------------------
-	function get_pref($thing, $default='', $from_db=0) // checks $prefs for a named variable, or creates a default
+/**
+ * Gets a preference string.
+ *
+ * @param   string $thing   The named variable
+ * @param   mixed  $default Used as a replacement if named pref isn't found
+ * @param   bool   $from_db If TRUE checks database opposed $prefs variable in memory
+ * @return  string Preference value or $default
+ * @package Pref
+ */
+
+	function get_pref($thing, $default = '', $from_db = false)
 	{
 		global $prefs, $txp_user;
 
@@ -2176,7 +3374,13 @@ function escape_js($js)
 		return (isset($prefs[$thing])) ? $prefs[$thing] : $default;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets a list of custom fields.
+ *
+ * @return  array
+ * @package CustomField
+ */
+
 	function getCustomFields()
 	{
 		global $prefs;
@@ -2188,9 +3392,11 @@ function escape_js($js)
 			$cfs = preg_grep('/^custom_\d+_set/', array_keys($prefs));
 
 			$out = array();
-			foreach ($cfs as $name) {
+			foreach ($cfs as $name)
+			{
 				preg_match('/(\d+)/', $name, $match);
-				if (!empty($prefs[$name])) {
+				if (!empty($prefs[$name]))
+				{
 					$out[$match[1]] = strtolower($prefs[$name]);
 				}
 			}
@@ -2199,21 +3405,25 @@ function escape_js($js)
 	}
 
 /**
- * Build a query qualifier to filter non-matching custom fields from the result set
+ * Build a query qualifier to filter non-matching custom fields from the result set.
  *
- * @param array $custom 	An array of 'custom_field_name' => field_number tupels
- * @param array $pairs 		Filter criteria: An array of 'name' => value tupels
- * @return bool|string 		A SQL qualifier for a querys 'WHERE' part
+ * @param   array $custom An array of 'custom_field_name' => field_number tupels
+ * @param   array $pairs  Filter criteria: An array of 'name' => value tupels
+ * @return  bool|string   A SQL qualifier for a querys 'WHERE' part
+ * @package CustomField
  */
-// -------------------------------------------------------------
-	function buildCustomSql($custom,$pairs)
+
+	function buildCustomSql($custom, $pairs)
 	{
-		if ($pairs) {
+		if ($pairs)
+		{
 			$pairs = doSlash($pairs);
-			foreach($pairs as $k => $v) {
-				if(in_array($k,$custom)) {
+			foreach ($pairs as $k => $v)
+			{
+				if (in_array($k, $custom))
+				{
 					$no = array_keys($custom,$k);
-					# nb - use 'like' here to allow substring matches
+					// nb - use 'like' here to allow substring matches
 					$out[] = "and custom_".$no[0]." like '$v'";
 				}
 			}
@@ -2221,27 +3431,45 @@ function escape_js($js)
 		return (!empty($out)) ? ' '.join(' ',$out).' ' : false;
 	}
 
-// -------------------------------------------------------------
-	function txp_status_header($status='200 OK')
+/**
+ * Sends a HTTP status header.
+ *
+ * @param   string $status The HTTP status code
+ * @package Network
+ */
+
+	function txp_status_header($status = '200 OK')
 	{
 		if (IS_FASTCGI)
+		{
 			header("Status: $status");
+		}
 		elseif ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')
+		{
 			header("HTTP/1.0 $status");
+		}
 		else
+		{
 			header("HTTP/1.1 $status");
+		}
 	}
 
-// -------------------------------------------------------------
-	function txp_die($msg, $status='503', $url='')
-	{
-		// 503 status might discourage search engines from indexing or caching the error message
+/**
+ * Terminates normal page rendition and outputs an error page.
+ *
+ * @param string|array $msg    The error message
+ * @param string       $status HTTP status code
+ * @param string       $url    Redirects to the specified URL. Can be used with $status of 301, 302 and 307
+ */
 
+	function txp_die($msg, $status = '503', $url = '')
+	{
 		//Make it possible to call this function as a tag, e.g. in an article <txp:txp_die status="410" />
 		if (is_array($msg))
-			extract(lAtts(array('msg' => '', 'status' => '503', 'url' => ''),$msg));
+		{
+			extract(lAtts(array('msg' => '', 'status' => '503', 'url' => ''), $msg));
+		}
 
-		// Intentionally incomplete - just the ones we're likely to use
 		$codes = array(
 			'200' => 'OK',
 			'301' => 'Moved Permanently',
@@ -2258,34 +3486,43 @@ function escape_js($js)
 			'503' => 'Service Unavailable',
 		);
 
-		if ($status) {
+		if ($status)
+		{
 			if (isset($codes[strval($status)]))
+			{
 				$status = strval($status) . ' ' . $codes[$status];
+			}
 
 			txp_status_header($status);
 		}
 
 		$code = '';
-		if ($status and $parts = @explode(' ', $status, 2)) {
+		if ($status and $parts = @explode(' ', $status, 2))
+		{
 			$code = @$parts[0];
 		}
 
 		callback_event('txp_die', $code);
 
 		// redirect with status
-		if ($url && in_array($code, array(301, 302, 307))) {
+		if ($url && in_array($code, array(301, 302, 307)))
+		{
 			ob_end_clean();
 			header("Location: $url", true, $code);
 			die('<html><head><meta http-equiv="refresh" content="0;URL='.txpspecialchars($url).'"></head><body></body></html>');
 		}
 
-		if (@$GLOBALS['connected'] && @txpinterface == 'public') {
-			$out = safe_field('user_html','txp_page',"name='error_".doSlash($code)."'");
+		if (@$GLOBALS['connected'] && @txpinterface == 'public')
+		{
+			$out = safe_field('user_html', 'txp_page', "name='error_".doSlash($code)."'");
 			if ($out === false)
-				$out = safe_field('user_html','txp_page',"name='error_default'");
+			{
+				$out = safe_field('user_html', 'txp_page', "name='error_default'");
+			}
 		}
 
 		if (!isset($out))
+		{
 			$out = <<<eod
 <!doctype html>
 <html lang="en">
@@ -2298,11 +3535,12 @@ function escape_js($js)
 </body>
 </html>
 eod;
+		}
 
 		header("Content-type: text/html; charset=utf-8");
 
-		if (is_callable('parse')) {
-
+		if (is_callable('parse'))
+		{
 			$GLOBALS['txp_error_message'] = $msg;
 			$GLOBALS['txp_error_status'] = $status;
 			$GLOBALS['txp_error_code'] = $code;
@@ -2310,15 +3548,21 @@ eod;
 			set_error_handler("tagErrorHandler");
 			die(parse($out));
 		}
-		else {
-			$out = preg_replace(array('@<txp:error_status[^>]*/>@', '@<txp:error_message[^>]*/>@'),
-				array($status, $msg),
-				$out);
+		else
+		{
+			$out = preg_replace(array('@<txp:error_status[^>]*/>@', '@<txp:error_message[^>]*/>@'), array($status, $msg), $out);
 			die($out);
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets a URL-encoded and HTML entity-escaped query string for a URL.
+ *
+ * @param   array  $q The parameters for the query
+ * @return  string The query, including starting "?".
+ * @package URL
+ */
+
 	function join_qs($q)
 	{
 		$qs = array();
@@ -2338,14 +3582,27 @@ eod;
 		return ($str ? '?'.$str : '');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Builds a page url from an array of parameters.
+ *
+ * The $inherit can be used to add parameters to an existing url, e.g:
+ * pagelinkurl(array('pg'=>2), $pretext).
+ *
+ * This function can not be used to link to an article. See permlinkurl()
+ * and permlinkurl_id() instead.
+ *
+ * @param   array $parts   The parts used to construct the URL
+ * @param   array $inherit Can be used to add parameters to an existing url
+ * @return  string
+ * @see     permlinkurl()
+ * @see     permlinkurl_id()
+ * @package URL
+ */
 
 	function pagelinkurl($parts, $inherit = array())
 	{
 		global $permlink_mode, $prefs;
 
-		// $inherit can be used to add parameters to an existing url, e.g:
-		// $url = pagelinkurl(array('pg'=>2), $pretext);
 		$keys = array_merge($inherit, $parts);
 
 		if (isset($prefs['custom_url_func'])
@@ -2355,7 +3612,6 @@ eod;
 			return $url;
 		}
 
-		// can't use this to link to an article
 		if (isset($keys['id']))
 		{
 			unset($keys['id']);
@@ -2374,7 +3630,8 @@ eod;
 
 		if ($permlink_mode == 'messy')
 		{
-			if (!empty($keys['context'])) {
+			if (!empty($keys['context']))
+			{
 				$keys['context'] = gTxt($keys['context'].'_context');
 			}
 			return hu.'index.php'.join_qs($keys);
@@ -2401,7 +3658,8 @@ eod;
 
 			elseif (!empty($keys['s']))
 			{
-				if (!empty($keys['context'])) {
+				if (!empty($keys['context']))
+				{
 					$keys['context'] = gTxt($keys['context'].'_context');
 				}
 				$url = hu.urlencode($keys['s']).'/';
@@ -2429,14 +3687,22 @@ eod;
 		}
 	}
 
-// -------------------------------------------------------------
-	function filedownloadurl($id, $filename='')
+/**
+ * Gets a file download URL.
+ *
+ * @param   int    $id       The ID
+ * @param   string $filename The filename
+ * @return  string
+ * @package File
+ */
+
+	function filedownloadurl($id, $filename = '')
 	{
 		global $permlink_mode;
 
 		$filename = urlencode($filename);
-		#FIXME: work around yet another mod_deflate problem (double compression)
-		# http://blogs.msdn.com/wndp/archive/2006/08/21/Content-Encoding-not-equal-Content-Type.aspx
+		// FIXME: work around yet another mod_deflate problem (double compression)
+		// http://blogs.msdn.com/wndp/archive/2006/08/21/Content-Encoding-not-equal-Content-Type.aspx
 		if (preg_match('/gz$/i', $filename))
 			$filename .= a;
 		return ($permlink_mode == 'messy') ?
@@ -2444,7 +3710,16 @@ eod;
 			hu.gTxt('file_download').'/'.$id.($filename ? '/'.$filename : '');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets an image's absolute URL.
+ *
+ * @param   int    $id        The image
+ * @param   string $ext       The file extension
+ * @param   bool   $thumbnail If TRUE returns a URL to the thumbnail
+ * @return  string
+ * @package Image
+ */
+
 	function imagesrcurl($id, $ext, $thumbnail = false)
 	{
 		global $img_dir;
@@ -2452,7 +3727,14 @@ eod;
 		return ihu.$img_dir.'/'.$id.$thumbnail.$ext;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Checks if a value exists in a list.
+ *
+ * @param  string $val   The searched value
+ * @param  string $list  The value list
+ * @param  string $delim The list boundary
+ * @return bool   Returns TRUE if $val is found, FALSE otherwise
+ */
 
 	function in_list($val, $list, $delim = ',')
 	{
@@ -2461,69 +3743,127 @@ eod;
 		return in_array($val, $args);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Split a string by string.
+ *
+ * @param  string $list  The string
+ * @param  string $delim The boundary
+ * @return array
+ */
 
 	function do_list($list, $delim = ',')
 	{
 		return array_map('trim', explode($delim, $list));
 	}
 
-// -------------------------------------------------------------
+/**
+ * Wraps a string in single quotes.
+ *
+ * @param  string $val The input string
+ * @return string
+ */
+
 	function doQuote($val)
 	{
 		return "'$val'";
 	}
 
-// -------------------------------------------------------------
+/**
+ * Escapes special characters for use in an SQL statement and wraps in quotes.
+ *
+ * @param  string|array $in The input value
+ * @return mixed
+ */
+
 	function quote_list($in)
 	{
 		$out = doSlash($in);
 		return doArray($out, 'doQuote');
 	}
 
-// -------------------------------------------------------------
+/**
+ * Adds a line to the tag trace.
+ *
+ * @param   string $msg The message
+ * @package Debug
+ */
+
 	function trace_add($msg)
 	{
-		global $production_status;
+		global $production_status, $txptrace, $txptracelevel;
 
 		if ($production_status === 'debug')
 		{
-			global $txptrace,$txptracelevel;
-
 			$txptrace[] = str_repeat("\t", $txptracelevel).$msg;
 		}
 	}
 
-//-------------------------------------------------------------
-	function article_push() {
+/**
+ * Push current article on the end of data stack.
+ *
+ * This function populates $stack_article global with the
+ * current $thisarticle.
+ */
+
+	function article_push()
+	{
 		global $thisarticle, $stack_article;
-		$stack_article[] = @$thisarticle;
+		$stack_article[] = $thisarticle;
 	}
 
-//-------------------------------------------------------------
-	function article_pop() {
+/**
+ * Advance to the next article in the current data stack.
+ *
+ * This function populates $thisarticle global with the
+ * last article form the stack stored in $stack_article.
+ */
+
+	function article_pop()
+	{
 		global $thisarticle, $stack_article;
 		$thisarticle = array_pop($stack_article);
 	}
-// -------------------------------------------------------------
 
-	function relative_path($path, $pfx=NULL)
+/**
+ * Gets a path relative to the site's root directory.
+ *
+ * @param   string $path The filename to parse
+ * @param   string $pfx  The root directory
+ * @return  string The absolute $path converted to relative
+ * @package File
+ */
+
+	function relative_path($path, $pfx = NULL)
 	{
 		if ($pfx === NULL)
+		{
 			$pfx = dirname(txpath);
+		}
 		return preg_replace('@^/'.preg_quote(ltrim($pfx, '/'), '@').'/?@', '', $path);
 	}
 
-// -------------------------------------------------------------
-	function get_caller($num=1,$start=2)
+/**
+ * Gets a backtrace.
+ *
+ * @param   int $num   The limit
+ * @param   int $start The offset
+ * @return  array A backtrace
+ * @package Debug
+ */
+
+	function get_caller($num = 1, $start = 2)
 	{
 		$out = array();
 		if (!is_callable('debug_backtrace'))
+		{
 			return $out;
+		}
 
 		$bt = debug_backtrace();
-		for ($i=$start; $i< $num+$start; $i++) {
-			if (!empty($bt[$i])) {
+		for ($i=$start; $i< $num+$start; $i++)
+		{
+			if (!empty($bt[$i]))
+			{
 				$t = '';
 				if (!empty($bt[$i]['file']))
 					$t .= relative_path($bt[$i]['file']);
@@ -2535,27 +3875,35 @@ eod;
 					$t .= $bt[$i]['class'];
 				if (!empty($bt[$i]['type']))
 					$t .= $bt[$i]['type'];
-				if (!empty($bt[$i]['function'])) {
+				if (!empty($bt[$i]['function']))
+				{
 					$t .= $bt[$i]['function'];
-
-				$t .= '()';
+					$t .= '()';
 				}
-
-
 				$out[] = $t;
 			}
 		}
 		return $out;
 	}
 
-//-------------------------------------------------------------
-// function name is misleading but remains for legacy reasons
-// this actually sets the locale
-	function getlocale($lang) {
+/**
+ * Sets a locale.
+ *
+ * The function name is misleading but remains for legacy reasons.
+ *
+ * @param   string $lang
+ * @return  string Current locale
+ * @package i18n
+ */
+
+	function getlocale($lang)
+	{
 		global $locale;
 
 		if (empty($locale))
+		{
 			$locale = @setlocale(LC_TIME, '0');
+		}
 
 		// Locale identifiers vary from system to system.  The
 		// following code will attempt to discover which identifiers
@@ -2603,114 +3951,202 @@ eod;
 			'zh-tw' => array('zh_TW.UTF-8', 'zh_TW'),
 		);
 
-		if (!empty($guesses[$lang])) {
+		if (!empty($guesses[$lang]))
+		{
 			$l = @setlocale(LC_TIME, $guesses[$lang]);
 			if ($l !== false)
+			{
 				$locale = $l;
+			}
 		}
 		@setlocale(LC_TIME, $locale);
 
 		return $locale;
 	}
 
-//-------------------------------------------------------------
-	function assert_article() {
+/**
+ * Assert article context error.
+ */
+
+	function assert_article()
+	{
 		global $thisarticle;
 		if (empty($thisarticle))
+		{
 			trigger_error(gTxt('error_article_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_comment() {
+/**
+ * Assert comment context error.
+ */
+
+	function assert_comment()
+	{
 		global $thiscomment;
 		if (empty($thiscomment))
+		{
 			trigger_error(gTxt('error_comment_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_file() {
+/**
+ * Assert file context error.
+ */
+
+	function assert_file()
+	{
 		global $thisfile;
 		if (empty($thisfile))
+		{
 			trigger_error(gTxt('error_file_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_image() {
+/**
+ * Assert image context error.
+ */
+
+	function assert_image()
+	{
 		global $thisimage;
 		if (empty($thisimage))
+		{
 			trigger_error(gTxt('error_image_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_link() {
+/**
+ * Assert link context error.
+ */
+
+	function assert_link()
+	{
 		global $thislink;
 		if (empty($thislink))
+		{
 			trigger_error(gTxt('error_link_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_section() {
+/**
+ * Assert section context error.
+ */
+
+	function assert_section()
+	{
 		global $thissection;
 		if (empty($thissection))
+		{
 			trigger_error(gTxt('error_section_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_category() {
+/**
+ * Assert category context error.
+ */
+
+	function assert_category()
+	{
 		global $thiscategory;
 		if (empty($thiscategory))
+		{
 			trigger_error(gTxt('error_category_context'));
+		}
 	}
 
-//-------------------------------------------------------------
-	function assert_int($myvar) {
-		if (is_numeric($myvar) and $myvar == intval($myvar)) {
+/**
+ * Validate a variable as an integer.
+ *
+ * @param  mixed    $myvar The variable
+ * @return int|bool The variable or FALSE on error
+ */
+
+	function assert_int($myvar)
+	{
+		if (is_numeric($myvar) and $myvar == intval($myvar))
+		{
 			return (int) $myvar;
 		}
-		trigger_error("'".txpspecialchars((string)$myvar)."' is not an integer", E_USER_ERROR);
+		trigger_error("'".txpspecialchars((string) $myvar)."' is not an integer", E_USER_ERROR);
 		return false;
 	}
 
-//-------------------------------------------------------------
-	function assert_string($myvar) {
-		if (is_string($myvar)) {
+/**
+ * Validate a variable as a string.
+ *
+ * @param  mixed       $myvar The variable
+ * @return string|bool The variable or FALSE on error
+ */
+
+	function assert_string($myvar)
+	{
+		if (is_string($myvar))
+		{
 			return $myvar;
 		}
-		trigger_error("'".txpspecialchars((string)$myvar)."' is not a string", E_USER_ERROR);
+		trigger_error("'".txpspecialchars((string) $myvar)."' is not a string", E_USER_ERROR);
 		return false;
 	}
 
-//-------------------------------------------------------------
-	function assert_array($myvar) {
-		if (is_array($myvar)) {
+/**
+ * Validate a variable as an array.
+ *
+ * @param  mixed      $myvar The variable
+ * @return array|bool The variable or FALSE on error
+ */
+
+	function assert_array($myvar)
+	{
+		if (is_array($myvar))
+		{
 			return $myvar;
 		}
-		trigger_error("'".txpspecialchars((string)$myvar)."' is not an array", E_USER_ERROR);
+		trigger_error("'".txpspecialchars((string) $myvar)."' is not an array", E_USER_ERROR);
 		return false;
 	}
 
-//-------------------------------------------------------------
-	function replace_relative_urls($html, $permalink='') {
+/**
+ * Converts relative links in HTML markup to absolute.
+ *
+ * @param   string $html      The html to check
+ * @param   string $permalink Optional URL part appended to the links
+ * @return  string HTML
+ * @package URL
+ */
 
+	function replace_relative_urls($html, $permalink = '')
+	{
 		global $siteurl;
 
-		# urls like "/foo/bar" - relative to the domain
-		if (serverSet('HTTP_HOST')) {
-			$html = preg_replace('@(<a[^>]+href=")/@','$1'.PROTOCOL.serverSet('HTTP_HOST').'/',$html);
-			$html = preg_replace('@(<img[^>]+src=")/@','$1'.PROTOCOL.serverSet('HTTP_HOST').'/',$html);
+		// urls like "/foo/bar" - relative to the domain
+		if (serverSet('HTTP_HOST'))
+		{
+			$html = preg_replace('@(<a[^>]+href=")/@', '$1'.PROTOCOL.serverSet('HTTP_HOST').'/', $html);
+			$html = preg_replace('@(<img[^>]+src=")/@', '$1'.PROTOCOL.serverSet('HTTP_HOST').'/', $html);
 		}
-		# "foo/bar" - relative to the textpattern root
-		# leave "http:", "mailto:" et al. as absolute urls
-		$html = preg_replace('@(<a[^>]+href=")(?!\w+:)@','$1'.PROTOCOL.$siteurl.'/$2',$html);
-		$html = preg_replace('@(<img[^>]+src=")(?!\w+:)@','$1'.PROTOCOL.$siteurl.'/$2',$html);
+		// "foo/bar" - relative to the textpattern root
+		// leave "http:", "mailto:" et al. as absolute urls
+		$html = preg_replace('@(<a[^>]+href=")(?!\w+:)@', '$1'.PROTOCOL.$siteurl.'/$2', $html);
+		$html = preg_replace('@(<img[^>]+src=")(?!\w+:)@', '$1'.PROTOCOL.$siteurl.'/$2', $html);
 
 		if ($permalink)
-			$html = preg_replace("/href=\\\"#(.*)\"/","href=\"".$permalink."#\\1\"",$html);
-		return ($html);
+		{
+			$html = preg_replace("/href=\\\"#(.*)\"/", "href=\"".$permalink."#\\1\"", $html);
+		}
+
+		return $html;
 	}
 
-//-------------------------------------------------------------
-	function show_clean_test($pretext) {
+/**
+ * Used for clean URL test.
+ *
+ * @param  array   $pretext
+ * @access private
+ */
+
+	function show_clean_test($pretext)
+	{
 		echo md5(@$pretext['req']).n;
 		if (serverSet('SERVER_ADDR') == serverSet('REMOTE_ADDR'))
 		{
@@ -2718,9 +4154,21 @@ eod;
 		}
 	}
 
-//-------------------------------------------------------------
+/**
+ * Calculates paging.
+ *
+ * Takes a total number of items, a per page limit and the current
+ * page number, and in return returns the page number, an offset
+ * and a number of pages.
+ *
+ * @param  int   $total The number of items in total
+ * @param  int   $limit The number of items per page
+ * @param  int   $page  The page number
+ * @return array Array of page, offset and number of pages.
+ */
 
-	function pager($total, $limit, $page) {
+	function pager($total, $limit, $page)
+	{
 		$total = (int) $total;
 		$limit = (int) $limit;
 		$page = (int) $page;
@@ -2734,45 +4182,72 @@ eod;
 		return array($page, $offset, $num_pages);
 	}
 
-//-------------------------------------------------------------
-// word-wrap a string using a zero width space
-	function soft_wrap($text, $width, $break='&#8203;')
+/**
+ * Word-wrap a string using a zero width space.
+ *
+ * @param  string $text  The input string
+ * @param  int    $width Target line lenght
+ * @param  string $break Is not used
+ * @return string
+ */
+
+	function soft_wrap($text, $width, $break = '&#8203;')
 	{
 		$wbr = chr(226).chr(128).chr(139);
 		$words = explode(' ', $text);
-		foreach($words as $wordnr => $word) {
+		foreach($words as $wordnr => $word)
+		{
 			$word = preg_replace('|([,./\\>?!:;@-]+)(?=.)|', '$1 ', $word);
 			$parts = explode(' ', $word);
-			foreach($parts as $partnr => $part) {
+			foreach($parts as $partnr => $part)
+			{
 				$len = strlen(utf8_decode($part));
-				if (!$len) continue;
-				$parts[$partnr] = preg_replace('/(.{'.ceil($len/ceil($len/$width)).'})(?=.)/u', '$1'.$wbr, $part);
+				if ($len)
+				{
+					$parts[$partnr] = preg_replace('/(.{'.ceil($len/ceil($len/$width)).'})(?=.)/u', '$1'.$wbr, $part);
+				}
 			}
 			$words[$wordnr] = join($wbr, $parts);
 		}
 		return join(' ', $words);
 	}
 
-//-------------------------------------------------------------
+/**
+ * Removes prefix from a string.
+ *
+ * @param  string $str The string
+ * @param  string $pfx The prefix
+ * @return string
+ */
+
 	function strip_prefix($str, $pfx) {
 		return preg_replace('/^'.preg_quote($pfx, '/').'/', '', $str);
 	}
 
-//-------------------------------------------------------------
-// wrap an array of name => value tupels into an XML envelope,
-// supports one level of nested arrays at most.
-	function send_xml_response($response=array())
+/** 
+ * Sends an XML envelope.
+ * 
+ * Wraps an array of name => value tupels into an XML envelope,
+ * supports one level of nested arrays at most.
+ *
+ * @param   array  $response
+ * @return  string XML envelope
+ * @package XML
+ */
+
+	function send_xml_response($response = array())
 	{
 		static $headers_sent = false;
 
-		if (!$headers_sent) {
+		if (!$headers_sent)
+		{
 			ob_clean();
 			header('Content-Type: text/xml; charset=utf-8');
 			$out[] = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>';
 			$headers_sent = true;
 		}
 
-		$default_response = array (
+		$default_response = array(
 			'http-status' => '200 OK',
 		);
 
@@ -2805,15 +4280,18 @@ eod;
 	}
 
 /**
- * Send a text/javascript response
+ * Sends a text/javascript response.
  *
- * @param string $out
- * @since 4.4
+ * @param   string $out The JavaScript
+ * @since   4.4.0
+ * @package Ajax
  */
+
 	function send_script_response($out = '')
 	{
 		static $headers_sent = false;
-		if (!$headers_sent) {
+		if (!$headers_sent)
+		{
 			ob_clean();
 			header('Content-Type: text/javascript; charset=utf-8');
 			txp_status_header('200 OK');
@@ -2825,28 +4303,31 @@ eod;
 /**
  * Display a modal client message in response to an AJAX request and halt execution.
  *
- * @param array $message string|array: $message[0] is the message's text; $message[1] is the message's type (one of E_ERROR or E_WARNING, anything else meaning "success"; not used)
- * @since 4.5
+ * @param   string|array $thing The $thing[0] is the message's text; $thing[1] is the message's type (one of E_ERROR or E_WARNING, anything else meaning "success"; not used)
+ * @since   4.5.0
+ * @package Ajax
  */
-function modal_halt($thing)
-{
-	global $app_mode, $theme;
-	if ($app_mode == 'async')
-	{
-		send_script_response($theme->announce_async($thing, true));
-		die();
-	}
-}
 
-// -------------------------------------------------------------
-// Perform regular housekeeping.
-// Might evolve into some kind of pseudo-cron later...
+	function modal_halt($thing)
+	{
+		global $app_mode, $theme;
+		if ($app_mode == 'async')
+		{
+			send_script_response($theme->announce_async($thing, true));
+			die();
+		}
+	}
+
+/**
+ * Performs regular housekeeping.
+ *
+ * @access private
+ */
+
 	function janitor()
 	{
-		global $prefs;
+		global $prefs, $auto_dst, $timezone_key, $is_dst;
 
-		// update DST setting
-		global $auto_dst, $timezone_key, $is_dst;
 		if ($auto_dst && $timezone_key)
 		{
 			$is_dst = timezone::is_dst(time(), $timezone_key);
@@ -2858,12 +4339,29 @@ function modal_halt($thing)
 		}
 	}
 
-// -------------------------------------------------------------
-// Dealing with timezones.
+/**
+ * Dealing with timezones.
+ *
+ * @package DateTime
+ */
+
 	class timezone
 	{
+		/**
+		 * @var array Stores a list of details about each timezone
+		 */
+
 		private $_details;
+
+		/**
+		 * @var array Stores a list of timezone offsets
+		 */
+
 		private $_offsets;
+
+		/**
+		 * Constructor.
+		 */
 
 		function __construct()
 		{
@@ -2937,14 +4435,16 @@ function modal_halt($thing)
 		}
 
 		/**
-		 * Render HTML SELECT element for choosing a timezone
-		 * @param	string	$name	Element name
-		 * @param	string	$value	Selected timezone
-		 * @param	boolean	$blank_first Add empty first option
-		 * @param	boolean|string	$onchange n/a
-		 * @param	string	$select_id	HTML id attribute
-		 * @return	string	HTML markup
+		 * Render HTML SELECT element for choosing a timezone.
+		 *
+		 * @param  string         $name        Element name
+		 * @param  string         $value       Selected timezone
+		 * @param  boolean        $blank_first Add empty first option
+		 * @param  boolean|string $onchange
+		 * @param  string         $select_id   HTML id attribute
+		 * @return string         HTML markup
 		 */
+
 		function selectInput($name = '', $value = '', $blank_first = '', $onchange = '', $select_id = '')
 		{
 			if (!empty($this->_details))
@@ -2956,10 +4456,16 @@ function modal_halt($thing)
 				foreach ($this->_details as $timezone_id => $tz)
 				{
 					extract($tz);
-					if ($value == $timezone_id) $selected = true;
+					if ($value == $timezone_id)
+					{
+						$selected = true;
+					}
 					if ($continent !== $thiscontinent)
 					{
-						if ($thiscontinent !== '') $out[] = n.t.'</optgroup>';
+						if ($thiscontinent !== '')
+						{
+							$out[] = n.t.'</optgroup>';
+						}
 						$out[] = n.t.'<optgroup label="'.gTxt($continent).'">';
 						$thiscontinent = $continent;
 					}
@@ -2981,9 +4487,11 @@ function modal_halt($thing)
 		}
 
 		/**
-		 * Build a matrix of timezone details
-		 * @return	array	Array of timezone details indexed by timezone key
+		 * Build a matrix of timezone details.
+		 *
+		 * @return array Array of timezone details indexed by timezone key
 		 */
+
 		function details()
 		{
 			return $this->_details;
@@ -2991,22 +4499,27 @@ function modal_halt($thing)
 
 		/**
 		 * Find a timezone key matching a given GMT offset.
+		 *
 		 * NB: More than one key might fit any given GMT offset,
 		 * thus the returned value is ambiguous and merely useful for presentation purposes.
-		 * @param	integer $gmtoffset
-		 * @return	string	timezone key
+		 *
+		 * @param  int    $gmtoffset
+		 * @return string timezone key
 		 */
+
 		function key($gmtoffset)
 		{
 			return isset($this->_offsets[$gmtoffset]) ? $this->_offsets[$gmtoffset] : '';
 		}
 
-		 /**
+		/**
 		 * Is DST in effect?
-		 * @param	integer $timestamp When?
-		 * @param	string 	$timezone_key Where?
-		 * @return	boolean	Yes, they are saving time, actually.
+		 *
+		 * @param  int     $timestamp When?
+		 * @param  string  $timezone_key Where?
+		 * @return bool
 		 */
+
 		static function is_dst($timestamp, $timezone_key)
 		{
 			global $is_dst, $auto_dst;
@@ -3030,22 +4543,35 @@ function modal_halt($thing)
 		}
 
 		/**
-		 * Check for run-time timezone support
-		 * @return	boolean	Timezone feature is enabled
+		 * Check for run-time timezone support.
+		 *
+		 * @return bool Timezone feature is enabled
 		 */
+
 		static function is_supported()
 		{
 			return !defined('NO_TIMEZONE_SUPPORT');	// user-definable emergency brake
 		}
 	}
 
-//-------------------------------------------------------------
+/**
+ * Installs localization strings from a Textpack.
+ *
+ * @param   string $textpack      The Textpack to install
+ * @param   bool   $add_new_langs If TRUE, installs strings for any included language
+ * @return  int    Number of installed strings
+ * @package i18n
+ */
+
 	function install_textpack($textpack, $add_new_langs = false)
 	{
 		global $prefs;
 
 		$textpack = explode(n, $textpack);
-		if (empty($textpack)) return 0;
+		if (empty($textpack))
+		{
+			return 0;
+		}
 
 		// presume site language equals textpack language
 		$language = get_pref('language', 'en-gb');
@@ -3108,9 +4634,11 @@ function modal_halt($thing)
  *
  * The token is reproducable, unique among sites and users, expires later.
  *
- * @return	string	The token.
+ * @return  string The token
+ * @see     bouncer()
+ * @package CSRF
  */
-//-------------------------------------------------------------
+
 	function form_token()
 	{
 		static $token;
@@ -3118,7 +4646,8 @@ function modal_halt($thing)
 
 		// Generate a ciphered token from the current user's nonce (thus valid for login time plus 30 days)
 		// and a pinch of salt from the blog UID.
-		if (empty($token)) {
+		if (empty($token))
+		{
 			$nonce = safe_field('nonce', 'txp_users', "name='".doSlash($txp_user)."'");
 			$token = md5($nonce . get_pref('blog_uid'));
 		}
@@ -3126,43 +4655,53 @@ function modal_halt($thing)
 	}
 
 /**
- * Assert system requirements
+ * Assert system requirements.
+ *
+ * @access private
  */
-//-------------------------------------------------------------
+
 	function assert_system_requirements()
 	{
-		if (version_compare(REQUIRED_PHP_VERSION, PHP_VERSION) > 0) {
+		if (version_compare(REQUIRED_PHP_VERSION, PHP_VERSION) > 0)
+		{
 			txp_die('This server runs PHP version '.PHP_VERSION.'. Textpattern needs PHP version '. REQUIRED_PHP_VERSION. ' or better.');
 		}
 	}
 
-
 /**
  * Validate admin steps. Protect against CSRF attempts.
  *
- * @param	string	$step	Requested admin step.
- * @param	array	$steps	An array of valid steps with flag indicating CSRF needs, e.g. array('savething' => true, 'listthings' => false)
- * @return	boolean	$step is valid, proceed. Dies on CSRF attempt.
+ * @param   string  $step  Requested admin step.
+ * @param   array   $steps An array of valid steps with flag indicating CSRF needs, e.g. array('savething' => true, 'listthings' => false)
+ * @return  boolean If the $step is valid, proceeds. Dies on CSRF attempt.
+ * @see     form_token()
+ * @package CSRF
  */
-//-------------------------------------------------------------
+
 	function bouncer($step, $steps)
 	{
 		global $event;
 
-		if (empty($step)) return true;
+		if (empty($step))
+		{
+			return true;
+		}
 
 		// Validate step
-		if (!array_key_exists($step, $steps)) {
+		if (!array_key_exists($step, $steps))
+		{
 			return false;
 		}
 
 		// Does this step require a token?
-		if (!$steps[$step]) {
+		if (!$steps[$step])
+		{
 			return true;
 		}
 
 		// Validate token
-		if (gps('_txp_token') == form_token()) {
+		if (gps('_txp_token') == form_token())
+		{
 			return true;
 		}
 
@@ -3171,55 +4710,62 @@ function modal_halt($thing)
 	}
 
 /**
- * Test whether the client accepts a certain response format
- * @param   string  $format One of 'html', 'txt', 'js', 'css', 'json', 'xml', 'rdf', 'atom', or 'rss'
- * @return  boolean $format is accepted
- * @since 4.5.0
+ * Test whether the client accepts a certain response format.
+ *
+ * @param   string  $format One of 'html', 'txt', 'js', 'css', 'json', 'xml', 'rdf', 'atom', 'rss'
+ * @return  boolean $format TRUE if accepted
+ * @since   4.5.0
+ * @package Network
  */
-function http_accept_format($format)
-{
-	static $formats = array(
-		'html' => array('text/html', 'application/xhtml+xml', '*/*'),
-		'txt'  => array('text/plain', '*/*'),
-		'js'   => array('application/javascript', 'application/x-javascript', 'text/javascript', 'application/ecmascript', 'application/x-ecmascript', '*/*'),
-		'css'  => array('text/css', '*/*'),
-		'json' => array('application/json', 'application/x-json', '*/*'),
-		'xml'  => array('text/xml', 'application/xml', 'application/x-xml', '*/*'),
-		'rdf'  => array('application/rdf+xml', '*/*'),
-		'atom' => array('application/atom+xml', '*/*'),
-		'rss'  => array('application/rss+xml', '*/*'),
-	);
-	static $accepts = array();
-//	static $q = array(); // nice to have
 
-	if (empty($accepts)) {
-		// build cache of accepted formats
-		$accepts = preg_split('/\s*,\s*/', serverSet('HTTP_ACCEPT'), null, PREG_SPLIT_NO_EMPTY);
-		foreach ($accepts as &$a) {
-			// sniff out quality factors if present
-			if (preg_match('/(.*)\s*;\s*q=([.0-9]*)/', $a, $m)) {
-				$a = $m[1];
-//				$q[$a] = floatval($m[2]);
-//			} else {
-//				$q[$a] = 1.0;
+	function http_accept_format($format)
+	{
+		static $formats = array(
+			'html' => array('text/html', 'application/xhtml+xml', '*/*'),
+			'txt'  => array('text/plain', '*/*'),
+			'js'   => array('application/javascript', 'application/x-javascript', 'text/javascript', 'application/ecmascript', 'application/x-ecmascript', '*/*'),
+			'css'  => array('text/css', '*/*'),
+			'json' => array('application/json', 'application/x-json', '*/*'),
+			'xml'  => array('text/xml', 'application/xml', 'application/x-xml', '*/*'),
+			'rdf'  => array('application/rdf+xml', '*/*'),
+			'atom' => array('application/atom+xml', '*/*'),
+			'rss'  => array('application/rss+xml', '*/*'),
+		);
+		static $accepts = array();
+	//	static $q = array(); // nice to have
+	
+		if (empty($accepts))
+		{
+			// build cache of accepted formats
+			$accepts = preg_split('/\s*,\s*/', serverSet('HTTP_ACCEPT'), null, PREG_SPLIT_NO_EMPTY);
+			foreach ($accepts as &$a)
+			{
+				// sniff out quality factors if present
+				if (preg_match('/(.*)\s*;\s*q=([.0-9]*)/', $a, $m))
+				{
+					$a = $m[1];
+	//				$q[$a] = floatval($m[2]);
+	//			} else {
+	//				$q[$a] = 1.0;
+				}
 			}
 		}
+		return isset($formats[$format]) ? count(array_intersect($formats[$format], $accepts)) > 0 : false;
 	}
-	return isset($formats[$format]) ? count(array_intersect($formats[$format], $accepts)) > 0 : false;
-}
 
 /**
- * Translate article status names into numerical status codes
+ * Translate article status names into numerical status codes.
  *
- * @param string $name 	Named status {'draft', 'hidden', 'pending', 'live', 'sticky'}
- * @return int 			Numerical status [1..5]
+ * @param  string $name Named status 'draft', 'hidden', 'pending', 'live', 'sticky'
+ * @return int    Numerical status [1..5]
  */
-function getStatusNum($name)
-{
-	$labels = array('draft' => 1, 'hidden' => 2, 'pending' => 3, 'live' => 4, 'sticky' => 5);
-	$status = strtolower($name);
-	$num = empty($labels[$status]) ? 4 : $labels[$status];
-	return $num;
-}
+
+	function getStatusNum($name)
+	{
+		$labels = array('draft' => 1, 'hidden' => 2, 'pending' => 3, 'live' => 4, 'sticky' => 5);
+		$status = strtolower($name);
+		$num = empty($labels[$status]) ? 4 : $labels[$status];
+		return $num;
+	}
 
 ?>
