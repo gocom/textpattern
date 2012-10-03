@@ -1,17 +1,26 @@
 <?php
 
 /*
-	This is Textpattern
-	Copyright 2005 by Dean Allen - all rights reserved.
+ * This is Textpattern
+ * Copyright 2005 by Dean Allen - all rights reserved.
+ * Use of this software denotes acceptance of the Textpattern license agreement
+ */
 
-	Use of this software denotes acceptance of the Textpattern license agreement
+/**
+ * Tools for searching site contents.
+ *
+ * @package Search
+ */
 
-*/
+/**
+ * Performs searching and returns results.
+ *
+ * This is now performed by doArticles().
+ *
+ * @deprecated ?
+ * @see        doArticles()
+ */
 
-
-// -------------------------------------------------------------
-// DEPRECATED
-// this is now performed by doArticles()
 	function search($q)
 	{
 		global $prefs;
@@ -76,24 +85,40 @@
 		return (is_array($results)) ? join('',$results) : '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Limit search to searchable sections.
+ *
+ * This functions get searchable sections as SQL where clause.
+ * The returned results can be then be used in a SQL query.
+ *
+ * @return string|bool SQL statement, or FALSE when all section are included in search
+ */
+
 	function filterSearch()
 	{
 		$rs = safe_column("name", "txp_section", "searchable != '1'");
-		if ($rs) {
-			foreach($rs as $name) $filters[] = "and Section != '".doSlash($name)."'";
-			return join(' ',$filters);
+		if ($rs)
+		{
+			foreach ($rs as $name)
+			{
+				$filters[] = "and Section != '".doSlash($name)."'";
+			}
+			return join(' ', $filters);
 		}
 		return false;
 	}
 
-// -------------------------------------------------------------
-// DEPRECATED
+/**
+ * Legacy search results form.
+ *
+ * This is no longer used.
+ *
+ * @deprecated ?
+ */
+
 	function legacy_form()
-	{	// lose this eventually
+	{
 		return '<h2><txp:search_result_title /></h2>
 <p><txp:search_result_excerpt /><br/>
 <small><txp:search_result_url /> &middot; <txp:search_result_date /></small></p>';
 	}
-
-?>
