@@ -498,4 +498,3 @@
 			$s
 		.'" size="'.$size.'" maxlength="'.$size.'" class="'.$name.'"'.(empty($tab) ? '' : ' tabindex="'.$tab.'"').' title="'.gTxt('article_'.$name).'"'.($placeholder == '' ? '' : ' placeholder="'.txpspecialchars($placeholder).'"').' />';
 	}
-?>
