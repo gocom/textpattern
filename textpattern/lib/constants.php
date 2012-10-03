@@ -4,8 +4,6 @@
  * Constants
  */
 
-$old_level = error_reporting((E_ALL | E_STRICT) ^ E_NOTICE);
-
 /**
  * If set to TRUE, writes dump files to temporary directory
  * containing debug information.
@@ -371,7 +369,3 @@ define('INPUT_TINY', 2);
  */
 
 define('REQUIRED_PHP_VERSION', '5.2');
-
-error_reporting($old_level);
-unset($old_level);
-?>
