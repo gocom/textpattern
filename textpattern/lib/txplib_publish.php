@@ -617,4 +617,3 @@ function filterAtts($atts = null)
 	}
 	return lAtts($valid, $out, 0);
 }
-?>

@@ -4762,5 +4762,3 @@ eod;
 		$num = empty($labels[$status]) ? 4 : $labels[$status];
 		return $num;
 	}
-
-?>
