@@ -1,12 +1,16 @@
 <?php
 
 /*
-	This is Textpattern
-	Copyright 2005 by Dean Allen - all rights reserved.
+ * This is Textpattern
+ * Copyright 2005 by Dean Allen - all rights reserved.
+ * Use of this software denotes acceptance of the Textpattern license agreement
+ */
 
-	Use of this software denotes acceptance of the Textpattern license agreement
-
-*/
+/**
+ * Log visitors.
+ *
+ * @package Log
+ */
 
 /**
  * Adds a row to the visitor logs.
