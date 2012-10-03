@@ -1,28 +1,42 @@
 <?php
 
 /*
-	This is Textpattern
-	Copyright 2005 by Dean Allen - all rights reserved.
+ * This is Textpattern
+ * Copyright 2005 by Dean Allen - all rights reserved.
+ * Use of this software denotes acceptance of the Textpattern license agreement
+ */
 
-	Use of this software denotes acceptance of the Textpattern license agreement
-*/
+/**
+ * Handling RSS feeds.
+ *
+ * @package XML
+ */
 
+/**
+ * Generates and returns a RSS feed.
+ *
+ * @return string XML
+ */
 
-// -------------------------------------------------------------
 	function rss()
 	{
-		global $prefs,$thisarticle;
+		global $prefs, $thisarticle;
 		set_error_handler('feedErrorHandler');
 		ob_clean();
 		extract($prefs);
 
-		extract(doSlash(gpsa(array('limit','area'))));
+		extract(doSlash(gpsa(array(
+			'limit',
+			'area',
+		))));
 
 		// build filter criteria from a comma-separated list of sections and categories
 		$feed_filter_limit = get_pref('feed_filter_limit', 10);
 		$section = gps('section');
 		$category = gps('category');
-		if (!is_scalar($section) || !is_scalar($category)) {
+
+		if (!is_scalar($section) || !is_scalar($category))
+		{
 			txp_die('Not Found', 404);
 		}
 
@@ -59,15 +73,22 @@
 		$section = doSlash($section);
 		$category = doSlash($category);
 
-		if (!$area or $area=='article') {
-
+		if (!$area or $area=='article')
+		{
 			$sfilter = (!empty($section)) ? "and Section in ('".join("','", $section)."')" : '';
 			$cfilter = (!empty($category))? "and (Category1 in ('".join("','", $category)."') or Category2 in ('".join("','", $category)."'))" : '';
 			$limit = ($limit) ? $limit : $rss_how_many;
 			$limit = intval(min($limit,max(100,$rss_how_many)));
 
 			$frs = safe_column("name", "txp_section", "in_rss != '1'");
-			if ($frs) foreach($frs as $f) $query[] = "and Section != '".doSlash($f)."'";
+			if ($frs)
+			{
+				foreach($frs as $f)
+				{
+					$query[] = "and Section != '".doSlash($f)."'";
+				}
+			}
+
 			$query[] = $sfilter;
 			$query[] = $cfilter;
 
@@ -79,8 +100,10 @@
 				"and Posted < now()".$expired."order by Posted desc limit $limit"
 			);
 
-			if($rs) {
-				while ($a = nextRow($rs)) {
+			if($rs)
+			{
+				while ($a = nextRow($rs))
+				{
 					extract($a);
 					populateArticleData($a);
 
@@ -92,16 +115,24 @@
 					$summary = trim(replace_relative_urls(parse($thisarticle['excerpt']), $permlink));
 					$content = trim(replace_relative_urls(parse($thisarticle['body']), $permlink));
 
-					if ($syndicate_body_or_excerpt) {
-						# short feed: use body as summary if there's no excerpt
+					if ($syndicate_body_or_excerpt)
+					{
+						// short feed: use body as summary if there's no excerpt
 						if (!trim($summary))
+						{
 							$summary = $content;
+						}
 						$content = '';
 					}
 
-					if ($show_comment_count_in_feed) {
+					if ($show_comment_count_in_feed)
+					{
 						$count = ($comments_count > 0) ? ' ['.$comments_count.']' : '';
-					} else $count = '';
+					}
+					else
+					{
+						$count = '';
+					}
 
 					$Title = escape_title(strip_tags($Title)).$count;
 
@@ -120,11 +151,11 @@
 
 					$etags[$ID] = strtoupper(dechex(crc32($articles[$ID])));
 					$dates[$ID] = $uPosted;
-
 				}
 			}
-		} elseif ($area=='link') {
-
+		}
+		elseif ($area=='link')
+		{
 			$cfilter = ($category) ? "category in ('".join("','", $category)."')"  : '1';
 			$limit = ($limit) ? $limit : $rss_how_many;
 			$limit = intval(min($limit,max(100,$rss_how_many)));
@@ -148,34 +179,51 @@
 		}
 
 		if (!$articles) {
-			if ($section) {
-				if (safe_field('name', 'txp_section', "name in ('".join("','", $section)."')") == false) {
+			if ($section)
+			{
+				if (safe_field('name', 'txp_section', "name in ('".join("','", $section)."')") == false)
+				{
 					txp_die(gTxt('404_not_found'), '404');
 				}
-			} elseif ($category) {
-				switch ($area) {
+			}
+			elseif ($category)
+			{
+				switch ($area)
+				{
 					case 'link':
-							if (safe_field('id', 'txp_category', "name = '$category' and type = 'link'") == false) {
-								txp_die(gTxt('404_not_found'), '404');
-							}
+						if (safe_field('id', 'txp_category', "name = '$category' and type = 'link'") == false)
+						{
+							txp_die(gTxt('404_not_found'), '404');
+						}
 					break;
 
 					case 'article':
 					default:
-							if (safe_field('id', 'txp_category', "name in ('".join("','", $category)."') and type = 'article'") == false) {
-								txp_die(gTxt('404_not_found'), '404');
-							}
+						if (safe_field('id', 'txp_category', "name in ('".join("','", $category)."') and type = 'article'") == false)
+						{
+							txp_die(gTxt('404_not_found'), '404');
+						}
 					break;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			//turn on compression if we aren't using it already
-			if (extension_loaded('zlib') && ini_get("zlib.output_compression") == 0 && ini_get('output_handler') != 'ob_gzhandler' && !headers_sent()) {
+			if (
+				extension_loaded('zlib') &&
+				ini_get("zlib.output_compression") == 0 &&
+				ini_get('output_handler') != 'ob_gzhandler' &&
+				!headers_sent()
+			)
+			{
 				// make sure notices/warnings/errors don't fudge up the feed
 				// when compression is used
 				$buf = '';
 				while ($b = @ob_get_clean())
+				{
 					$buf .= $b;
+				}
 				@ob_start('ob_gzhandler');
 				echo $buf;
 			}
@@ -184,30 +232,39 @@
 			$hims = serverset('HTTP_IF_MODIFIED_SINCE');
 			$imsd = ($hims) ? strtotime($hims) : 0;
 
-			if (is_callable('apache_request_headers')) {
+			if (is_callable('apache_request_headers'))
+			{
 				$headers = apache_request_headers();
-				if (isset($headers["A-IM"])) {
+				if (isset($headers["A-IM"]))
+				{
 					$canaim = strpos($headers["A-IM"], "feed");
-				} else {
+				}
+				else
+				{
 					$canaim = false;
 				}
-			} else {
+			}
+			else
+			{
 				$canaim = false;
 			}
 
 			$hinm = stripslashes(serverset('HTTP_IF_NONE_MATCH'));
-
 			$cutarticles = false;
 
-			if ($canaim !== false) {
-				foreach($articles as $id=>$thing) {
-					if (strpos($hinm, $etags[$id]) !== false) {
+			if ($canaim !== false)
+			{
+				foreach ($articles as $id => $thing)
+				{
+					if (strpos($hinm, $etags[$id]) !== false)
+					{
 						unset($articles[$id]);
 						$cutarticles = true;
 						$cut_etag = true;
 					}
 
-					if ($dates[$id] < $imsd) {
+					if ($dates[$id] < $imsd)
+					{
 						unset($articles[$id]);
 						$cutarticles = true;
 						$cut_time = true;
@@ -215,17 +272,23 @@
 				}
 			}
 
-			if (isset($cut_etag) && isset($cut_time)) {
+			if (isset($cut_etag) && isset($cut_time))
+			{
 				header("Vary: If-None-Match, If-Modified-Since");
-			} else if (isset($cut_etag)) {
+			}
+			else if (isset($cut_etag))
+			{
 				header("Vary: If-None-Match");
-			} else if (isset($cut_time)) {
+			}
+			else if (isset($cut_time))
+			{
 				header("Vary: If-Modified-Since");
 			}
 
 			$etag = @join("-",$etags);
 
-			if (strstr($hinm, $etag)) {
+			if (strstr($hinm, $etag))
+			{
 				txp_status_header('304 Not Modified');
 				exit(0);
 			}
@@ -241,8 +304,13 @@
 
 		$out = array_merge($out, $articles);
 
-		header("Content-Type: application/rss+xml; charset=utf-8");
-		if (isset($etag)) header('ETag: "'.$etag.'"');
+		header('Content-Type: application/rss+xml; charset=utf-8');
+
+		if (isset($etag))
+		{
+			header('ETag: "'.$etag.'"');
+		}
+
 		return
 			'<?xml version="1.0" encoding="utf-8"?>'.n.
 			'<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">'.n.
@@ -250,21 +318,28 @@
 			'</rss>';
 	}
 
+/**
+ * Converts HTML entieties to UTF-8 characters
+ *
+ * @param      string $toUnicode
+ * @return     string
+ * @deprecated ?
+ */
 
-// DEPRECATED FUNCTIONS
-// included for backwards compatibility with older plugins only
-	function rss_safe_hed($toUnicode) {
-
-		if (version_compare(phpversion(), "5.0.0", ">=")) {
-			$str =  html_entity_decode($toUnicode, ENT_QUOTES, "UTF-8");
-		} else {
+	function rss_safe_hed($toUnicode)
+	{
+		if (version_compare(phpversion(), "5.0.0", ">="))
+		{
+			$str = html_entity_decode($toUnicode, ENT_QUOTES, "UTF-8");
+		}
+		else
+		{
 			$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-			foreach($trans_tbl as $k => $v) {
+			foreach($trans_tbl as $k => $v)
+			{
 				$ttr[$v] = utf8_encode($k);
 			}
 			$str = strtr($toUnicode, $ttr);
 		}
 		return $str;
 	}
-
-?>
