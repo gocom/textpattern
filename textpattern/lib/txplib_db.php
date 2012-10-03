@@ -1025,5 +1025,3 @@ $DB = new DB;
 </html>
 eod;
 	}
-
-?>
