@@ -1,5 +1,3 @@
-# $HeadURL$
-# $LastChangedRevision$
 # Inhibit directory listing
 Options -Indexes
 # Inhibit direct file downloads
