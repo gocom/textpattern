@@ -1,6 +1,24 @@
 <?php
 
-//-------------------------------------------------------------
+/**
+ * Password handling functions.
+ * @package User
+ */
+
+/**
+ * Emails a new user with login details.
+ *
+ * This function can be only executed when the current
+ * user trying to send the email is authenticated with an account
+ * that has privileges to 'admin.edit' permission.
+ *
+ * @param  string $RealName The real name
+ * @param  string $name     The login name
+ * @param  string $email    The email address
+ * @param  string $password The password
+ * @return bool   FALSE on error.
+ * @see    send_new_password()
+ */
 
 	function send_password($RealName, $name, $email, $password)
 	{
@@ -20,13 +38,26 @@
 		return txpMail($email, "[$sitename] ".gTxt('your_login_info'), $message);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sends a new password to an existing user.
+ *
+ * If the $user is set FALSE, the current user is expected.
+ *
+ * @param  string $password The new password
+ * @param  string $email    The email address
+ * @param  string $name     The login name
+ * @return bool   FALSE on error.
+ * @see    send_password()
+ */
 
 	function send_new_password($password, $email, $name)
 	{
 		global $txp_user, $sitename;
 
-		if ( empty( $name)) $name = $txp_user;
+		if (empty($name))
+		{
+			$name = $txp_user;
+		}
 
 		$message = gTxt('greeting').' '.$name.','.
 
@@ -37,7 +68,18 @@
 		return txpMail($email, "[$sitename] ".gTxt('your_new_password'), $message);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Sends a password reset link to a user's email address.
+ *
+ * This function will return a success message even when the specified
+ * user doesn't exist. Though an error message could be thrown when
+ * user isn't found, this is done due to security. This prevents the function
+ * from leaking existing account names.
+ *
+ * @param  string $name     The login name
+ * @return string A localized message string
+ * @see    send_new_password()
+ */
 
 	function send_reset_confirmation_request($name)
 	{
@@ -68,13 +110,16 @@
 
 		else
 		{
-			// Though 'unknown_author' could be thrown, send generic 'request_sent' message
-			// instead so that (non-)existence of account names are not leaked
 			return gTxt('password_reset_confirmation_request_sent');
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Generates a password.
+ *
+ * @param  string $length The length of the password
+ * @return string A new, random, plain-text password
+ */
 
 	function generate_password($length = 10)
 	{
@@ -97,7 +142,16 @@
 		return $pass;
 	}
 
-// -------------------------------------------------------------
+/**
+ * Resets a user's password and emails it.
+ *
+ * The old replaced with a new random-generated password.
+ *
+ * @param  string $name The login name
+ * @return string A localized message string
+ * @see    PASSWORD_LENGTH
+ * @see    generate_password()
+ */
 
 	function reset_author_pass($name)
 	{
@@ -126,4 +180,3 @@
 			return(gTxt('could_not_update_author').' '.txpspecialchars($name));
 		}
 	}
-?>
