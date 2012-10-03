@@ -7,9 +7,9 @@ if (@ini_get('register_globals'))
 
 header('Content-type: text/css');
 
-if (!defined("txpath"))
+if (!defined('txpath'))
 {
-	define("txpath", dirname(__FILE__).'/textpattern');
+	define('txpath', dirname(__FILE__).'/textpattern');
 }
 
 if (!isset($txpcfg['table_prefix']))
@@ -19,11 +19,11 @@ if (!isset($txpcfg['table_prefix']))
 	ob_end_clean();
 }
 
-$nolog = 1;
-define("txpinterface", "css");
+$nolog = true;
+define('txpinterface', 'css');
 include txpath.'/publish.php';
 $s = gps('s');
 $n = gps('n');
-output_css($s,$n);
+output_css($s, $n);
 
 ?>
