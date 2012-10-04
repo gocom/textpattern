@@ -1,20 +1,68 @@
 <?php
 
-if (!defined ('THEME')) define('THEME', 'theme/');
+if (!defined ('THEME'))
+{
+	/**
+	 * Relative path to themes directory
+	 */
+
+	define('THEME', 'theme/');
+}
+
+/**
+ * Admin-side theme.
+ */
 
 class theme
 {
-	var $name, $menu, $url, $is_popup, $message;
-
-//----------------------------------------
-// Theme engine methods
-//----------------------------------------
 
 	/**
-	 * Constructor
-	 * @param	string	$name	Theme name
+	 * The theme name.
+	 *
+	 * @var string
 	 */
-	function theme($name)
+
+	public $name;
+	
+	/**
+	 * Stores a menu.
+	 *
+	 * @var array
+	 */
+	
+	public $menu;
+	
+	/**
+	 * Theme location.
+	 *
+	 * @var string
+	 */
+	
+	public $url;
+	
+	/**
+	 * Just a popup for a tag builder.
+	 *
+	 * @var bool
+	 */
+	
+	public $is_popup;
+	
+	/**
+	 * An activity message.
+	 *
+	 * @var bool
+	 */
+	
+	public $message;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string $name Theme name
+	 */
+
+	public function __construct($name)
 	{
 		$this->name = $name;
 		$this->menu = array();
@@ -24,21 +72,25 @@ class theme
 	}
 
 	/**
-	 * Get a theme's source path
-	 * @param	string	$name	Theme name
-	 * @return	string	Source file path for named theme
+	 * Get a theme's source path.
+	 *
+	 * @param  string $name Theme name
+	 * @return string Source file path for named theme
 	 */
-	static function path($name)
+
+	static public function path($name)
 	{
 		return txpath.DS.THEME.$name.DS.$name.'.php';
 	}
 
 	/**
-	 * Theme factory
-	 * @param	string	$name	Theme name
-	 * @return	object|boolean	An initialised theme object, or false on failure
+	 * Theme factory.
+	 *
+	 * @param  string      $name Theme name
+	 * @return object|bool An initialised theme object or FALSE on failure
 	 */
-	static function factory($name)
+
+	static public function factory($name)
 	{
 		$path = theme::path($name);
 		if (is_readable($path))
@@ -62,11 +114,13 @@ class theme
 	}
 
 	/**
-	 * Initialise the theme singleton
+	 * Initialise the theme singleton.
+	 *
 	 * @param	string 	$name 	Theme name
 	 * @return	object	A valid theme object
 	 */
-	static function init($name = '')
+
+	static public function init($name = '')
 	{
 		static $instance;
 
@@ -95,10 +149,12 @@ class theme
 	}
 
 	/**
-	 * Get a list of all theme names
+	 * Get a list of all theme names.
+	 *
 	 * @return array Alphabetically sorted array of all available theme names
 	 */
-	static function names()
+
+	static public function names()
 	{
 		$dirs = glob(txpath.DS.THEME.'*');
 		if (is_array($dirs))
@@ -118,8 +174,7 @@ class theme
 			sort($out, SORT_STRING);
 			return $out;
 		}
-		else
-			return array();
+		return array();
 	}
 
 	/**
@@ -127,7 +182,8 @@ class theme
 	 * @param	string	$name	Name of ancestor theme
 	 * @return	boolean	True on success, false on unavailable/invalid ancestor theme
 	 */
-	static function based_on($name)
+
+	static public function based_on($name)
 	{
 		global $production_status;
 		$theme = theme::factory($name);
@@ -144,26 +200,31 @@ class theme
 	}
 
 	/**
-	 * Sets Textpatterns menu structure, message contents and other application states
-	 * @param	string	$area	Currently active top level menu
-	 * @param	string	$event	Currently active second level menu
-	 * @param	boolean	$is_popup	Just a popup window for tag builder et cetera
-	 * @param	array	$message	The contents of the notification message pane
-	 * @return	object	This theme object
+	 * Sets Textpatterns menu structure, message contents and other application states.
+	 *
+	 * @param  string $area     Currently active top level menu
+	 * @param  string $event    Currently active second level menu
+	 * @param  bool   $is_popup Just a popup window for tag builder et cetera
+	 * @param  array  $message   The contents of the notification message pane
+	 * @return object This theme object
 	 */
-	function set_state($area, $event, $is_popup, $message)
+
+	public function set_state($area, $event, $is_popup, $message)
 	{
 		$this->is_popup = $is_popup;
 		$this->message = $message;
 
-		if ($is_popup) return $this;
+		if ($is_popup)
+		{
+			return $this;
+		}
 
 		// use legacy areas() for b/c
 		$areas = areas();
 		$defaults = array(
-				'content' => 'article',
-				'presentation' => 'page',
-				'admin' => 'admin'
+			'content' => 'article',
+			'presentation' => 'page',
+			'admin' => 'admin'
 		);
 
 		if(empty($areas['start']))
@@ -186,7 +247,6 @@ class theme
 
 			if (has_privs('tab.'.$ar))
 			{
-			
 				if (!has_privs($e_)) 
 				{
 					$e_ = '';
@@ -196,11 +256,11 @@ class theme
 				{
 					if (has_privs($b))
 					{
-						
-						if ($e_ === '') {
+						if ($e_ === '')
+						{
 							$e_ = $b;
 						}
-						
+
 						if ($b == $dflt_tab)
 						{
 							$this->menu[$ar]['event'] = $dflt_tab;
@@ -209,7 +269,7 @@ class theme
 						$i_[] = array('label' => $a, 'event' => $b, 'active' => ($b == $event));
 					}
 				}
-				
+
 				if ($e_)
 				{
 					$this->menu[$ar] = array(
@@ -221,75 +281,86 @@ class theme
 				}
 			}
 		}
+
 		return $this;
 	}
 
-//----------------------------------------
-// Overrideable methods for custom themes
-//----------------------------------------
-
 	/**
-	 * Output HEAD element contents. Returned value is rendered into the HEAD element of all admin side pages by core.
+	 * HTML head section.
+	 *
+	 * Outputs HEAD element contents. Returned value is rendered
+	 * into the HEAD element of all admin side pages by core.
+	 *
 	 * @return string
 	 */
-	function html_head()
+
+	public function html_head()
 	{
 		trigger_error(__FUNCTION__.' is abstract.', E_USER_ERROR);
 	}
 
 	/**
-	 * Draw the theme's header
+	 * Draw the theme's header.
+	 *
 	 * @return string
 	 */
-	function header()
+
+	public function header()
 	{
 		trigger_error(__FUNCTION__.' is abstract.', E_USER_ERROR);
 	}
 
 	/**
-	 * Draw the theme's footer
+	 * Draw the theme's footer.
+	 *
 	 * @return string
 	 */
-	function footer()
+
+	public function footer()
 	{
 		trigger_error(__FUNCTION__.' is abstract.', E_USER_ERROR);
 	}
 
 	/**
-	 * Output notification message for synchronous HTML views
-	 * @param	array	$thing	Message text and status flag
-	 * @param   boolean $modal  true: Immediate user interaction suggested
+	 * Output notification message for synchronous HTML views.
+	 *
+	 * @param array $thing Message text and status flag
+	 * @param bool  $modal If TRUE, immediate user interaction suggested
 	 */
-	function announce($thing=array('', 0), $modal = false)
+
+	public function announce($thing = array('', 0), $modal = false)
 	{
 		trigger_error(__FUNCTION__.' is abstract.', E_USER_ERROR);
 	}
 
 	/**
-	 * Output notification message for asynchronous Javascript views
-	 * @param	array	$thing	Message text and status flag
-	 * @param   boolean $modal  true: Immediate user interaction suggested
-	 * @since   4.5.0
+	 * Output notification message for asynchronous Javascript views.
+	 *
+	 * @param array $thing Message text and status flag
+	 * @param bool  $modal If TRUE, immediate user interaction suggested
+	 * @since 4.5.0
 	 */
-	function announce_async($thing=array('', 0), $modal = false)
+
+	public function announce_async($thing=array('', 0), $modal = false)
 	{
 		trigger_error(__FUNCTION__.' is abstract.', E_USER_ERROR);
 	}
 
 	/**
 	 * Define bureaucratic details of this theme. All returned items are optional.
+	 *
 	 * @return array
 	 */
-	function manifest()
+
+	public function manifest()
 	{
 		return array(
-			'title'			=> '',	// Human-readable title of this theme. No HTML, keep it short.
-			'author' 		=> '',	// Name(s) of this theme's creator(s).
-			'author_uri' 	=> '',	// URI of the theme's site. Decent vanity is accepted.
-			'version' 		=> '',	// Version numbering. Mind version_compare().
-			'description' 	=> '',	// Human readable short description. No HTML.
-			'help' 			=> '',	// URI of the theme's help and docs. Strictly optional.
+			'title'      => '', // Human-readable title of this theme. No HTML, keep it short.
+			'author'     => '', // Name(s) of this theme's creator(s).
+			'author_uri' => '', // URI of the theme's site. Decent vanity is accepted.
+			'version'    => '', // Version numbering. Mind version_compare().
+			'description'=> '', // Human readable short description. No HTML.
+			'help'       => '', // URI of the theme's help and docs. Strictly optional.
 		);
 	}
 }
-?>
