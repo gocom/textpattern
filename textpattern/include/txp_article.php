@@ -25,13 +25,7 @@ foreach($cfs as $i => $cf_name)
 	$vars[] = "custom_$i";
 }
 
-$statuses = array(
-		STATUS_DRAFT   => gTxt('draft'),
-		STATUS_HIDDEN  => gTxt('hidden'),
-		STATUS_PENDING => gTxt('pending'),
-		STATUS_LIVE    => strong(gTxt('live')),
-		STATUS_STICKY  => gTxt('sticky'),
-);
+$statuses = get_article_statuses();
 
 if (!empty($event) and $event == 'article') {
 	require_privs('article');

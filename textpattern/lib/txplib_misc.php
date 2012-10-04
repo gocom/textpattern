@@ -699,6 +699,30 @@
  	}
 
 /**
+ * Gets a list of article statuses.
+ *
+ * @return array
+ */
+
+	function get_article_statuses()
+	{
+		static $statuses = null;
+
+		if (!$statuses)
+		{
+			$statuses = array(
+				STATUS_DRAFT   => gTxt('draft'),
+				STATUS_HIDDEN  => gTxt('hidden'),
+				STATUS_PENDING => gTxt('pending'),
+				STATUS_LIVE    => strong(gTxt('live')),
+				STATUS_STICKY  => gTxt('sticky'),
+			);
+		}
+
+		return $statuses;
+	}
+
+/**
  * Gets the dimensions of an image for a HTML img tag.
  *
  * @param   string      $name The filename
