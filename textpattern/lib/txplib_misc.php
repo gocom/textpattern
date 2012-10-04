@@ -667,10 +667,11 @@
 /**
  * Calculates a password hash.
  *
- * @param  string $password The string
- * @return string A hash
- * @see    PASSWORD_COMPLEXITY
- * @see    PASSWORD_PORTABILITY
+ * @param   string $password The string
+ * @return  string A hash
+ * @see     PASSWORD_COMPLEXITY
+ * @see     PASSWORD_PORTABILITY
+ * @package User
  */
 
 	function txp_hash_password($password)
@@ -686,8 +687,9 @@
 /**
  * Gets a privilege level label.
  *
- * @param  int    $priv The privilege level
- * @return string A label
+ * @param   int    $priv The privilege level
+ * @return  string A label
+ * @package User
  */
  
  	function get_priv_level($priv)
