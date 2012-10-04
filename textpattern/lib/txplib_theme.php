@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Base for admin-side themes.
+ *
+ * @package Theme
+ */
+
 if (!defined ('THEME'))
 {
 	/**
@@ -15,7 +21,6 @@ if (!defined ('THEME'))
 
 class theme
 {
-
 	/**
 	 * The theme name.
 	 *
