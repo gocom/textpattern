@@ -665,6 +665,25 @@
 	}
 
 /**
+ * Calculates a password hash.
+ *
+ * @param  string $password The string
+ * @return string A hash
+ * @see    PASSWORD_COMPLEXITY
+ * @see    PASSWORD_PORTABILITY
+ */
+
+	function txp_hash_password($password)
+	{
+		static $phpass = NULL;
+		if (!$phpass)
+		{
+			$phpass = new PasswordHash(PASSWORD_COMPLEXITY, PASSWORD_PORTABILITY);
+		}
+		return $phpass->HashPassword($password);
+	}
+
+/**
  * Gets a privilege level label.
  *
  * @param  int    $priv The privilege level

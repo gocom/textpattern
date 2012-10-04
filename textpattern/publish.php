@@ -29,6 +29,7 @@
 	}
 
 	include_once txpath.'/lib/constants.php';
+	include_once txpath.'/lib/PasswordHash.php';
 	include_once txpath.'/lib/txplib_publish.php';
 	include_once txpath.'/lib/txplib_misc.php';
 	include_once txpath.'/lib/txplib_db.php';

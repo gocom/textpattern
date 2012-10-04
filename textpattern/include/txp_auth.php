@@ -13,8 +13,6 @@ Use of this software indicates acceptance of the Textpattern license agreement
 
 if (!defined('txpinterface')) die('txpinterface is undefined.');
 
-include_once txpath.'/lib/PasswordHash.php';
-
 function doAuth()
 {
 	global $txp_user;
@@ -75,16 +73,6 @@ function doAuth()
 			safe_update("txp_users", "last_access = now()", "name = '$safe_user'");
 		}
 		return $name;
-	}
-
-// -------------------------------------------------------------
-	function txp_hash_password($password)
-	{
-		static $phpass = NULL;
-		if (!$phpass) {
-			$phpass = new PasswordHash(PASSWORD_COMPLEXITY, PASSWORD_PORTABILITY);
-		}
-		return $phpass->HashPassword($password);
 	}
 
 // -------------------------------------------------------------
