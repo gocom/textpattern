@@ -2,6 +2,8 @@
 
 /**
  * Collection of HTML widgets.
+ *
+ * @package HTML
  */
 
 /**
