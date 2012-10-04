@@ -654,8 +654,28 @@
 	function get_groups()
 	{
 		global $txp_groups;
-		return doArray($txp_groups, 'gTxt');
+		static $groups = null;
+
+		if ($groups === null)
+		{
+			$groups = doArray($txp_groups, 'gTxt');
+		}
+
+		return $groups;
 	}
+
+/**
+ * Gets a privilege level label.
+ *
+ * @param  int    $priv The privilege level
+ * @return string A label
+ */
+ 
+ 	function get_priv_level($priv)
+ 	{
+ 		$levels = get_groups();
+ 		return $levels[$priv];
+ 	}
 
 /**
  * Gets the dimensions of an image for a HTML img tag.

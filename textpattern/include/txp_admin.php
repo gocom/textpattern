@@ -187,14 +187,6 @@
 
 // -------------------------------------------------------------
 
-	function get_priv_level($priv)
-	{
-		global $levels;
-		return $levels[$priv];
-	}
-
-// -------------------------------------------------------------
-
 	function new_pass_form()
 	{
 		global $step, $txp_user;
