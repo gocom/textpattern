@@ -1,4 +1,4 @@
-Changes in 4.5.1
+h2. Changes in 4.5.1
 
 * Maintenance release with bug fixes, no security implications
 * Default front-side template: Remove duplicate search input field
@@ -7,10 +7,10 @@ Changes in 4.5.1
 * Prevent fatal aborts from error-handling during version upgrades
 * Unregister all globals in multi-site setups
 * Prevent deletion of used stylesheets from UI
-* Offer all supported units in the tag builder for <txp:file_download_size />
+* Offer all supported units in the tag builder for ==<txp:file_download_size />==
 * Developer: New events 'authors_deleted', 'categories_deleted', 'css_deleted', 'discuss_deleted', 'file_deleted', 'forms_deleted', 'thumbnail_deleted', 'links_deleted', 'articles_deleted', 'page_deleted', 'sections_deleted'
 
-Changes in 4.5.0
+h2. Changes in 4.5.0
 
 * Minimum system requirement: PHP 5.2
 * Modern default site theme (responsive, HTML5, CSS3)
@@ -25,18 +25,18 @@ Changes in 4.5.0
 * Check for new Textpattern version moved from Preferences to Diagnostics panel
 * Removed raw PHP support in pages and articles
 * Plugin status is preserved across plugin updates
-* <txp:link_to_prev> and <txp:link_to_next> adhere to the sort order set by <txp:article>
-* Deprecated 'escape' attribute for <txp:search_term />
-* Removed 'align' attribute for <txp:image />, <txp:thumbnail />, <txp:article_image />
-* <txp:css /> accepts a comma-separated list of style-sheet names for the 'name' attribute
-* <txp:txp_die />: New attribute 'url'. Specifies location target for HTTP stati 301, 302, 307
-* <txp:article_custom>, <txp:file_download_list> preserve sorting order from 'id' attribute
-* <txp:images /> preserves sorting order from article image ids
-* <txp:file_download> may be used as a container tag
-* <txp:comment_form />: New attributes 'previewlabel', 'submitlabel', 'rememberlabel', 'forgetlabel'
-* New <txp:author_email> tag
-* <txp:linklist /> accepts a comma-separated list of link ids in the new 'id' attribute
-* <txp:images /> uses the sort order of images from the 'id' attribute if present.
+* ==<txp:link_to_prev>== and ==<txp:link_to_next>== adhere to the sort order set by ==<txp:article>==
+* Deprecated 'escape' attribute for ==<txp:search_term />==
+* Removed 'align' attribute for ==<txp:image />==, ==<txp:thumbnail />==, ==<txp:article_image />==
+* ==<txp:css />== accepts a comma-separated list of style-sheet names for the 'name' attribute
+* ==<txp:txp_die />==: New attribute 'url'. Specifies location target for HTTP stati 301, 302, 307
+* ==<txp:article_custom>==, ==<txp:file_download_list>== preserve sorting order from 'id' attribute
+* ==<txp:images />== preserves sorting order from article image ids
+* ==<txp:file_download>== may be used as a container tag
+* ==<txp:comment_form />==: New attributes 'previewlabel', 'submitlabel', 'rememberlabel', 'forgetlabel'
+* New ==<txp:author_email>== tag
+* ==<txp:linklist />== accepts a comma-separated list of link ids in the new 'id' attribute
+* ==<txp:images />== uses the sort order of images from the 'id' attribute if present.
 * Developer: Introduce gTxtScript() to help with the l10n of client-side strings
 * Developer: Introduce txpspecialchars() as a recommended HTML5-safe alternative to htmlspecialchars()
 * Developer: New events 'article_saved', 'article_posted', 'comment.saved', 'article_ui'.'partials_meta', 'article_ui'.'validate_save', 'image_ui'.'fullsize_image', 'image_ui'.'thumbnail_image', 'admin_criteria'.'author_list', 'admin_criteria'.'author_list', 'admin_criteria'.'css_list', 'admin_criteria'.'discuss_list', 'admin_criteria'.'file_list', 'admin_criteria'.'form_list', 'admin_criteria'.'image_list', 'admin_criteria'.'link_list', 'admin_criteria'.'list_list', 'admin_criteria'.'log_list', 'admin_criteria'.'page_list', 'admin_criteria'.'section_list' (NB: 'image_ui'.'image_edit' and 'image_ui'.'thumbnail_edit' changed)
@@ -60,7 +60,7 @@ Changes in 4.4.1
 
 * Security: Add admin-side CSRF protection measures. Updates are highly recommended. Thanks, Neal Poole.
 * Upload of SWF images requires 'image.create.trusted' privilege (applies to publisher, managing editor, copy editor, and designer roles).
-* <txp:file_download_size /> improved from both i18n and l10n viewpoints
+* ==<txp:file_download_size />== improved from both i18n and l10n viewpoints
 * Developer: CSRF protection API in bouncer(), form_token() and tInput().
 * Developer: CSRF token included in output from form(), aLink(), eLink(), dLink(), and wLink() functions.
 * phpass 0.4 / genuine
@@ -71,7 +71,7 @@ Changes in 4.4.0
 * Security: Fix several vulnerabilites. Updates are *absolutely* recommended for sites running any older version. Thanks, Neal Poole.
 * Passwords are case-sensitive.
 * Hotlink protection for files: Downloads from a web-accessible "/files" directory are inhibited. The "/file_download/$id/example.foo" route is the only valid way to access downloadable files. Requires an Apache webserver and usage of the sample .htaccess file.
-* Empty <txp:variable></txp:variable> container sets a variable's value to "".
+* Empty ==<txp:variable></txp:variable>== container sets a variable's value to "".
 * WordPress import tool fixed for WP 3.x.
 * Context bug in messy mode fixed
 * get_pref() now honours per-user prefs in all cases
@@ -79,7 +79,7 @@ Changes in 4.4.0
 * Developer: sendAsyncEvent() accepts parameter $format.
 * Developer: Introducing escape_js() and send_script_response().
 * Developer: Taghandler functions *must not* contain upper case letters.
-* Developer: Taghandler functions *must not* be defined within a <txp:php> element.
+* Developer: Taghandler functions *must not* be defined within a ==<txp:php>== element.
 * Developer: phpass 0.3 / genuine for password portability, hashing, stretching, and salting. Old-style passwords will be migrated upon a user's first login. Persistent hash values in database are incompatible with previous versions.
 * jQuery 1.5.1
 
@@ -92,18 +92,18 @@ Changes in 4.3.0
 * Feature: Optional top-level 'Home' tab for dashboard plugins
 * Feature: File titles
 * Feature: Multiple categories/sections in feeds via http://example.com/rss/?category=foo,bar&section=baz,omg and http://example.com/atom/?category=foo,bar&section=baz,omg)
-* New tags: <txp:images />, <txp:image_info />, <txp:image_url />, <txp:image_date />, <txp:if_thumbnail />.
-* New tags: <txp:link_author />, <txp:image_author />, <txp:file_download_author />.
+* New tags: ==<txp:images />==, ==<txp:image_info />==, ==<txp:image_url />==, ==<txp:image_date />==, ==<txp:if_thumbnail />==.
+* New tags: ==<txp:link_author />==, ==<txp:image_author />==, ==<txp:file_download_author />==.
 * Changed: Verbose semantic admin-side markup.
 * Changed: Explicit "Create new $thing" button for pages and styles.
-* Changed: <txp:image /> and  <txp:article_image /> accept "width" and/or "height" attribute.
-* Changed: <txp:search_input /> accepts a "match" attribute. Possible values: "exact", "any" or "all" (default).
-* Changed: <txp:css /> accepts a "name" attribute. Attribute "n" is deprecated.
-* Changed: <txp:image_index /> accepts a "category" attribute. Attribute "c" is deprecated.
-* Changed: <txp:breadcrumb /> accepts a "separator" attribute. Attribute "sep" is deprecated.
-* Changed: <txp:if_plugin /> accepts a "version" attribute. Attribute "ver" is deprecated.
-* Changed: <txp:if_custom_field /> accepts a "value" attribute. Attribute "val" is deprecated. Added attributes "match" and "separator"
-* Changed: <txp:feed_link />, <txp:link_feed_link />, <txp:popup />, <txp:search_input /> accept a "class" attribute.
+* Changed: ==<txp:image />== and  ==<txp:article_image />== accept "width" and/or "height" attribute.
+* Changed: ==<txp:search_input />== accepts a "match" attribute. Possible values: "exact", "any" or "all" (default).
+* Changed: ==<txp:css />== accepts a "name" attribute. Attribute "n" is deprecated.
+* Changed: ==<txp:image_index />== accepts a "category" attribute. Attribute "c" is deprecated.
+* Changed: ==<txp:breadcrumb />== accepts a "separator" attribute. Attribute "sep" is deprecated.
+* Changed: ==<txp:if_plugin />== accepts a "version" attribute. Attribute "ver" is deprecated.
+* Changed: ==<txp:if_custom_field />== accepts a "value" attribute. Attribute "val" is deprecated. Added attributes "match" and "separator"
+* Changed: ==<txp:feed_link />==, ==<txp:link_feed_link />==, ==<txp:popup />==, ==<txp:search_input />== accept a "class" attribute.
 * Changed: Use percent-encoding in URLs as a RFC-1738-compliant fallback for languages lacking a suitable transliteration array.
 * Changed: Silence E_STRICT warnings in "live" production mode.
 * Removed: "Friendly" CSS editor.
@@ -128,14 +128,14 @@ Changes in 4.2.0
 * Feature: Default event preference setting (thanks: Mary)
 * Fixed: PHP 5.3 compatibility (thanks: Mary)
 * Fixed: When a user is deleted, reassign her assets
-* Fixed: Tag builders for <txp:category /> and <txp:section />
-* Fixed: Bogus "Article tags cannot be used outside an article context" warning  in <txp:else />-branch of <txp:if_keywords>
-* Fixed: Removed superflous &amp; encoding for article titles in <txp:recent_comments />
-* Fixed: <txp:expires> uses "class" and "wraptag" attributes as intended
-* New tag: <txp:link_id /> (thanks: Rick Siletti)
-* New tag: <txp:yield />
+* Fixed: Tag builders for ==<txp:category />== and ==<txp:section />==
+* Fixed: Bogus "Article tags cannot be used outside an article context" warning  in ==<txp:else />==-branch of ==<txp:if_keywords>==
+* Fixed: Removed superflous &amp; encoding for article titles in ==<txp:recent_comments />==
+* Fixed: ==<txp:expires>== uses "class" and "wraptag" attributes as intended
+* New tag: ==<txp:link_id />== (thanks: Rick Siletti)
+* New tag: ==<txp:yield />==
 * Changed: Article timestamp is left untouched for draft, pending, or hidden articles published into the future.
-* Changed: <txp:file_download_list /> tag accepts a comma-separated list of file ids in a new "id" attribute (thanks: Rick Silletti)
+* Changed: ==<txp:file_download_list />== tag accepts a comma-separated list of file ids in a new "id" attribute (thanks: Rick Silletti)
 * Developer: pluggable_ui() serves as a base for custom admin-side user interface panels, see new '*_ui' events below
 * Developer: New events 'log_it', 'plugin_lifecycle', 'plugin_prefs', 'txp_die', 'article_ui', 'author_ui', 'category_ui', 'file_ui', 'image_ui', 'link_ui', 'prefs_ui', 'section_ui'
 * Developer: Per-user preferences
@@ -146,8 +146,8 @@ Changes in 4.2.0
 * Developer: Sending requests to the admin-side with URL parameter "app_mode" set to "async" suppress any default admin-side output. Think AJAX.
 * Developer: Cached plugins are loaded in natural sort order.
 * Developer: Deprecated cleanfInput(), escape_output(), escape_tags(), getAtt(), gAtt(), and input() functions. These will be removed in next release.
-* Developer: Plugins can flag their interest in lifecycle events (install, uninstall, activate, deactivate). @see http://svn.textpattern.com/development/4.x-plugin-template/
-* Developer: Optional capability to jump to a plugin's options from the plugin tab. @see http://svn.textpattern.com/development/4.x-plugin-template/
+* Developer: Plugins can flag their interest in lifecycle events (install, uninstall, activate, deactivate). ==see http://svn.textpattern.com/development/4.x-plugin-template/
+* Developer: Optional capability to jump to a plugin's options from the plugin tab. ==see http://svn.textpattern.com/development/4.x-plugin-template/
 * jQuery 1.3.2
 
 Changes in 4.1.0
@@ -156,15 +156,15 @@ Changes in 4.1.0
 
 Changes in 4.0.8
 
-* Fixed: Current section/category is overwritten in <txp:section_list> and <txp:category_list> (container or form mode)
+* Fixed: Current section/category is overwritten in ==<txp:section_list>== and ==<txp:category_list>== (container or form mode)
 * Fixed: Registration and notification mails are not sent in PHP safe mode.
 * Fixed: Error message upon article save from MySQL 5 in 'strict' mode.
 * Fixed: Timeout during "clean URL test" causes WSOD in diagnostics tab.
 * Partly fixed: Search result excerpt breaks HTML entities.
-* Changed tag: <txp:if_section> without a name attribute is now TRUE on a section page (old behaviour is preserved on upgrades).
-* Changed tag: <txp:if_category name=""> is now FALSE on a category page (old behaviour is preserved on upgrades).
-* Changed tag: <txp:link_url /> escapes its output.
-* Changed tag: <txp:file_download_list /> uses "wraptag", "break", and "label" attributes consistently like other tags.
+* Changed tag: ==<txp:if_section>== without a name attribute is now TRUE on a section page (old behaviour is preserved on upgrades).
+* Changed tag: ==<txp:if_category name="">== is now FALSE on a category page (old behaviour is preserved on upgrades).
+* Changed tag: ==<txp:link_url />== escapes its output.
+* Changed tag: ==<txp:file_download_list />== uses "wraptag", "break", and "label" attributes consistently like other tags.
 * Speed: faster plugin loading from the database.
 * Diagnostics tab: ignore line endings when checking for modified files and show full paths.
 * Pages tab: allow 'default' page to be deleted if not used by a section.
@@ -178,30 +178,30 @@ Changes in 4.0.7
 * Parser: unquoted attribute values are deprecated and will result in warnings when site status is not set to 'live'. Fix your templates and use double quotes to delimit attribute values.
 * Feature: Expiry time for articles, accompanied by related tags
 * Speed: various components of the parsing process have been optimized, which compensates the impact of increased parser complexity, resulting in slightly faster parsing speed
-* New tags: <txp:expires />, <txp:if_expired>, <txp:if_expires>
-* New tag: <txp:if_keywords>
-* New tags: <txp:if_first_section>, <txp:if_last_section>
-* New tags: <txp:if_first_category>, <txp:if_last_category>
-* New tag: <txp:if_variable>
-* New tag: <txp:modified />
-* New tag: <txp:rsd /> specifies the Really Simple Discovery endpoint for XML-RPC clients
-* New tag: <txp:variable />
-* Changed tag: <txp:article /> can be used as a container tag
-* Changed tag: <txp:article /> allows new attributes 'wraptag' and 'break'
-* Changed tag: <txp:article_custom /> can be used as a container tag
-* Changed tag: <txp:article_custom /> allows new attributes 'wraptag' and 'break'
-* Changed tag: <txp:article_custom /> allows comma separated list for 'id' attributes (this doesn't imply a sort order).
-* Changed tag: <txp:category /> applies 'class' attribute to the <a> element when wraptag is empty.
-* Changed tag: <txp:category_list /> can be used as a container tag
-* Changed tag: <txp:category_list /> accepts a 'children' attribute which limits the list depth to one level below the parent category when set to '0'.
-* Changed tag: <txp:file_download_list /> can be used as a container tag
-* Changed tag: <txp:if_article_id /> defaults to the current article's id.
-* Changed tag: <txp:linklist /> can be used as a container tag
-* Changed tag: <txp:recent_comments /> can be used as a container tag
-* Changed tag: <txp:recent_comments /> allows new attribute 'offset'
-* Changed tag: <txp:search_input /> allows new attribute 'html_id' to set the form's id.
-* Changed tag: <txp:section /> applies the 'class' attribute to the <a> element when wraptag is empty.
-* Changed tag: <txp:section_list /> can be used as a container tag
+* New tags: ==<txp:expires />==, ==<txp:if_expired>==, ==<txp:if_expires>==
+* New tag: ==<txp:if_keywords>==
+* New tags: ==<txp:if_first_section>==, ==<txp:if_last_section>==
+* New tags: ==<txp:if_first_category>==, ==<txp:if_last_category>==
+* New tag: ==<txp:if_variable>==
+* New tag: ==<txp:modified />==
+* New tag: ==<txp:rsd />== specifies the Really Simple Discovery endpoint for XML-RPC clients
+* New tag: ==<txp:variable />==
+* Changed tag: ==<txp:article />== can be used as a container tag
+* Changed tag: ==<txp:article />== allows new attributes 'wraptag' and 'break'
+* Changed tag: ==<txp:article_custom />== can be used as a container tag
+* Changed tag: ==<txp:article_custom />== allows new attributes 'wraptag' and 'break'
+* Changed tag: ==<txp:article_custom />== allows comma separated list for 'id' attributes (this doesn't imply a sort order).
+* Changed tag: ==<txp:category />== applies 'class' attribute to the <a> element when wraptag is empty.
+* Changed tag: ==<txp:category_list />== can be used as a container tag
+* Changed tag: ==<txp:category_list />== accepts a 'children' attribute which limits the list depth to one level below the parent category when set to '0'.
+* Changed tag: ==<txp:file_download_list />== can be used as a container tag
+* Changed tag: ==<txp:if_article_id />== defaults to the current article's id.
+* Changed tag: ==<txp:linklist />== can be used as a container tag
+* Changed tag: ==<txp:recent_comments />== can be used as a container tag
+* Changed tag: ==<txp:recent_comments />== allows new attribute 'offset'
+* Changed tag: ==<txp:search_input />== allows new attribute 'html_id' to set the form's id.
+* Changed tag: ==<txp:section />== applies the 'class' attribute to the <a> element when wraptag is empty.
+* Changed tag: ==<txp:section_list />== can be used as a container tag
 * XML-RPC: server now included in main TXP package, disabled by default
 * Articles tab: added 'article image' and 'keywords' as search criteria
 * Categories tab: categories cannot be accidentally deleted if they are still in use.
@@ -235,25 +235,25 @@ Changes in 4.0.6
 * Security: fixed local file include vulnerability (publisher only) in textpattern/index.php (thanks DSecRG and Victor)
 * Security: fixed XSS vulnerability and parameter value overflow in comments preview (thanks DSecRG)
 * Security: escape request method as shown on logs tab (thanks Victor)
-* Changed tag: <txp:thumbnail /> allows non-JS links to the full-size image
-* Changed tag: <txp:article_custom /> allows comma-separated lists for category, section and author attributes (thanks Manfre)
-* Changed tag: <txp:linklist /> allows comma-separated list for category attribute
-* Changed tag: <txp:file_download_list /> allows comma-separated list for category attribute
-* Changed tag: <txp:recent_articles /> allows comma-separated lists for category and section attribute
-* Changed tag: <txp:related_articles /> allows comma-separated list for section attribute
-* Changed tag: <txp:search_result_excerpt /> allows a custom "break" attribute defaulting to an ellipsis
-* Deprecated tag: <txp:sitename /> replaced by <txp:site_name />
-* Deprecated tag: <txp:request_uri /> replaced by <txp:page_url />
-* Deprecated tag: <txp:s /> replaced by <txp:page_url type="s" />
-* Deprecated tag: <txp:c /> replaced by <txp:page_url type="c" />
-* Deprecated tag: <txp:q /> replaced by <txp:page_url type="q" />
-* Deprecated tag: <txp:id /> replaced by <txp:page_url type="id" />
-* Deprecated tag: <txp:pg /> replaced by <txp:page_url type="pg" />
+* Changed tag: ==<txp:thumbnail />== allows non-JS links to the full-size image
+* Changed tag: ==<txp:article_custom />== allows comma-separated lists for category, section and author attributes (thanks Manfre)
+* Changed tag: ==<txp:linklist />== allows comma-separated list for category attribute
+* Changed tag: ==<txp:file_download_list />== allows comma-separated list for category attribute
+* Changed tag: ==<txp:recent_articles />== allows comma-separated lists for category and section attribute
+* Changed tag: ==<txp:related_articles />== allows comma-separated list for section attribute
+* Changed tag: ==<txp:search_result_excerpt />== allows a custom "break" attribute defaulting to an ellipsis
+* Deprecated tag: ==<txp:sitename /> replaced by ==<txp:site_name />==
+* Deprecated tag: ==<txp:request_uri /> replaced by ==<txp:page_url />==
+* Deprecated tag: ==<txp:s />== replaced by ==<txp:page_url type="s" />==
+* Deprecated tag: ==<txp:c />== replaced by ==<txp:page_url type="c" />==
+* Deprecated tag: ==<txp:q />== replaced by ==<txp:page_url type="q" />==
+* Deprecated tag: ==<txp:id />== replaced by ==<txp:page_url type="id" />==
+* Deprecated tag: ==<txp:pg />== replaced by ==<txp:page_url type="pg" />==
 * Deprecated function: escape_output(), use htmlspecialchars() instead
 * Deprecated function: gAtt() (and getAtt()), use lAtts() instead
 * Deprecated variable: $txpcfg['txpath'], use constant 'txpath' instead
-* New tag: <txp:if_search_results> </txp:if_search_results>
-* New tag: <txp:search_term />
+* New tag: ==<txp:if_search_results>== ==</txp:if_search_results>==
+* New tag: ==<txp:search_term />==
 * New languages: Croatian, Korean, Português (Brasil), Serbian (Latin + Cyrillic), Turkish and Vietnamese (thanks: Filip Baraka, Alexsander Albert Santana, Vladimir Siljkovic, Süleyman Şentürk, Quang Anh Do)
 * Developer: using add_privs() for admin-side plugins is now required (used to be optional for publisher-only plugins)
 * Developer: dmp() prints debug output to a file in the temporary directory according to preferences. Define 'txpdmpfile' for the file name.
@@ -279,9 +279,9 @@ Changes in 4.0.5
 * Fixed security issue on public-side (XSS) (thanks zarathu)
 * Fixed path disclosure issue (thanks zarathu)
 * Search for posted and last modifed dates in article list
-* New tag: <txp:hide /> as a container for comments and other internal content
-* Changed tags: <txp:comments />, <txp:category_list />, <txp:section_list />
-  and <txp:image_index /> support 'sort' attribute
+* New tag: ==<txp:hide />== as a container for comments and other internal content
+* Changed tags: ==<txp:comments />==, ==<txp:category_list />==, ==<txp:section_list />==
+  and ==<txp:image_index />== support 'sort' attribute
 * Distribute jQuery 1.1.2 as a default JavaScript library
 * Keep image properties on replacement
 * Add 'delete thumbnail' function
@@ -307,9 +307,9 @@ Changes in 4.0.5
 * Fix some more IIS issues
 * New callback event: 'textpattern_end'
 * New callback event: 'ping'
-* New tag: <txp:article_url_title />
-* Changed tag: <txp:permlink /> loses default title attribute
-* Changed tag: <txp:file_download_link /> returns filename as an additional URL part
+* New tag: ==<txp:article_url_title />==
+* Changed tag: ==<txp:permlink />== loses default title attribute
+* Changed tag: ==<txp:file_download_link />== returns filename as an additional URL part
 * Many, many minor improvements, see:
   http://dev.textpattern.com/log/development/4.0/?action=stop_on_copy&rev=2443&stop_rev=1963
 
@@ -381,13 +381,12 @@ Changes in 4.0.3:
 * Seperate hidden comments into unmoderated and spam
 * Add bulk changing of comment status (visible, moderated, spam)
 * Better error-handling in comments-form when critical fields are missing
-  New tag: <txp:comments_error /> (and conditional <txp:if_comments_error >)
+  New tag: ==<txp:comments_error />== (and conditional ==<txp:if_comments_error >==)
   Style-able error-message and form-elements via CSS (class=comments_warn).
 * Plugin-Authors: Add callbacks for future spam-plugins [comment.save, comment.form]
 * Plugin-Authors: Add getComment() and comment_evaluator for future spam-plugins
 * Plugin-Authors: Allow (optionally, transparently) for installing compressed plugins.
-* Plugin-Authors: Add window events using addEvent, to allow multiple events loading
-                  at window.onload, useful for admin side plugins.
+* Plugin-Authors: Add window events using addEvent, to allow multiple events loading at window.onload, useful for admin side plugins.
 * Improve mysql5-compatibility
 * Add comment edit link to notification emails
 * Make comment-time format customizable in tag (mary)
@@ -456,12 +455,7 @@ Changes in 4.0.2:
 * Add a pageby attribute to txp:article, for multi-column lists
 * Fix txp:link_to_next/prev so they work at the top of a page
 * Minor speed improvements, new class and linkclass attributes for txp:breadcrumb tag
-* Added txp:comments_preview and txp:if_comments_preview tags. Example usage:
-	<txp:if_comments_preview>
-	 <div id="cpreview" style="background-color:#FF0"><b>Hello, the following is your preview</b>
-	   <txp:comments_preview /><txp:comments_form preview="1" />
-	 </div>
-	</txp:if_comments_preview>
+* Added txp:comments_preview and txp:if_comments_preview tags. Example usage: @<txp:if_comments_preview><txp:comments_preview /><txp:comments_form preview="1" /></txp:if_comments_preview>@
 * Fixed unparsed excerpts in Feeds.
 * Textile: smarter handling of relative link and image paths
 * Textile: stop footnote links from clashing in article lists
