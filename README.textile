@@ -1,6 +1,6 @@
 h1. Textpattern CMS 4.5.1
 
-p. Released under the GNU General Public License. See "LICENSE":LICENSE for terms and conditions. Includes contributions licensed under the GNU Lesser General Public License. See "LGPL":LGPL for terms and conditions. Includes contributions licensed under the New BSD License.
+p. Released under the GNU General Public License. See LICENSE for terms and conditions. Includes contributions licensed under the GNU Lesser General Public License. See LGPL for terms and conditions. Includes contributions licensed under the New BSD License.
 
 h2. Installation
 
