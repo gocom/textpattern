@@ -2,6 +2,7 @@
 
 /**
  * Password handling functions.
+ *
  * @package User
  */
 
