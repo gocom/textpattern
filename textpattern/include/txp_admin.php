@@ -588,8 +588,14 @@
 
 		author_list($msg);
 	}
-// -------------------------------------------------------------
-//	@deprecated
+
+/**
+ * The legacy admin panel.
+ *
+ * @param      string $message
+ * @deprecated ?
+ */
+
 	function admin($message = '')
 	{
 		author_list($message);
