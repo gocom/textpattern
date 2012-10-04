@@ -4762,3 +4762,37 @@ eod;
 		$num = empty($labels[$status]) ? 4 : $labels[$status];
 		return $num;
 	}
+
+/**
+ * List language files available in the filesystem.
+ *
+ * This function gets a list of Textpacks
+ * placed to the ../lang directory.
+ *
+ * These Textpacks need to be named after a language
+ * code and end to a .txt extension.
+ *
+ * This function triggers a E_USER_WARNING when the lang
+ * directory isn't present.
+ *
+ * @return  array Available language filenames
+ * @package i18n
+ */
+
+	function get_lang_files()
+	{
+		$lang_dir = txpath.DS.'lang'.DS;
+
+		if (!is_dir($lang_dir))
+		{
+			trigger_error('Lang directory is not a directory: '.$lang_dir, E_USER_WARNING);
+			return array();
+		}
+
+		if (chdir($lang_dir))
+		{
+			$files = glob('*.txt');
+		}
+
+		return (is_array($files)) ? $files : array();
+	}

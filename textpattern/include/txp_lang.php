@@ -421,27 +421,3 @@ function remove_language()
 
 	return list_languages($msg);
 }
-
-/**
- * Fetch language files available in the filesystem
- *
- * @return array available language filenames
- */
-function get_lang_files()
-{
-	$lang_dir = txpath.DS.'lang'.DS;
-
-	if (!is_dir($lang_dir))
-	{
-		trigger_error('Lang directory is not a directory: '.$lang_dir, E_USER_WARNING);
-		return array();
-	}
-
-	if (chdir($lang_dir))
-	{
-		$files = glob('*.txt');
-	}
-	return (is_array($files)) ? $files : array();
-}
-
-?>
