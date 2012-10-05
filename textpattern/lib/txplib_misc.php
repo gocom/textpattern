@@ -2703,6 +2703,24 @@
 	}
 
 /**
+ * Verifies temporary directory.
+ *
+ * This function verifies that the temporary directory is writeable.
+ *
+ * @param   string $dir The directory to check
+ * @return  bool|null NULL on error, TRUE on success
+ * @package Debug
+ */
+
+	function test_tempdir($dir) {
+		$f = realpath(tempnam($dir, 'txp_'));
+		if (is_file($f)) {
+			@unlink($f);
+			return true;
+		}
+	}
+
+/**
  * Gets the server's upload size limit.
  *
  * This function takes a desider limit you would want
