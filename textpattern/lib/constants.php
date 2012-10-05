@@ -41,13 +41,12 @@ define('sp', "&#160;");
 define('a', "&#38;");
 
 /**
- * If set to TRUE, writes dump files to temporary directory
- * containing debug information.
+ * If set to TRUE, dumps debug log to the temp directory.
  *
  * @package Debug
  */
 
-define('TXP_DEBUG', 0);
+define('TXP_DEBUG', false);
 
 /**
  * Comment spam status.
@@ -74,7 +73,7 @@ define('MODERATE', 0);
 define('VISIBLE', 1);
 
 /**
- * Comment spam status.
+ * Comment reload status.
  *
  * @package Comment
  */
@@ -266,7 +265,6 @@ if (!defined('PASSWORD_COMPLEXITY'))
  */
 
 define('PASSWORD_PORTABILITY', TRUE);
-
 
 if (!defined('LOGIN_COOKIE_HTTP_ONLY'))
 {
