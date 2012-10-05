@@ -777,7 +777,7 @@
 /**
  * Checks if GD supports the given image type.
  *
- * @param   string $image_type Either '.gif', '.png', '.jpg'
+ * @param   string $image_type Either 'gif', 'png', 'jpg'
  * @return  bool
  * @package Image
  */
@@ -789,20 +789,20 @@
 		{
 			$gd_info = gd_info();
 
-			switch ($image_type)
+			switch (ltrim($image_type, '.'))
 			{
 				// check gif support
-				case '.gif':
+				case 'gif':
 					return ($gd_info['GIF Create Support'] == 1) ? true : false;
 					break;
 
 				// check png support
-				case '.png':
+				case 'png':
 					return ($gd_info['PNG Support'] == 1) ? true : false;
 					break;
 
 				// check jpg support
-				case '.jpg':
+				case 'jpg':
 					return (!empty($gd_info['JPEG Support']) || !empty($gd_info['JPG Support'])) ? true : false;
 					break;
 
