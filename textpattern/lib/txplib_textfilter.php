@@ -17,17 +17,17 @@ interface ITextfilter
 	 * @param  array  $options of options: 'lite' => boolean, 'rel' => string, 'noimage' => boolean, 'restricted' => boolean
 	 * @return string Filtered output text
 	 */
-	function filter($thing, $options);
+	public function filter($thing, $options);
 
 	/**
 	 * @return string HTML for filter-specific help
 	 */
-	function help();
+	public function help();
 
 	/**
 	 * @return mixed A globally unique, persistable identifier for this particular textfilter class
 	 */
-	function getKey();
+	public function getKey();
 }
 
 /**
@@ -44,7 +44,7 @@ class Textfilter implements ITextfilter
 	 * @param string $key   A globally unique, persistable identifier for this particular textfilter class
 	 * @param string $title The human-readable title of this filter class
 	 */
-	function __construct($key, $title)
+	public function __construct($key, $title)
 	{
 		global $txpversion;
 
@@ -82,24 +82,24 @@ class Textfilter implements ITextfilter
 	 * @param string        $event Not used
 	 * @param TextfilterSet $set   The set of registered textfilters
 	 */
-	function register($step, $event, $set)
+	public function register($step, $event, $set)
 	{
 		$set[] = $this;
 	}
 
 	// ITextfilter implementation
-	function filter($thing, $options)
+	public function filter($thing, $options)
 	{
 		$this->setOptions($options);
 		return $thing;
 	}
 
-	function help()
+	public function help()
 	{
 		return '';
 	}
 
-	function getKey()
+	public function getKey()
 	{
 		return $this->key;
 	}
@@ -107,7 +107,7 @@ class Textfilter implements ITextfilter
 
 class PlainTextfilter extends Textfilter implements ITextfilter
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct(LEAVE_TEXT_UNTOUCHED, gTxt('leave_text_untouched'));
 	}
@@ -121,7 +121,7 @@ class PlainTextfilter extends Textfilter implements ITextfilter
 
 class Nl2BrTextfilter extends Textfilter implements ITextfilter
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct(CONVERT_LINEBREAKS, gTxt('convert_linebreaks'));
 	}
@@ -137,7 +137,7 @@ class TextileTextfilter extends Textfilter implements ITextfilter
 {
 	protected $textile;
 
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct(USE_TEXTILE, gTxt('use_textile'));
 
@@ -156,7 +156,7 @@ class TextileTextfilter extends Textfilter implements ITextfilter
 		}
 	}
 
-	function help()
+	public function help()
 	{
 		return
 			n.'<ul class="textile plain-list">'.
@@ -252,7 +252,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	 *
 	 * @return array Map of 'key' => 'title' for all textfilters
 	 */
-	static function map()
+	static public function map()
 	{
 		static $out = array();
 		if (empty($out)) {
@@ -272,7 +272,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	 * @param  array  $context Filter context ('options' => array, 'field' => string, 'data' => mixed)
 	 * @return string Filtered output text
 	 */
-	static function filter($key, $thing, $context)
+	static public function filter($key, $thing, $context)
 	{
 		// Preprocessing, anyone?
 		callback_event_ref('textfilter', 'filter', 0, $thing, $context);
@@ -296,7 +296,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	 * @param  string $key The textfilter's key
 	 * @return string HTML for human-readable help
 	 */
-	static function help($key)
+	static public function help($key)
 	{
 		$me = self::getInstance();
 		if (isset($me[$key])) {
@@ -306,13 +306,13 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	}
 
 	// ArrayAccess interface to our set of filters
-	function offsetSet($key, $filter)
+	public function offsetSet($key, $filter)
 	{
 		if (null === $key) $key = $filter->getKey();
 		$this->filters[$key] = $filter;
 	}
 
-	function offsetGet($key)
+	public function offsetGet($key)
 	{
 		if ($this->offsetExists($key)) {
 			return $this->filters[$key];
@@ -320,18 +320,18 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 		return null;
 	}
 
-	function offsetExists($key)
+	public function offsetExists($key)
 	{
 		return isset($this->filters[$key]);
 	}
 
-	function offsetUnset($key)
+	public function offsetUnset($key)
 	{
 		unset($this->filters[$key]);
 	}
 
 	// IteratorAggregate interface
-	function getIterator()
+	public function getIterator()
 	{
 		return new ArrayIterator($this->filters);
 	}
@@ -339,7 +339,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 
 class TextfilterConstraint extends Constraint
 {
-	function validate()
+	public function validate()
 	{
 		return array_key_exists($this->value, TextfilterSet::map());
 	}
