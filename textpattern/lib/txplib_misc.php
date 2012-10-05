@@ -2718,25 +2718,33 @@
 	function real_max_upload_size($user_max)
 	{
 		// The minimum of the candidates, is the real max. possible size
-		$candidates = array($user_max,
-							ini_get('post_max_size'),
-							ini_get('upload_max_filesize'));
+		$candidates = array(
+			$user_max,
+			ini_get('post_max_size'),
+			ini_get('upload_max_filesize')
+		);
 		$real_max = null;
 		foreach ($candidates as $item)
 		{
 			$val = trim($item);
 			$modifier = strtolower( substr($val, -1) );
-			switch($modifier) {
+			switch ($modifier)
+			{
 				// The 'G' modifier is available since PHP 5.1.0
 				case 'g': $val *= 1024;
 				case 'm': $val *= 1024;
 				case 'k': $val *= 1024;
 			}
-			if ($val > 1) {
+			if ($val > 1)
+			{
 				if (is_null($real_max))
+				{
 					$real_max = $val;
+				}
 				elseif ($val < $real_max)
+				{
 					$real_max = $val;
+				}
 			}
 		}
 		return $real_max;
