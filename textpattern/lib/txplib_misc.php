@@ -5045,3 +5045,55 @@ eod;
 
 		return (is_array($files)) ? $files : array();
 	}
+
+/**
+ * Checks for Textpattern updates.
+ *
+ * This function uses XML-RPC to do a active remote connection to
+ * rpc.textpattern.com. Created connections are not cached, scheduled or
+ * delayed, and each subsequent call to the function creates a new connection.
+ *
+ * These connections do not transmit any identifiable information. Just a
+ * anonymous UID assigned for the installation on the first run.
+ *
+ * @return  array|null When updates are found returns an array consisting keys 'version', 'msg'
+ * @package Update
+ * @example
+ * if ($updates = checkUpdates())
+ * {
+ * 	echo "New version: {$updates['version']}";
+ * }
+ */
+
+	function checkUpdates()
+	{
+		require_once txpath.'/lib/IXRClass.php';
+		$client = new IXR_Client('http://rpc.textpattern.com');
+		$uid = safe_field('val','txp_prefs',"name='blog_uid'");
+		if (!$client->query('tups.getTXPVersion',$uid))
+		{
+			return array('version' => 0, 'msg' => 'problem_connecting_rpc_server');
+		}
+
+		else
+		{
+			$out = array();
+			$response = $client->getResponse();
+			if (is_array($response))
+			{
+				ksort($response);
+				$version = get_pref('version');
+
+				// Go through each available branch (x.y), but only return the _highest_ version
+				foreach ($response as $key => $val)
+				{
+					if (version_compare($version, $val) < 0)
+					{
+						$out = array('version' => $val, 'msg' => 'textpattern_update_available');
+					}
+				}
+
+				return $out;
+			}
+		}
+	}
