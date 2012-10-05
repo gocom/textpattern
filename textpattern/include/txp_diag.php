@@ -106,12 +106,28 @@
 		doDiagnostics();
 	}
 
+/**
+ * Checks if the given Apache module is installed and active.
+ *
+ * @param  string $m The module
+ * @return bool|null TRUE on success, NULL or FALSE on error
+ */
+
 	function apache_module($m) {
 		$modules = @apache_get_modules();
 		if (is_array($modules)) {
 			return in_array($m, $modules);
 		}
 	}
+
+/**
+ * Verifies temporary directory.
+ *
+ * This function verifies that the temporary directory is writeable.
+ *
+ * @param  string $dir The directory to check
+ * @return bool|null NULL on error, TRUE on success
+ */
 
 	function test_tempdir($dir) {
 		$f = realpath(tempnam($dir, 'txp_'));
@@ -121,6 +137,14 @@
 		}
 	}
 
+/**
+ * Lists all database tables used by the core.
+ *
+ * The returned tables include prefixes.
+ *
+ * @return array
+ */
+
 	function list_txp_tables() {
 		$table_names = array(PFX.'textpattern');
 		$rows = getRows("SHOW TABLES LIKE '".PFX."txp\_%'");
@@ -128,6 +152,15 @@
 			$table_names[] = array_shift($row);
 		return $table_names;
 	}
+
+/**
+ * Checks the status of the given database tables.
+ *
+ * @param  array  $tables   The tables to check
+ * @param  string $type     Is not used
+ * @param  bool   $warnings If TRUE, displays warnings
+ * @return array  An array of table statuses
+ */
 
 	function check_tables($tables, $type='FAST', $warnings=0) {
 		$msgs = array();
@@ -641,8 +674,25 @@
 			'</div>';
 	}
 
-	//-------------------------------------------------------------
-	// check for updates through xml-rpc
+/**
+ * Checks for Textpattern updates.
+ *
+ * This function uses XML-RPC to do a active remote connection to
+ * rpc.textpattern.com. Created connections are not cached, scheduled or
+ * delayed, and each subsequent call to the function creates a new connection.
+ *
+ * These connections do not transmit any identifiable information. Just a
+ * anonymous UID assigned for the installation on the first run.
+ *
+ * @return  array|null When updates are found returns an array consisting keys 'version', 'msg'
+ * @package Update
+ * @example
+ * if ($updates = checkUpdates())
+ * {
+ * 	echo "New version: {$updates['version']}";
+ * }
+ */
+
 	function checkUpdates()
 	{
 		require_once txpath.'/lib/IXRClass.php';
