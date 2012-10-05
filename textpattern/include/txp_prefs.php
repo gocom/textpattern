@@ -533,46 +533,6 @@ EOS
 			n.'</div>';
 	}
 
-/**
- * Gets the server's upload size limit.
- *
- * This function takes a desider limit you would want
- * to allocate for uploads, and checks it against PHP's
- * post_max_size upload_max_filesize settings. The lowest
- * value of the three is returned.
- *
- * @param   int  $user_max The preferred limit
- * @return  int  Upload size limit
- * @package File
- */
-
-	function real_max_upload_size($user_max)
-	{
-		// The minimum of the candidates, is the real max. possible size
-		$candidates = array($user_max,
-							ini_get('post_max_size'),
-							ini_get('upload_max_filesize'));
-		$real_max = null;
-		foreach ($candidates as $item)
-		{
-			$val = trim($item);
-			$modifier = strtolower( substr($val, -1) );
-			switch($modifier) {
-				// The 'G' modifier is available since PHP 5.1.0
-				case 'g': $val *= 1024;
-				case 'm': $val *= 1024;
-				case 'k': $val *= 1024;
-			}
-			if ($val > 1) {
-				if (is_null($real_max))
-					$real_max = $val;
-				elseif ($val < $real_max)
-					$real_max = $val;
-			}
-		}
-		return $real_max;
-	}
-
 //-------------------------------------------------------------
 	function advanced_prefs_save()
 	{
