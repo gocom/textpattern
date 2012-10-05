@@ -2,6 +2,7 @@
 
 /**
  * Database credentials and site configuration.
+ *
  * @package DB
  */
 
