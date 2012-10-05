@@ -767,7 +767,7 @@
 			// For php as (f)cgi, two rules in htaccess often allow this workaround
 			$ru = serverSet('REDIRECT_REMOTE_USER');
 
-			if ($ru && !$au && !$ap && substr($ru,0,5) == 'Basic')
+			if ($ru && !$au && !$ap && strpos($ru, 'Basic') === 0)
 			{
 				list ($au, $ap) = explode(':', base64_decode(substr($ru, 6)));
 			}
