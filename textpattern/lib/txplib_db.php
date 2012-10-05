@@ -1020,7 +1020,7 @@ $DB = new DB;
  * Checks the status of the given database tables.
  *
  * @param  array  $tables   The tables to check
- * @param  string $type     Is not used
+ * @param  string $type     Check type: FOR UPGRADE | QUICK | FAST | MEDIUM | EXTENDED | CHANGED
  * @param  bool   $warnings If TRUE, displays warnings
  * @return array  An array of table statuses
  */
