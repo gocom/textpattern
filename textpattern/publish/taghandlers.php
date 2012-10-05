@@ -3372,7 +3372,18 @@
 		return '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Renders a list from an array.
+ *
+ * @param  array  $list       The array
+ * @param  string $wraptag    The HTML tag the list is wrapped in
+ * @param  string $break      The HTML wrapping list items
+ * @param  string $breakclass The HTML class applied to $break
+ * @param  string $atts       The HTML attributes applied to $wraptag
+ * @param  string $breakatts  The HTML attributes applied to $break
+ * @param  string $id         The HTML id applied to $wraptag
+ * @return string HTML list
+ */
 
 	function doWrap($list, $wraptag, $break, $class = '', $breakclass = '', $atts = '', $breakatts = '', $id = '')
 	{
@@ -3412,7 +3423,16 @@
 			tag(n.join("</$break>".n."<{$break}{$breakatts}>".n, $list).n, $break, $breakatts);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Wraps the given content in a tag.
+ *
+ * @param  string $content 
+ * @param  string $tag     The HTML tag
+ * @param  string $class   The HTML class
+ * @param  string $atts    The HTML attributes
+ * @param  string $id      The HTML id
+ * @return string HTML
+ */
 
 	function doTag($content, $tag, $class = '', $atts = '', $id = '')
 	{
@@ -3434,7 +3454,14 @@
 		return ($content) ? tag($content, $tag, $atts) : "<$tag $atts />";
 	}
 
-// -------------------------------------------------------------
+/**
+ * Wraps a label in a tag.
+ *
+ * @param  string $label    The label text
+ * @param  string $labeltag The HTML tag the label is wrapped in
+ * @return HTML
+ */
+
 	function doLabel($label='', $labeltag='')
 	{
 		if ($label) {
