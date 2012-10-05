@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Ouputs css files.
+ *
+ * @ignore
+ */
+
 if (@ini_get('register_globals'))
 {
 	die('Register_globals needs to be turned off.');
