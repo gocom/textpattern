@@ -898,9 +898,30 @@
 		}
 	}
 
-// -------------------------------------------------------------
-// Refactoring attempt, allowing other - plugin - functions to
-// upload images without the need for writing duplicated code.
+/**
+ * Uploads an image.
+ *
+ * This function can be used to upload a new image or replace an existing one.
+ * If $id is specified, the image will be replaced. If $uploaded is set
+ * FALSE, $file can take a local file path instead of HTTP file upload variable.
+ *
+ * All uploaded files will included on the Images panel.
+ *
+ * @param  array        $file     HTTP file upload variables
+ * @param  array        $meta     Image meta data, requires keys 'caption', 'alt', 'category'
+ * @param  int          $id       Existing image's ID
+ * @param  bool         $uploaded If FALSE, $file takes a filename instead of upload vars
+ * @return array|string An array of array(message, id) on success, localized error string on error
+ * @example
+ * print_r(image_data(
+ * 	$_FILES['myfile'],
+ * 	array(
+ * 		'caption'  => '',
+ * 		'alt'      => '',
+ * 		'category' => '',
+ * 	)
+ * ));
+ */
 
 	function image_data($file , $meta = '', $id = '', $uploaded = true)
 	{
@@ -1049,8 +1070,12 @@
 		}
 	}
 
-// -------------------------------------------------------------
-// check GD info
+/**
+ * Checks if GD supports the given image type.
+ *
+ * @param  string $image_type Either '.gif', '.png', '.jpg'
+ * @return bool
+ */
 
 	function check_gd($image_type) {
 		// GD is installed
