@@ -3407,7 +3407,15 @@
 		}
 	}
 
-// -------------------------------------------------------------
+/**
+ * Gets an URL for the given article.
+ *
+ * @param   int    $id The article ID
+ * @return  string
+ * @package URL
+ * @example
+ * echo permlinkurl_id(12);
+ */
 
 	function permlinkurl_id($id)
 	{
@@ -3425,7 +3433,22 @@
 		return permlinkurl($rs);
 	}
 
-// -------------------------------------------------------------
+/**
+ * Generates an article URL from the given data array.
+ *
+ * @param   array  $article_array An array consisting of keys 'thisid', 'section', 'title', 'url_title', 'posted'
+ * @return  string
+ * @package URL
+ * @see     permlinkurl_id()
+ * @example
+ * echo permlinkurl_id(array(
+ * 	'thisid'    => 12,
+ * 	'section'   => 'blog',
+ * 	'url_title' => 'my-title',
+ *  'posted'    => 1345414041
+ * ));
+ */
+
 	function permlinkurl($article_array)
 	{
 		global $permlink_mode, $prefs, $permlinks;
@@ -3495,8 +3518,19 @@
 		return LANG;
 	}
 
-// -------------------------------------------------------------
-	# DEPRECATED - provided only for backwards compatibility
+/**
+ * Formats a article permlink.
+ *
+ * Provided only for backwards compatibility.
+ *
+ * @param      int    $ID
+ * @param      string $Section
+ * @return     string
+ * @package    URL
+ * @deprecated ?
+ * @see        permlinkurl_id()
+ */
+
 	function formatPermLink($ID,$Section)
 	{
 		trigger_error(gTxt('deprecated_tag'), E_USER_NOTICE);
@@ -3504,8 +3538,20 @@
 		return permlinkurl_id($ID);
 	}
 
-// -------------------------------------------------------------
-	# DEPRECATED - provided only for backwards compatibility
+/**
+ * Formats a comment invite link.
+ *
+ * Provided only for backwards compatibility.
+ *
+ * @param      string $AnnotateInvite
+ * @param      string $Section
+ * @param      int    $ID
+ * @return     string
+ * @package    URL
+ * @deprecated ?
+ * @see        permlinkurl_id()
+ */
+
 	function formatCommentsInvite($AnnotateInvite,$Section,$ID)
 	{
 		trigger_error(gTxt('deprecated_tag'), E_USER_NOTICE);
@@ -3523,8 +3569,23 @@
 		}
 
 	}
-// -------------------------------------------------------------
-	# DEPRECATED - provided only for backwards compatibility
+
+/**
+ * Parses &lt;txp:permlink /&gt; tag.
+ *
+ * Provided only for backwards compatibility.
+ *
+ * @param      string $text
+ * @param      string $plink
+ * @param      string $Title
+ * @param      string $url_title
+ * @return     string
+ * @package    TagParser
+ * @deprecated ?
+ * @see        permlinkurl_id()
+ * @see        permlink()
+ */
+
 	function doPermlink($text, $plink, $Title, $url_title)
 	{
 		trigger_error(gTxt('deprecated_tag'), E_USER_NOTICE);
@@ -3536,8 +3597,22 @@
 			"<a href=\"".$plink.$Title."\" title=\"".gTxt('permanent_link')."\">$2</a>",$text);
 	}
 
-// -------------------------------------------------------------
-	# DEPRECATED - provided only for backwards compatibility
+/**
+ * Renders a HTML link to an article.
+ *
+ * Provided only for backwards compatibility.
+ *
+ * @param      string $ID
+ * @param      string $Title
+ * @param      string $url_title
+ * @param      string $Section
+ * @return     string
+ * @package    URL
+ * @deprecated ?
+ * @see        permlinkurl_id()
+ * @see        permlink()
+ */
+
 	function doArticleHref($ID,$Title,$url_title,$Section)
 	{
 		trigger_error(gTxt('deprecated_tag'), E_USER_NOTICE);
