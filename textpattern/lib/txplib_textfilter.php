@@ -518,7 +518,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	}
 
 	/**
-	 * IteratorAggregate interface
+	 * IteratorAggregate interface.
 	 *
 	 * @return ArrayIterator
 	 * @see    IteratorAggregate
