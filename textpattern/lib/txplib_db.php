@@ -1020,9 +1020,13 @@ $DB = new DB;
  * Checks the status of the given database tables.
  *
  * @param  array  $tables   The tables to check
- * @param  string $type     Check type: FOR UPGRADE | QUICK | FAST | MEDIUM | EXTENDED | CHANGED
+ * @param  string $type     Check type, either FOR UPGRADE, QUICK, FAST, MEDIUM, EXTENDED, CHANGED
  * @param  bool   $warnings If TRUE, displays warnings
  * @return array  An array of table statuses
+ * @example
+ * print_r(
+ * 	check_tables(list_txp_tables())
+ * );
  */
 
 	function check_tables($tables, $type = 'FAST', $warnings = false)
