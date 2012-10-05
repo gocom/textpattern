@@ -7,8 +7,16 @@
 	Use of this software denotes acceptance of the Textpattern license agreement
 */
 
+/**
+ * Handling Atom feeds.
+ *
+ * @package XML
+ */
 
-// -------------------------------------------------------------
+/**
+ * Generates and outputs a Atom feed.
+ */
+
 	function atom()
 	{
 		global $thisarticle;
@@ -292,10 +300,15 @@
 			'<feed xml:lang="'.$language.'" xmlns="http://www.w3.org/2005/Atom">'.join(n,$out).'</feed>';
 	}
 
-
-// DEPRECATED FUNCTIONS
-// these are included only for backwards compatibility with older plugins
-// see the above code for more appropriate ways of handling feed content
+/**
+ * Converts HTML entieties to UTF-8 characters.
+ *
+ * These are included only for backwards compatibility with older plugins.
+ *
+ * @param      string $toUnicode
+ * @return     string
+ * @deprecated ?
+ */
 
 	function safe_hed($toUnicode) {
 
@@ -311,6 +324,15 @@
 		return $str;
 	}
 
+/**
+ * Sanitizes a string for use in a feed.
+ *
+ * @param      string $toFeed
+ * @param      string $permalink
+ * @return     string
+ * @deprecated ?
+ */
+
 	function fixup_for_feed($toFeed, $permalink) {
 
 		// fix relative urls
@@ -325,5 +347,3 @@
 		$txt = preg_replace("/&(?![#0-9]+;)/i",'&amp;', $txt);
 		return $txt;
 	}
-
-?>
