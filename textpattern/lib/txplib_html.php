@@ -1304,9 +1304,10 @@ EOF;
  * @return HTML
  */
 
-	function doLabel($label='', $labeltag='')
+	function doLabel($label = '', $labeltag = '')
 	{
-		if ($label) {
+		if ($label)
+		{
 			return (empty($labeltag)? $label.'<br />' : tag($label, $labeltag));
 		}
 		return '';
