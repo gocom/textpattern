@@ -4,26 +4,27 @@
  * @since 4.6.0
  */
 
+/**
+ * Imports Textile.
+ */
+
 require_once txpath.'/lib/classTextile.php';
 
 interface ITextfilter
 {
 	/**
-	 * @abstract
-	 * @param $thing string raw input text
-	 * @param $options array of options: 'lite' => boolean, 'rel' => string, 'noimage' => boolean, 'restricted' => boolean
-	 * @return string filtered output text
+	 * @param  string $thing Raw input string
+	 * @param  array  $options of options: 'lite' => boolean, 'rel' => string, 'noimage' => boolean, 'restricted' => boolean
+	 * @return string Filtered output text
 	 */
 	function filter($thing, $options);
 
 	/**
-	 * @abstract
 	 * @return string HTML for filter-specific help
 	 */
 	function help();
 
 	/**
-	 * @abstract
 	 * @return mixed A globally unique, persistable identifier for this particular textfilter class
 	 */
 	function getKey();
@@ -38,10 +39,10 @@ class Textfilter implements ITextfilter
 	protected $key, $options;
 
 	/**
-	 * General constructor for textfilters
+	 * General constructor for textfilters.
 	 *
-	 * @param $key	mixed A globally unique, persistable identifier for this particular textfilter class
-	 * @param $title string The human-readable title of this filter class
+	 * @param string $key   A globally unique, persistable identifier for this particular textfilter class
+	 * @param string $title The human-readable title of this filter class
 	 */
 	function __construct($key, $title)
 	{
@@ -60,9 +61,9 @@ class Textfilter implements ITextfilter
 	}
 
 	/**
-	 * Set this filter's options
+	 * Set this filter's options.
 	 *
-	 * @param $options array of options: 'lite' => boolean, 'rel' => string, 'noimage' => boolean, 'restricted' => boolean
+	 * @param array $options Array of options: 'lite' => boolean, 'rel' => string, 'noimage' => boolean, 'restricted' => boolean
 	 */
 	private function setOptions($options)
 	{
@@ -77,9 +78,9 @@ class Textfilter implements ITextfilter
 	/**
 	 * Event handler, registers this textfilter class with the core
 	 *
-	 * @param $step string not used
-	 * @param $event string not used
-	 * @param $set TextfilterSet The set of registered textfilters
+	 * @param string        $step  Not used
+	 * @param string        $event Not used
+	 * @param TextfilterSet $set   The set of registered textfilters
 	 */
 	function register($step, $event, $set)
 	{
@@ -249,8 +250,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	/**
 	 * Create an array map of filter keys vs. titles
 	 *
-	 * @static
-	 * @return array map of 'key' => 'title' for all textfilters
+	 * @return array Map of 'key' => 'title' for all textfilters
 	 */
 	static function map()
 	{
@@ -267,10 +267,9 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	 * Filter raw input text by calling one of our known textfilters by its key.
 	 * Invokes the 'textfilter'.'filter' pre- and post-callbacks.
 	 *
-	 * @static
-	 * @param $key mixed The textfilter's key
-	 * @param $context array Filter context ('options' => array, 'field' => string, 'data' => mixed)
-	 * @param $thing string Raw input text
+	 * @param  string $key     The textfilter's key
+	 * @param  string $thing   Raw input text
+	 * @param  array  $context Filter context ('options' => array, 'field' => string, 'data' => mixed)
 	 * @return string Filtered output text
 	 */
 	static function filter($key, $thing, $context)
@@ -294,8 +293,7 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 	/**
 	 * Get help text for a certain textfilter
 	 *
-	 * @static
-	 * @param $key The textfilter's key
+	 * @param  string $key The textfilter's key
 	 * @return string HTML for human-readable help
 	 */
 	static function help($key)
