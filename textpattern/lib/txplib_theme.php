@@ -121,8 +121,8 @@ class theme
 	/**
 	 * Initialise the theme singleton.
 	 *
-	 * @param	string 	$name 	Theme name
-	 * @return	object	A valid theme object
+	 * @param  string $name Theme name
+	 * @return obj    A valid theme object
 	 */
 
 	static public function init($name = '')
@@ -183,9 +183,10 @@ class theme
 	}
 
 	/**
-	 * Inherit from an ancestor theme
-	 * @param	string	$name	Name of ancestor theme
-	 * @return	boolean	True on success, false on unavailable/invalid ancestor theme
+	 * Inherit from an ancestor theme.
+	 *
+	 * @param  string  $name Name of ancestor theme
+	 * @return bool    True on success, false on unavailable/invalid ancestor theme
 	 */
 
 	static public function based_on($name)
@@ -207,11 +208,11 @@ class theme
 	/**
 	 * Sets Textpatterns menu structure, message contents and other application states.
 	 *
-	 * @param  string $area     Currently active top level menu
-	 * @param  string $event    Currently active second level menu
-	 * @param  bool   $is_popup Just a popup window for tag builder et cetera
+	 * @param  string $area      Currently active top level menu
+	 * @param  string $event     Currently active second level menu
+	 * @param  bool   $is_popup  Just a popup window for tag builder et cetera
 	 * @param  array  $message   The contents of the notification message pane
-	 * @return object This theme object
+	 * @return obj    This theme object
 	 */
 
 	public function set_state($area, $event, $is_popup, $message)
