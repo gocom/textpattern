@@ -923,9 +923,7 @@
 
 	function image_data($file , $meta = array(), $id = '', $uploaded = true)
 	{
-		global $txpcfg, $txp_user, $prefs, $file_max_upload_size, $event;
-
-		extract($txpcfg);
+		global $txp_user, $prefs, $file_max_upload_size, $event;
 
 		$name = $file['name'];
 		$error = $file['error'];
