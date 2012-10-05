@@ -1996,10 +1996,20 @@
 		return parse(EvalElse($thing,(count($evaluator -> get_result_message()) > 0)));
 	}
 
-// -------------------------------------------------------------
-	# DEPRECATED - provided only for backwards compatibility
-	# this functionality will be merged into comments_invite
-	# no point in having two tags for one functionality
+/**
+ * Comment invitation label.
+ *
+ * Provided only for backwards compatibility.
+ *
+ * This functionality is merged into comments_invite.
+ *
+ * @param      array  $atts
+ * @param      string $thing
+ * @return     string HTML
+ * @deprecated ?
+ * @see        comments_invite()
+ */
+
 	function comments_annotateinvite($atts, $thing)
 	{
 		trigger_error(gTxt('deprecated_tag'), E_USER_NOTICE);
