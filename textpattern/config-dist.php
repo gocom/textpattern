@@ -62,7 +62,7 @@
 	 * @global string $txpcfg['dbcharset']
 	 */
 
-		$txpcfg['dbcharset'] = 'latin1';
+		$txpcfg['dbcharset'] = 'utf8';
 
 	/**
 	 * Database client flags.
