@@ -109,8 +109,9 @@
 /**
  * Checks if the given Apache module is installed and active.
  *
- * @param  string $m The module
- * @return bool|null TRUE on success, NULL or FALSE on error
+ * @param   string $m The module
+ * @return  bool|null TRUE on success, NULL or FALSE on error
+ * @package System
  */
 
 	function apache_module($m) {
@@ -125,8 +126,9 @@
  *
  * This function verifies that the temporary directory is writeable.
  *
- * @param  string $dir The directory to check
- * @return bool|null NULL on error, TRUE on success
+ * @param   string $dir The directory to check
+ * @return  bool|null NULL on error, TRUE on success
+ * @package Debug
  */
 
 	function test_tempdir($dir) {
@@ -142,7 +144,8 @@
  *
  * The returned tables include prefixes.
  *
- * @return array
+ * @return  array
+ * @package DB
  */
 
 	function list_txp_tables() {
@@ -156,10 +159,11 @@
 /**
  * Checks the status of the given database tables.
  *
- * @param  array  $tables   The tables to check
- * @param  string $type     Is not used
- * @param  bool   $warnings If TRUE, displays warnings
- * @return array  An array of table statuses
+ * @param   array  $tables   The tables to check
+ * @param   string $type     Is not used
+ * @param   bool   $warnings If TRUE, displays warnings
+ * @return  array  An array of table statuses
+ * @package DB
  */
 
 	function check_tables($tables, $type='FAST', $warnings=0) {
