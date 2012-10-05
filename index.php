@@ -17,10 +17,15 @@ if (!defined('txpath'))
 	define('txpath', dirname(__FILE__).'/textpattern');
 }
 
-// save server path to site root
-
 if (!isset($here))
 {
+	/**
+	 * Server path to the site root.
+	 *
+	 * @global  string $here
+	 * @package File
+	 */
+
 	$here = dirname(__FILE__);
 }
 
