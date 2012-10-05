@@ -772,7 +772,7 @@
 
 		if (func_num_args() > 0)
 		{
-			return isset($extensions[$type]) ? $extensions[$type] : false;
+			return !empty($extensions[$type]) ? $extensions[$type] : false;
 		}
 
 		return $extensions;
