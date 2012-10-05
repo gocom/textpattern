@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @ignore
  * @deprecated
  * @see ../css.php
  */
