@@ -923,7 +923,7 @@
 
 	function image_data($file , $meta = '', $id = '', $uploaded = true)
 	{
-		global $txpcfg, $extensions, $txp_user, $prefs, $file_max_upload_size, $event;
+		global $txpcfg, $txp_user, $prefs, $file_max_upload_size, $event;
 
 		extract($txpcfg);
 
@@ -949,11 +949,10 @@
 		}
 
 		list($w, $h, $extension) = getimagesize($file);
+		$ext = get_safe_image_types($extension);
 
-		if (($file !== false) && @$extensions[$extension])
+		if ($file !== false && $ext)
 		{
-			$ext = $extensions[$extension];
-
 			$name = substr($name, 0, strrpos($name, '.')).$ext;
 			$safename = doSlash($name);
 
