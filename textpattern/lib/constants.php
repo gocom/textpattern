@@ -22,7 +22,7 @@ define('n', "\n");
  * @package HTML
  */
 
-define('br', "<br />");
+define('br', '<br />');
 
 /**
  * HTML non-breaking space entity.
@@ -30,7 +30,7 @@ define('br', "<br />");
  * @package HTML
  */
 
-define('sp', "&#160;");
+define('sp', '&#160;');
 
 /**
  * HTML ampersand entity.
@@ -38,7 +38,7 @@ define('sp', "&#160;");
  * @package HTML
  */
 
-define('a', "&#38;");
+define('a', '&#38;');
 
 /**
  * If set to TRUE, dumps debug log to the temp directory.
@@ -96,9 +96,9 @@ if (!defined('HELP_URL'))
 	define('HELP_URL', 'http://rpc.textpattern.com/help/');
 }
 
-define('LEAVE_TEXT_UNTOUCHED', '0');
-define('USE_TEXTILE', '1');
-define('CONVERT_LINEBREAKS', '2');
+define('LEAVE_TEXT_UNTOUCHED', 0);
+define('USE_TEXTILE', 1);
+define('CONVERT_LINEBREAKS', 2);
 
 /**
  * System is Windows if TRUE
