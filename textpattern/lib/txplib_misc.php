@@ -756,18 +756,14 @@
 	function get_safe_image_types($type = null)
 	{
 		global $txp_user;
-		static $extensions = null;
 
-		if (!$extensions)
+		if (!$txp_user || !has_privs('image.create.trusted'))
 		{
-			if (!$txp_user || !has_privs('image.create.trusted'))
-			{
-				$extensions = array(0, '.gif', '.jpg', '.png');
-			}
-			else
-			{
-				$extensions = array(0, '.gif', '.jpg', '.png', '.swf', 0, 0, 0, 0, 0, 0, 0, 0, '.swf');
-			}
+			$extensions = array(0, '.gif', '.jpg', '.png');
+		}
+		else
+		{
+			$extensions = array(0, '.gif', '.jpg', '.png', '.swf', 0, 0, 0, 0, 0, 0, 0, 0, '.swf');
 		}
 
 		if (func_num_args() > 0)
