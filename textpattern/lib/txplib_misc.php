@@ -3760,7 +3760,10 @@ eod;
 	function permlinkurl_id($id)
 	{
 		global $permlinks;
-		if (isset($permlinks[$id])) return $permlinks[$id];
+		if (isset($permlinks[$id]))
+		{
+			return $permlinks[$id];
+		}
 
 		$id = (int) $id;
 
@@ -3797,45 +3800,71 @@ eod;
 
 		if (isset($prefs['custom_url_func'])
 		    and is_callable($prefs['custom_url_func'])
-		    and ($url = call_user_func($prefs['custom_url_func'], $article_array, PERMLINKURL)) !== FALSE)
+		    and ($url = call_user_func($prefs['custom_url_func'], $article_array, PERMLINKURL)) !== false)
 		{
 			return $url;
 		}
 
-		if (empty($article_array)) return;
+		if (empty($article_array))
+		{
+			return;
+		}
 
 		extract($article_array);
 
-		if (empty($thisid)) $thisid = $ID;
+		if (empty($thisid))
+		{
+			$thisid = $ID;
+		}
 
-		if (isset($permlinks[$thisid])) return $permlinks[$thisid];
+		if (isset($permlinks[$thisid]))
+		{
+			return $permlinks[$thisid];
+		}
 
-		if (!isset($title)) $title = $Title;
-		if (empty($url_title)) $url_title = stripSpace($title);
-		if (empty($section)) $section = $Section; // lame, huh?
-		if (!isset($posted)) $posted = $Posted;
+		if (!isset($title))
+		{
+			$title = $Title;
+		}
+		if (empty($url_title))
+		{
+			$url_title = stripSpace($title);
+		}
+		if (empty($section))
+		{
+			$section = $Section; // lame, huh?
+		}
+		if (!isset($posted))
+		{
+			$posted = $Posted;
+		}
 
 		$section = urlencode($section);
 		$url_title = urlencode($url_title);
 
-		switch($permlink_mode) {
+		switch($permlink_mode)
+		{
 			case 'section_id_title':
 				if ($prefs['attach_titles_to_permalinks'])
 				{
 					$out = hu."$section/$thisid/$url_title";
-				}else{
+				}
+				else
+				{
 					$out = hu."$section/$thisid/";
 				}
 				break;
 			case 'year_month_day_title':
-				list($y,$m,$d) = explode("-",date("Y-m-d",$posted));
+				list($y, $m, $d) = explode("-", date("Y-m-d", $posted));
 				$out =  hu."$y/$m/$d/$url_title";
 				break;
 			case 'id_title':
 				if ($prefs['attach_titles_to_permalinks'])
 				{
 					$out = hu."$thisid/$url_title";
-				}else{
+				}
+				else
+				{
 					$out = hu."$thisid/";
 				}
 				break;
