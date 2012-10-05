@@ -426,3 +426,15 @@ define('INPUT_TINY', 2);
  */
 
 define('REQUIRED_PHP_VERSION', '5.2');
+
+/**
+ * Colon.
+ */
+
+define('cs', ': ');
+
+/**
+ * Horizontal line, 24 characters wide.
+ */
+
+define('ln', str_repeat('-', 24).n);
