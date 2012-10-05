@@ -1189,9 +1189,9 @@ EOF;
 	}
 
 /**
- * Renders a link element to hook up txpAsyncHref() with request parameters
+ * Renders a link element to hook up txpAsyncHref() with request parameters.
  *
- * textpattern.js: txpAsyncHref
+ * See this function's JavaScript companion, txpAsyncHref(), in textpattern.js.
  *
  * @param  string $item	 Link text
  * @param  array  $parms Request parameters; array keys are 'event', 'step', 'thing', 'property'
