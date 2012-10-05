@@ -533,7 +533,19 @@ EOS
 			n.'</div>';
 	}
 
-//-------------------------------------------------------------
+/**
+ * Gets the server's upload size limit.
+ *
+ * This function takes a desider limit you would want
+ * to allocate for uploads, and checks it against PHP's
+ * post_max_size upload_max_filesize settings. The lowest
+ * value of the three is returned.
+ *
+ * @param   int  $user_max The preferred limit
+ * @return  int  Upload size limit
+ * @package File
+ */
+
 	function real_max_upload_size($user_max)
 	{
 		// The minimum of the candidates, is the real max. possible size
