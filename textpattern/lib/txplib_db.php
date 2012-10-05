@@ -1005,11 +1005,14 @@ $DB = new DB;
  * @return array
  */
 
-	function list_txp_tables() {
+	function list_txp_tables()
+	{
 		$table_names = array(PFX.'textpattern');
 		$rows = getRows("SHOW TABLES LIKE '".PFX."txp\_%'");
 		foreach ($rows as $row)
+		{
 			$table_names[] = array_shift($row);
+		}
 		return $table_names;
 	}
 
@@ -1022,14 +1025,21 @@ $DB = new DB;
  * @return array  An array of table statuses
  */
 
-	function check_tables($tables, $type='FAST', $warnings=0) {
+	function check_tables($tables, $type = 'FAST', $warnings = false)
+	{
 		$msgs = array();
-		foreach ($tables as $table) {
+		foreach ($tables as $table)
+		{
 			$rs = getRows("CHECK TABLE `$table` $type");
-			if ($rs) {
+			if ($rs)
+			{
 				foreach ($rs as $r)
+				{
 					if ($r['Msg_type'] != 'status' and ($warnings or $r['Msg_type'] != 'warning'))
+					{
 						$msgs[] = $table.cs.$r['Msg_type'].cs.$r['Msg_text'];
+					}
+				}
 			}
 		}
 		return $msgs;
