@@ -264,7 +264,7 @@ if (!defined('PASSWORD_COMPLEXITY'))
  * @package User
  */
 
-define('PASSWORD_PORTABILITY', TRUE);
+define('PASSWORD_PORTABILITY', true);
 
 if (!defined('LOGIN_COOKIE_HTTP_ONLY'))
 {
