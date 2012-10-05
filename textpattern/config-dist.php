@@ -6,82 +6,82 @@
  * @package DB
  */
 
-	/**
-	 * Mysql database.
-	 *
-	 * @global string $txpcfg['db']
-	 */
+/**
+ * Mysql database.
+ *
+ * @global string $txpcfg['db']
+ */
 
-		$txpcfg['db'] = 'databasename';
+	$txpcfg['db'] = 'databasename';
 
-	/**
-	 * Database login name.
-	 *
-	 * @global string $txpcfg['user']
-	 */
-		$txpcfg['user'] = 'root';
+/**
+ * Database login name.
+ *
+ * @global string $txpcfg['user']
+ */
 
-	/**
-	 * Database password.
-	 *
-	 * @global string $txpcfg['pass']
-	 */
-		$txpcfg['pass'] = '';
+	$txpcfg['user'] = 'root';
 
-	/**
-	 * Database hostname.
-	 *
-	 * @global string $txpcfg['host']
-	 */
+/**
+ * Database password.
+ *
+ * @global string $txpcfg['pass']
+ */
 
-		$txpcfg['host'] = 'localhost';
+	$txpcfg['pass'] = '';
 
-	/**
-	 * Table prefix.
-	 *
-	 * Use ONLY if you require multiple installs in one db.
-	 *
-	 * @global string $txpcfg['table_prefix']
-	 */
+/**
+ * Database hostname.
+ *
+ * @global string $txpcfg['host']
+ */
 
-		$txpcfg['table_prefix'] = '';
+	$txpcfg['host'] = 'localhost';
 
-	/**
-	 * Full server path to textpattern directory, no slash at end.
-	 *
-	 * @global string $txpcfg['txpath']
-	 */
+/**
+ * Table prefix.
+ *
+ * Use ONLY if you require multiple installs in one db.
+ *
+ * @global string $txpcfg['table_prefix']
+ */
 
-		$txpcfg['txpath'] = '/home/path/to/textpattern';
+	$txpcfg['table_prefix'] = '';
 
-	/**
-	 * DB Connection Charset.
-	 *
-	 * Only for MySQL4.1 and up. Must be equal to the Table-Charset, e.g. latin1 or utf8.
-	 *
-	 * @global string $txpcfg['dbcharset']
-	 */
+/**
+ * Full server path to textpattern directory, no slash at the end.
+ *
+ * @global string $txpcfg['txpath']
+ */
 
-		$txpcfg['dbcharset'] = 'utf8';
+	$txpcfg['txpath'] = '/home/path/to/textpattern';
 
-	/**
-	 * Database client flags.
-	 *
-	 * These are optional. Use the database client flags as needed.
-	 * Flags: MYSQL_CLIENT_SSL, MYSQL_CLIENT_COMPRESS, MYSQL_CLIENT_IGNORE_SPACE,
-	 * MYSQL_CLIENT_INTERACTIVE
-	 *
-	 * @global int $txpcfg['client_flags']
-	 * @link   http://www.php.net/manual/function.mysql-connect.php
-	 */
+/**
+ * DB Connection Charset.
+ *
+ * Only for MySQL4.1 and up. Must be equal to the Table-Charset, e.g. latin1 or utf8.
+ *
+ * @global string $txpcfg['dbcharset']
+ */
 
-		$txpcfg['client_flags'] = 0;
+	$txpcfg['dbcharset'] = 'utf8';
 
-	/*
-	 * optional, advanced: http address of the site serving images
-	 * see http://forum.textpattern.com/viewtopic.php?id=34493
-	 */
+/**
+ * Database client flags.
+ *
+ * These are optional. Use the database client flags as needed.
+ * Flags: MYSQL_CLIENT_SSL, MYSQL_CLIENT_COMPRESS, MYSQL_CLIENT_IGNORE_SPACE,
+ * MYSQL_CLIENT_INTERACTIVE
+ *
+ * @global int $txpcfg['client_flags']
+ * @link   http://www.php.net/manual/function.mysql-connect.php
+ */
 
-	# define('ihu', 'http://static.example.com/');
+	$txpcfg['client_flags'] = 0;
 
-?>
+/*
+ * optional, advanced: http address of the site serving images
+ * see http://forum.textpattern.com/viewtopic.php?id=34493
+ */
+
+	// define('ihu', 'http://static.example.com/');
