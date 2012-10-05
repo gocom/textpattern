@@ -906,11 +906,12 @@
  *
  * All uploaded files will included on the Images panel.
  *
- * @param  array        $file     HTTP file upload variables
- * @param  array        $meta     Image meta data, requires keys 'caption', 'alt', 'category'
- * @param  int          $id       Existing image's ID
- * @param  bool         $uploaded If FALSE, $file takes a filename instead of upload vars
- * @return array|string An array of array(message, id) on success, localized error string on error
+ * @param   array        $file     HTTP file upload variables
+ * @param   array        $meta     Image meta data, requires keys 'caption', 'alt', 'category'
+ * @param   int          $id       Existing image's ID
+ * @param   bool         $uploaded If FALSE, $file takes a filename instead of upload vars
+ * @return  array|string An array of array(message, id) on success, localized error string on error
+ * @package Image
  * @example
  * print_r(image_data(
  * 	$_FILES['myfile'],
@@ -1072,8 +1073,9 @@
 /**
  * Checks if GD supports the given image type.
  *
- * @param  string $image_type Either '.gif', '.png', '.jpg'
- * @return bool
+ * @param   string $image_type Either '.gif', '.png', '.jpg'
+ * @return  bool
+ * @package Image
  */
 
 	function check_gd($image_type) {
