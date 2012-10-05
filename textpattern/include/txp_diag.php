@@ -106,46 +106,6 @@
 		doDiagnostics();
 	}
 
-/**
- * Lists all database tables used by the core.
- *
- * The returned tables include prefixes.
- *
- * @return  array
- * @package DB
- */
-
-	function list_txp_tables() {
-		$table_names = array(PFX.'textpattern');
-		$rows = getRows("SHOW TABLES LIKE '".PFX."txp\_%'");
-		foreach ($rows as $row)
-			$table_names[] = array_shift($row);
-		return $table_names;
-	}
-
-/**
- * Checks the status of the given database tables.
- *
- * @param   array  $tables   The tables to check
- * @param   string $type     Is not used
- * @param   bool   $warnings If TRUE, displays warnings
- * @return  array  An array of table statuses
- * @package DB
- */
-
-	function check_tables($tables, $type='FAST', $warnings=0) {
-		$msgs = array();
-		foreach ($tables as $table) {
-			$rs = getRows("CHECK TABLE `$table` $type");
-			if ($rs) {
-				foreach ($rs as $r)
-					if ($r['Msg_type'] != 'status' and ($warnings or $r['Msg_type'] != 'warning'))
-						$msgs[] = $table.cs.$r['Msg_type'].cs.$r['Msg_text'];
-			}
-		}
-		return $msgs;
-	}
-
 	function diag_msg_wrap($msg, $type='error')
 	{
 		return '<span class="'.$type.'">'.$msg.'</span>';
