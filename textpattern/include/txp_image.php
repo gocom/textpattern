@@ -900,7 +900,7 @@
  *
  * This function can be used to upload a new image or replace an existing one.
  * If $id is specified, the image will be replaced. If $uploaded is set
- * FALSE, $file can take a local file path instead of HTTP file upload variable.
+ * FALSE, $file can take a local file instead of HTTP file upload variable.
  *
  * All uploaded files will included on the Images panel.
  *
