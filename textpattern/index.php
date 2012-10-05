@@ -17,12 +17,34 @@ if (@ini_get('register_globals'))
 
 if (!defined('txpath'))
 {
+	/**
+	 * @ignore
+	 */
+
 	define("txpath", dirname(__FILE__));
 }
 
+/**
+ * @ignore
+ */
+
 define('txpinterface', 'admin');
 
+/**
+ * Textpattern version number.
+ *
+ * @global string $thisversion
+ * @see    txp_version
+ */
+
 $thisversion = '4.5.1';
+
+/**
+ * Running SVN version.
+ *
+ * @global bool $txp_using_svn
+ */
+
 $txp_using_svn = true; // set false for releases
 
 ob_start(NULL, 2048);
@@ -57,6 +79,14 @@ $microstart = getmicrotime();
 
 if ($connected && safe_query("describe `".PFX."textpattern`"))
 {
+	/**
+	 * Database structure version.
+	 *
+	 * @global  string $dbversion
+	 * @package Pref
+	 * @see     txp_version
+	 */
+
 	$dbversion = safe_field('val', 'txp_prefs', "name = 'version'");
 	// global site prefs
 	$prefs = get_prefs();
@@ -73,7 +103,16 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 		updateSitePath(dirname(dirname(__FILE__)));
 	}
 
+	/**
+	 * @ignore
+	 */
+
 	define('LANG', $language);
+	
+	/**
+	 * Textpattern version number.
+	 */
+
 	define('txp_version', $thisversion);
 
 	if (!defined('PROTOCOL'))
@@ -82,20 +121,36 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 		{
 			case '':
 			case 'off': // ISAPI with IIS
+				/**
+				 * @ignore
+				 */
 				define('PROTOCOL', 'http://');
 				break;
 			default:
+				/**
+				 * @ignore
+				 */
 				define('PROTOCOL', 'https://');
 				break;
 		}
 	}
 
+	/**
+	 * @ignore
+	 */
+
 	define('hu', PROTOCOL.$siteurl.'/');
-	// relative url global
+	/**
+	 * relative url global
+	 * @ignore
+	 */
 	define('rhu', preg_replace('|^https?://[^/]+|', '', hu));
-	// http address of the site serving images
 	if (!defined('ihu'))
 	{
+		/**
+		 * http address of the site serving images
+		 * @ignore
+		 */
 		define('ihu', hu);
 	}
 
@@ -106,7 +161,12 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 
 	$textarray = load_lang(LANG);
 
-	// init global theme
+	/**
+	 * Instance of admin-side theme.
+	 *
+	 * @global theme $theme
+	 */
+
 	$theme = theme::init();
 
 	include txpath.'/include/txp_auth.php';
@@ -122,6 +182,10 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 
 	if (!$dbversion or ($dbversion != $thisversion) or $txp_using_svn)
 	{
+		/**
+		 * If TRUE, updating.
+		 */
+
 		define('TXP_UPDATE', 1);
 		include txpath.'/update/_update.php';
 	}
