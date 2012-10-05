@@ -107,21 +107,6 @@
 	}
 
 /**
- * Checks if the given Apache module is installed and active.
- *
- * @param   string $m The module
- * @return  bool|null TRUE on success, NULL or FALSE on error
- * @package System
- */
-
-	function apache_module($m) {
-		$modules = @apache_get_modules();
-		if (is_array($modules)) {
-			return in_array($m, $modules);
-		}
-	}
-
-/**
  * Verifies temporary directory.
  *
  * This function verifies that the temporary directory is writeable.
