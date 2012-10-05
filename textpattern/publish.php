@@ -111,6 +111,14 @@
 		updateSitePath(dirname(dirname(__FILE__)));
 	}
 
+	/**
+	 * Path to images directory.
+	 *
+	 * @package Image
+	 */
+
+	define('IMPATH', $path_to_site.DS.$img_dir.DS);
+
 	if (!defined('PROTOCOL'))
 	{
 		/**

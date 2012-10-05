@@ -107,6 +107,12 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 	 * @ignore
 	 */
 
+	define('IMPATH', $path_to_site.DS.$img_dir.DS);
+
+	/**
+	 * @ignore
+	 */
+
 	define('LANG', $language);
 	
 	/**
