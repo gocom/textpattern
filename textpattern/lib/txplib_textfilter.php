@@ -96,8 +96,8 @@ class Textfilter implements ITextfilter
 	{
 		global $txpversion;
 
-		$this->key = $key;
-		$this->title = $title;
+		$this->key = (string) $key;
+		$this->title = (string) $title;
 		$this->version = $txpversion;
 		$this->options = array(
 			'lite' => false,
