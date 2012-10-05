@@ -150,6 +150,7 @@
 		 * HTTP address to the site serving images.
 		 *
 		 * @package URL
+		 * @link    http://forum.textpattern.com/viewtopic.php?id=34493
 		 */
 
 		define('ihu', hu);
