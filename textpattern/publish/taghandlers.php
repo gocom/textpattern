@@ -780,7 +780,7 @@
 				list ($au, $ap) = explode(':', base64_decode(substr($ru, 6)));
 			}
 
-			if ($au == $login && $ap == $pass)
+			if ($au === $login && $ap === $pass)
 			{
 				return parse($thing);
 			}
