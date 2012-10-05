@@ -5162,9 +5162,11 @@ eod;
  * @package System
  */
 
-	function apache_module($m) {
+	function apache_module($m)
+	{
 		$modules = @apache_get_modules();
-		if (is_array($modules)) {
+		if (is_array($modules))
+		{
 			return in_array($m, $modules);
 		}
 	}
