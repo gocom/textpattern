@@ -742,7 +742,15 @@
 		return '';
 	}
 
-// -------------------------------------------------------------
+/**
+ * Password protects a page.
+ *
+ * @param   array       $atts
+ * @param   string|null $thing
+ * @return  string|null
+ * @package Tag
+ */
+
 	function password_protect($atts, $thing = null)
 	{
 		extract(lAtts(array(
