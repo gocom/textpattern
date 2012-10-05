@@ -1,6 +1,14 @@
 <?php
 
-// Make sure we display all errors that occur during initialization
+/**
+ * This is Textpattern
+ * 
+ * Copyright 2005 by Dean Allen
+ * www.textpattern.com
+ * All rights reserved
+ *
+ * Use of this software indicates acceptance of the Textpattern license agreement
+ */
 
 error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', 1);
@@ -10,10 +18,20 @@ if (@ini_get('register_globals'))
 	die('Register_globals needs to be turned off.');
 }
 
+/**
+ * Indicates the interface being accessed.
+ *
+ * This is either 'public', 'admin', 'setup', 'css', 'xmlrpc'
+ */
+
 define('txpinterface', 'public');
 
 if (!defined('txpath'))
 {
+	/**
+	 * @ignore
+	 */
+
 	define('txpath', dirname(__FILE__).'/textpattern');
 }
 
