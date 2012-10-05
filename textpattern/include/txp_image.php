@@ -905,7 +905,7 @@
  * All uploaded files will included on the Images panel.
  *
  * @param   array        $file     HTTP file upload variables
- * @param   array        $meta     Image meta data, requires keys 'caption', 'alt', 'category'
+ * @param   array        $meta     Image meta data, allowed keys 'caption', 'alt', 'category'
  * @param   int          $id       Existing image's ID
  * @param   bool         $uploaded If FALSE, $file takes a filename instead of upload vars
  * @return  array|string An array of array(message, id) on success, localized error string on error
@@ -921,7 +921,7 @@
  * ));
  */
 
-	function image_data($file , $meta = '', $id = '', $uploaded = true)
+	function image_data($file , $meta = array(), $id = '', $uploaded = true)
 	{
 		global $txpcfg, $txp_user, $prefs, $file_max_upload_size, $event;
 
@@ -955,11 +955,11 @@
 		{
 			$name = substr($name, 0, strrpos($name, '.')).$ext;
 			$safename = doSlash($name);
-
-			if ($meta == false)
-			{
-				$meta = array('category' => '', 'caption' => '', 'alt' => '');
-			}
+			$meta = lAtts(array(
+				'category' => '',
+				'caption' => '',
+				'alt' => ''
+			), (array) $meta, false);
 
 			extract(doSlash($meta));
 
