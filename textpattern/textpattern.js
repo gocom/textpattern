@@ -858,6 +858,47 @@ jQuery.fn.gTxt = function(opts, tags, escape)
 	return this;
 };
 
+/**
+ * Legacy multi-edit functionality.
+ *
+ * @deprecated 4.5.0
+ */
+
+poweredit = function(elm)
+{
+	var something = elm.options[elm.selectedIndex].value;
+
+	// Add another chunk of HTML
+	var pjs = document.getElementById('js');
+
+	if (pjs == null)
+	{
+		var br = document.createElement('br');
+		elm.parentNode.appendChild(br);
+
+		pjs = document.createElement('P');
+		pjs.setAttribute('id','js');
+		elm.parentNode.appendChild(pjs);
+	}
+
+	if (pjs.style.display == 'none' || pjs.style.display == '')
+	{
+		pjs.style.display = 'block';
+	}
+
+	if (something != '')
+	{
+		switch (something)
+		{
+			default:
+				pjs.style.display = 'none';
+				break;
+		}
+	}
+
+	return false;
+};
+
 //-------------------------------------------------------------
 // global admin-side behaviour
 $(document).keyup(function(e) {
@@ -868,6 +909,12 @@ $(document).keyup(function(e) {
 });
 
 $(document).ready(function() {
+	// check cookies
+	var cookieEnabled = checkCookies();
+	if (!cookieEnabled)
+	{
+		alert(textpattern.gTxt('cookies_must_be_enabled'));
+	}
 	// disable spellchecking on all elements of class "code" in capable browsers
 	var c = $(".code")[0];
 	if(c && "spellcheck" in c) {$(".code").prop("spellcheck", false);}
