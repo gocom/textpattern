@@ -800,7 +800,7 @@
  * ));
  */
 
-	function image_data($file, $meta = array(), $id = '', $uploaded = true)
+	function image_data($file, $meta = array(), $id = 0, $uploaded = true)
 	{
 		global $txp_user, $prefs, $file_max_upload_size, $event;
 
