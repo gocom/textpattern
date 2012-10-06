@@ -166,6 +166,8 @@ eod;
 			$guess_siteurl = 'mysite.com';
 		}
 
+		$guess_siteurl = 'http://'.$guess_siteurl;
+
 		echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">'.
 			n.hed(setup_gTxt('need_details'),1).
 			n.hed('MySQL',2).
