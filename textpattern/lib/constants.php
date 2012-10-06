@@ -522,7 +522,7 @@ define('INTEGRITY_NOT_FILE', 5);
 define('INTEGRITY_STATUS', 1);
 
 /**
- * Return integrity status.
+ * Return integrity MD5 hashes.
  *
  * @package Debug
  */
