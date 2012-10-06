@@ -29,7 +29,20 @@ function doAuth()
 	ob_start();
 }
 
-// -------------------------------------------------------------
+/**
+ * Validates the given user credentials.
+ *
+ * This function validates a given login and a password combination.
+ * If the combination is correct, the user's login name is returned,
+ * FALSE otherwise.
+ *
+ * @param   string      $user     The login
+ * @param   string      $password The password
+ * @param   bool        $log      If TRUE, updates the user's last access time
+ * @return  string|bool The user's login name or FALSE on error
+ * @package User
+ */
+
 	function txp_validate($user,$password,$log=TRUE)
 	{
 		$safe_user = doSlash($user);
