@@ -20,6 +20,7 @@ error_reporting(E_ALL | E_STRICT);
 @ini_set("display_errors","1");
 
 include_once txpath.'/lib/constants.php';
+include_once txpath.'/lib/PasswordHash.php';
 include_once txpath.'/lib/txplib_html.php';
 include_once txpath.'/lib/txplib_forms.php';
 include_once txpath.'/lib/txplib_misc.php';
