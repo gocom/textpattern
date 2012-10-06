@@ -26,6 +26,7 @@ foreach($cfs as $i => $cf_name)
 }
 
 $statuses = get_article_statuses();
+$statuses[STATUS_LIVE] = strong($statuses[STATUS_LIVE]);
 
 if (!empty($event) and $event == 'article') {
 	require_privs('article');

@@ -780,7 +780,7 @@
 				STATUS_DRAFT   => gTxt('draft'),
 				STATUS_HIDDEN  => gTxt('hidden'),
 				STATUS_PENDING => gTxt('pending'),
-				STATUS_LIVE    => strong(gTxt('live')),
+				STATUS_LIVE    => gTxt('live'),
 				STATUS_STICKY  => gTxt('sticky'),
 			);
 		}
