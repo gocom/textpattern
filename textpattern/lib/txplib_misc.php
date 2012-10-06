@@ -765,12 +765,22 @@
  	}
 
 /**
- * Gets a list of article statuses.
+ * Gets and translates article statuses.
  *
- * @return array
+ * This function will return a list of article status, or
+ * translates the given $status to a human-readable label.
+ *
+ * If $status is set, and the status is invalid
+ * returns FALSE. Otherwise returns the label string.
+ *
+ * If $status is NULL, returns a list containing all available article
+ * statuses as an array.
+ *
+ * @param  int   $status If set, gets translates the given status to human-readable label string.
+ * @return mixed
  */
 
-	function get_article_statuses()
+	function get_article_statuses($status = null)
 	{
 		static $statuses = null;
 
@@ -783,6 +793,11 @@
 				STATUS_LIVE    => gTxt('live'),
 				STATUS_STICKY  => gTxt('sticky'),
 			);
+		}
+
+		if ($status !== null)
+		{
+			return isset($statuses[$status]) ? $statuses[$status] : false;
 		}
 
 		return $statuses;
