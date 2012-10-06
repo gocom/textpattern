@@ -65,6 +65,7 @@ error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', 1);
 
 include_once txpath.'/lib/constants.php';
+include txpath.'/lib/PasswordHash.php';
 include txpath.'/lib/txplib_misc.php';
 include txpath.'/lib/txplib_db.php';
 include txpath.'/lib/txplib_forms.php';
