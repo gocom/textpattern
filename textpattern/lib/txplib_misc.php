@@ -5368,7 +5368,14 @@ eod;
 
 	function getStatusNum($name)
 	{
-		$labels = array('draft' => 1, 'hidden' => 2, 'pending' => 3, 'live' => 4, 'sticky' => 5);
+		$labels = array(
+			'draft'   => STATUS_DRAFT,
+			'hidden'  => STATUS_HIDDEN,
+			'pending' => STATUS_PENDING,
+			'live'    => STATUS_LIVE,
+			'sticky'  => STATUS_STICKY,
+		);
+
 		$status = strtolower($name);
 		$num = empty($labels[$status]) ? 4 : $labels[$status];
 		return $num;
