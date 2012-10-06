@@ -53,7 +53,7 @@
 
 	function doDiagnostics()
 	{
-		global $prefs, $files, $txpcfg, $event, $step, $theme;
+		global $prefs, $files, $txpcfg, $event, $step, $theme, $txp_using_svn;
 		extract(get_prefs());
 
 		$urlparts = parse_url(hu);
@@ -179,94 +179,40 @@
 			}
 		}
 
-		$found = $missing = array();
-
-		foreach ($files as $f)
-		{
-			$realpath = realpath(txpath . $f);
-
-			if (is_readable($realpath))
-			{
-				$found[] = $realpath;
-			}
-			else
-			{
-				$missing[] = txpath . $f;
-			}
-		}
-
-		$files = $found;
-		unset($found);
-
-		if ($missing)
-			$fail['missing_files'] = diag_msg_wrap(gTxt('missing_files').cs.n.t.join(', '.n.t, $missing));
-
 		foreach ($fail as $k=>$v)
 			if (empty($v)) unset($fail[$k]);
 
-		# Find the highest revision number
-		$file_revs = $file_md5 = array();
-		$rev = 0;
+		$cs = check_file_integrity(INTEGRITY_REALPATH);
 
-		foreach ($files as $f)
+		if (!$cs)
 		{
-			$content = @file_get_contents($f);
-
-			if ($content !== FALSE)
-			{
-				if (preg_match('/^\$'.'LastChangedRevision: (\d+) \$/m', $content, $match))
-				{
-					$file_revs[$f] = $match[1];
-
-					if ($match[1] > $rev)
-					{
-						$rev = $match[1];
-					}
-				}
-
-				$file_md5[$f]  = md5(str_replace('$'.'HeadURL: http:', '$'.'HeadURL: https:', str_replace("\r\n", "\n", $content)));
-			}
+			$cs = array();
 		}
 
-		# Check revs & md5 against stable release, if possible
-		$dev_files = $old_files = $modified_files = array();
+		// files that don't match their checksums
 
-		if ($cs = @file(txpath . '/checksums.txt'))
+		if ($modified_files = array_keys($cs, INTEGRITY_MODIFIED))
 		{
-			foreach ($cs as $c)
-			{
-				if (preg_match('@^(\S+): r?(\S+) \((.*)\)$@', trim($c), $m))
-				{
-					list(,$file,$r,$md5) = $m;
-					$file = realpath(txpath . $file);
-
-					if (!empty($file_revs[$file]) and $r and $file_revs[$file] < $r)
-					{
-						$old_files[] = $file;
-					}
-					elseif (!empty($file_revs[$file]) and $r and $file_revs[$file] > $r)
-					{
-						$dev_files[] = $file;
-					}
-					elseif (!empty($file_md5[$file]) and $file_md5[$file] != $md5)
-					{
-						$modified_files[] = $file;
-					}
-				}
-			}
-		}
-
-		# files that haven't been updated
-		if ($old_files)
-			$fail['old_files'] = diag_msg_wrap(gTxt('old_files').cs.n.t.join(', '.n.t, $old_files));
-
-		# files that don't match their checksums
-		if ($modified_files)
 			$fail['modified_files'] = diag_msg_wrap(gTxt('modified_files').cs.n.t.join(', '.n.t, $modified_files), 'warning');
+		}
 
-		# running development code in live mode is not recommended
-		if ($dev_files and $production_status == 'live')
-			$fail['dev_version_live'] = diag_msg_wrap(gTxt('dev_version_live').cs.n.t.join(', '.n.t, $dev_files), 'warning');
+		// running development code in live mode is not recommended
+
+		if ($txp_using_svn and $production_status == 'live')
+		{
+			$fail['dev_version_live'] = diag_msg_wrap(gTxt('dev_version_live').cs.n.t.join(', '.n.t, array_keys($cs, INTEGRITY_MODIFIED)), 'warning');
+		}
+
+		// missing files
+
+		if ($missing = array_merge(
+			array_keys($cs, INTEGRITY_MISSING),
+			array_keys($cs, INTEGRITY_NOT_FILE),
+			array_keys($cs, INTEGRITY_NOT_READABLE)
+		))
+		{
+			$fail['missing_files'] = diag_msg_wrap(gTxt('missing_files').cs.n.t.join(', '.n.t, $missing));
+		}
 
 		# anything might break if arbitrary functions are disabled
 		if (ini_get('disable_functions')) {
@@ -395,7 +341,7 @@
 		$out = array(
 			'<p><textarea id="diagnostics-detail" cols="'.INPUT_LARGE.'" rows="'.INPUT_MEDIUM.'" readonly="readonly">',
 
-			gTxt('txp_version').cs.txp_version.' ('.($rev ? 'r'.$rev : 'unknown revision').')'.n,
+			gTxt('txp_version').cs.txp_version.($fail['modified_files'] ? ' ('.gTxt('modified').')' : '').n,
 
 			gTxt('last_update').cs.gmstrftime($fmt_date, $dbupdatetime).'/'.gmstrftime($fmt_date, @filemtime(txpath.'/update/_update.php')).n,
 
@@ -515,15 +461,15 @@
 
 			$out[] = n;
 
-			foreach ($files as $f)
+			if ($md5s = check_file_integrity(INTEGRITY_MD5))
 			{
-				$checksum = isset($file_md5[$f]) ? $file_md5[$f] : gTxt('unknown');
-				$revision = isset($file_revs[$f]) ? 'r'.$file_revs[$f] : gTxt('unknown');
-
-				$out[] = "$f" .cs.n.t. $revision .' ('.$checksum.')'.n;
+				foreach ($md5s as $f => $checksum)
+				{
+					$out[] = $f.cs.n.t.(!$checksum ? gTxt('unknown') : $checksum).n;
+				}
 			}
-			$out[] = n.ln;
 
+			$out[] = n.ln;
 		}
 
 		$out[] = callback_event('diag_results', $step).n;
