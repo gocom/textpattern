@@ -5522,27 +5522,27 @@ eod;
 
 						if (!is_readable($file))
 						{
-							$files[$file] = INTEGRITY_NOT_READABLE;
-							$md5[$file] = false;
+							$files[$relative] = INTEGRITY_NOT_READABLE;
+							$md5[$relative] = false;
 							continue;
 						}
 
 						if (!is_file($file))
 						{
-							$files[$file] = INTEGRITY_NOT_FILE;
-							$md5[$file] = false;
+							$files[$relative] = INTEGRITY_NOT_FILE;
+							$md5[$relative] = false;
 							continue;
 						}
 
-						$md5[$file] = md5_file($file);
+						$md5[$relative] = md5_file($file);
 
-						if ($md5[$file] !== $md5)
+						if ($md5[$relative] !== $md5)
 						{
-							$files[$file] = INTEGRITY_MODIFIED;
+							$files[$relative] = INTEGRITY_MODIFIED;
 						}
 						else
 						{
-							$files[$file] = INTEGRITY_GOOD;
+							$files[$relative] = INTEGRITY_GOOD;
 						}
 					}
 				}
