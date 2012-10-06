@@ -813,7 +813,7 @@
 			$cssname = join(',', quote_list($n));
 			if (count($n) > 1)
 			{
-				$order  = " order by field(name,'$cssname')";
+				$order  = " order by field(name, $cssname)";
 			}
 		}
 		elseif ($s)
@@ -827,7 +827,7 @@
 
 		if (isset($cssname))
 		{
-			$css = join(n, safe_column_num('css','txp_css',"name in ('$cssname')".$order));
+			$css = join(n, safe_column_num('css','txp_css',"name in ($cssname)".$order));
 			if (isset($css))
 			{
 				echo $css;
