@@ -776,8 +776,9 @@
  * If $status is NULL, returns a list containing all available article
  * statuses as an array.
  *
- * @param  int               $status The status to translate
- * @return array|string|bool
+ * @param   int               $status The status to translate
+ * @return  array|string|bool
+ * @package Article
  * @example
  * print_r(
  * 	get_article_statuses()
