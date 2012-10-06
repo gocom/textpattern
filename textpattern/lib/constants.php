@@ -527,4 +527,4 @@ define('INTEGRITY_STATUS', 1);
  * @package Debug
  */
 
-define('INTEGRITY_MD5', 1);
+define('INTEGRITY_MD5', 2);

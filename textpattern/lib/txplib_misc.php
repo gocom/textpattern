@@ -5498,7 +5498,7 @@ eod;
 
 	function check_file_integrity($return = INTEGRITY_STATUS)
 	{
-		static $files = null, $md5 = array();
+		static $files = null, $files_md5 = array();
 
 		if ($files === null)
 		{
@@ -5534,9 +5534,9 @@ eod;
 							continue;
 						}
 
-						$md5[$relative] = md5_file($file);
+						$files_md5[$relative] = md5_file($file);
 
-						if ($md5[$relative] !== $md5)
+						if ($files_md5[$relative] !== $md5)
 						{
 							$files[$relative] = INTEGRITY_MODIFIED;
 						}
@@ -5549,7 +5549,7 @@ eod;
 			}
 			else
 			{
-				$md5 = $files = false;
+				$files_md5 = $files = false;
 			}
 		}
 
@@ -5560,7 +5560,7 @@ eod;
 
 		if ($return == INTEGRITY_MD5)
 		{
-			return $md5;
+			return $files_md5;
 		}
 
 		return false;
