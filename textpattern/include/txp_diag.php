@@ -341,7 +341,7 @@
 		$out = array(
 			'<p><textarea id="diagnostics-detail" cols="'.INPUT_LARGE.'" rows="'.INPUT_MEDIUM.'" readonly="readonly">',
 
-			gTxt('txp_version').cs.txp_version.($fail['modified_files'] ? ' ('.gTxt('modified').')' : '').n,
+			gTxt('txp_version').cs.txp_version.(!empty($fail['modified_files']) ? ' ('.gTxt('modified').')' : '').n,
 
 			gTxt('last_update').cs.gmstrftime($fmt_date, $dbupdatetime).'/'.gmstrftime($fmt_date, @filemtime(txpath.'/update/_update.php')).n,
 
