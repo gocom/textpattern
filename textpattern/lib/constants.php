@@ -519,7 +519,7 @@ define('INTEGRITY_NOT_FILE', 5);
  * @package Debug
  */
 
-define('INTEGRITY_STATUS', 1);
+define('INTEGRITY_STATUS', 0x1);
 
 /**
  * Return integrity MD5 hashes.
@@ -527,4 +527,12 @@ define('INTEGRITY_STATUS', 1);
  * @package Debug
  */
 
-define('INTEGRITY_MD5', 2);
+define('INTEGRITY_MD5', 0x2);
+
+/**
+ * Return full paths.
+ *
+ * @package Debug
+ */
+ 
+ define('INTEGRITY_REALPATH', 0x4);

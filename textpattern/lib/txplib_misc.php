@@ -5491,12 +5491,12 @@ eod;
 /**
  * Checks installs's file integrity and returns results.
  *
- * @param   int        $return Either INTEGRITY_MD5, INTEGRITY_STATUS
+ * @param   int        $flags Either INTEGRITY_MD5 | INTEGRITY_STATUS | INTEGRITY_REALPATH
  * @return  array|bool Array of files and status, or FALSE on error
  * @package Debug
  */
 
-	function check_file_integrity($return = INTEGRITY_STATUS)
+	function check_file_integrity($flags = INTEGRITY_STATUS)
 	{
 		static $files = null, $files_md5 = array();
 
@@ -5553,15 +5553,23 @@ eod;
 			}
 		}
 
-		if ($return == INTEGRITY_STATUS)
+		$return = $files;
+
+		if ($flags & INTEGRITY_MD5)
 		{
-			return $files;
+			$return = $files_md5;
 		}
 
-		if ($return == INTEGRITY_MD5)
+		if ($flags & INTEGRITY_REALPATH)
 		{
-			return $files_md5;
+			foreach ($return as $path => $status)
+			{
+				$realpath = realpath(txpath.$path);
+				$relative[!$realpath ? $path : $realpath] = $status;
+			}
+
+			return $relative;
 		}
 
-		return false;
+		return $return;
 	}
