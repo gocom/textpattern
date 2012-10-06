@@ -698,22 +698,28 @@
  * @package User
  */
 
-	function txp_validate($user,$password,$log=TRUE)
+	function txp_validate($user, $password, $log = true)
 	{
 		$safe_user = doSlash($user);
-		$name = FALSE;
+		$name = false;
 
 		$hash = safe_field('pass', 'txp_users', "name = '$safe_user'");
 		$phpass = new PasswordHash(PASSWORD_COMPLEXITY, PASSWORD_PORTABILITY);
 
 		// check post-4.3-style passwords
-		if ($phpass->CheckPassword($password, $hash)) {
-			if ($log) {
+		if ($phpass->CheckPassword($password, $hash))
+		{
+			if ($log)
+			{
 				$name = safe_field("name", "txp_users",	"name = '$safe_user' and privs > 0");
-			} else {
+			}
+			else
+			{
 				$name = $user;
 			}
-		} else {
+		}
+		else
+		{
 			// no good password: check 4.3-style passwords
 			$passwords = array();
 
@@ -730,12 +736,13 @@
 				"name = '$safe_user' and (pass = ".join(' or pass = ', $passwords).") and privs > 0");
 
 			// old password is good: migrate password to phpass
-			if ($name !== FALSE) {
+			if ($name !== false)
+			{
 				safe_update("txp_users", "pass = '".doSlash($phpass->HashPassword($password))."'", "name = '$safe_user'");
 			}
 		}
 
-		if ($name !== FALSE && $log)
+		if ($name !== false && $log)
 		{
 			// update the last access time
 			safe_update("txp_users", "last_access = now()", "name = '$safe_user'");
