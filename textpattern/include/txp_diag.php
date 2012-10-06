@@ -17,7 +17,7 @@
 
 	global $files;
 
-	$files = array();/*
+	$files = array(
 		'/../index.php',
 		'/../css.php',
 		'/css.php',
@@ -90,7 +90,7 @@
 		'/update/_to_4.5.0.php',
 		'/update/_to_4.5.1.php',
 		'/update/_update.php'
-	);*/
+	);
 
 	$files_rpc = array(
 		'/../rpc/index.php',
