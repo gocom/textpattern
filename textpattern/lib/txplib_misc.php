@@ -5274,6 +5274,14 @@ eod;
  * @return  boolean If the $step is valid, proceeds. Dies on CSRF attempt.
  * @see     form_token()
  * @package CSRF
+ * @example
+ * global $step;
+ * bouncer($step, array(
+ * 	'browse'     => false,
+ * 	'edit'       => false,
+ * 	'save'       => true,
+ * 	'multi_edit' => true,
+ * ));
  */
 
 	function bouncer($step, $steps)
