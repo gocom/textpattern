@@ -776,8 +776,12 @@
  * If $status is NULL, returns a list containing all available article
  * statuses as an array.
  *
- * @param  int   $status If set, gets translates the given status to human-readable label string.
- * @return mixed
+ * @param  int               $status The status to translate
+ * @return array|string|bool
+ * @example
+ * print_r(
+ * 	get_article_statuses()
+ * );
  */
 
 	function get_article_statuses($status = null)
