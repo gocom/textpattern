@@ -77,7 +77,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex, nofollow">
 	<title><?php echo escape_title($pagetitle) ?> - <?php echo txpspecialchars($sitename) ?> &#124; Textpattern CMS</title>
-	<script src="jquery.js"></script>
+	<script src="jquery.js?v=<?php echo txp_version; ?>"></script>
 	<?php
 	echo script_js(
 		'var textpattern = {
@@ -96,7 +96,7 @@
 	);
 	gTxtScript(array('form_submission_error', 'are_you_sure', 'cookies_must_be_enabled'));
 	?>
-	<script src="textpattern.js"></script>
+	<script src="textpattern.js?v=<?php echo txp_version; ?>"></script>
 	<?php // Mandatory un-themable Textpattern core styles ?>
 	<style>
 		.not-ready .doc-ready, .not-ready form.async input[type="submit"], .not-ready a.async {
