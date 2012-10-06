@@ -472,3 +472,59 @@ define('cs', ': ');
  */
 
 define('ln', str_repeat('-', 24).n);
+
+/**
+ * File integrity status good.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_GOOD', 1);
+
+/**
+ * File integrity status modified.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_MODIFIED', 2);
+
+/**
+ * File integrity not readable.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_NOT_READABLE', 3);
+
+/**
+ * File integrity file missing.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_MISSING', 4);
+
+/**
+ * File integrity not a file.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_NOT_FILE', 5);
+
+/**
+ * Return integrity status.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_STATUS', 1);
+
+/**
+ * Return integrity status.
+ *
+ * @package Debug
+ */
+
+define('INTEGRITY_MD5', 1);

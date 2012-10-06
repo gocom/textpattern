@@ -5487,3 +5487,81 @@ eod;
 			}
 		}
 	}
+
+/**
+ * Checks installs's file integrity and returns results.
+ *
+ * @param   int        $return Either INTEGRITY_MD5, INTEGRITY_STATUS
+ * @return  array|bool Array of files and status, or FALSE on error
+ * @package Debug
+ */
+
+	function check_file_integrity($return = INTEGRITY_STATUS)
+	{
+		static $files = null, $md5 = array();
+
+		if ($files === null)
+		{
+			if ($cs = @file(txpath . '/checksums.txt'))
+			{
+				$files = array();
+
+				foreach ($cs as $c)
+				{
+					if (preg_match('@^(\S+): r?(\S+) \((.*)\)$@', trim($c), $m))
+					{
+						list(,$relative, $r, $md5) = $m;
+						$file = realpath(txpath . $relative);
+
+						if ($file === false)
+						{
+							$files[$relative] = INTEGRITY_MISSING;
+							$md5[$relative] = false;
+							continue;
+						}
+
+						if (!is_readable($file))
+						{
+							$files[$file] = INTEGRITY_NOT_READABLE;
+							$md5[$file] = false;
+							continue;
+						}
+
+						if (!is_file($file))
+						{
+							$files[$file] = INTEGRITY_NOT_FILE;
+							$md5[$file] = false;
+							continue;
+						}
+
+						$md5[$file] = md5_file($file);
+
+						if ($md5[$file] !== $md5)
+						{
+							$files[$file] = INTEGRITY_MODIFIED;
+						}
+						else
+						{
+							$files[$file] = INTEGRITY_GOOD;
+						}
+					}
+				}
+			}
+			else
+			{
+				$md5 = $files = false;
+			}
+		}
+
+		if ($return == INTEGRITY_STATUS)
+		{
+			return $files;
+		}
+
+		if ($return == INTEGRITY_MD5)
+		{
+			return $md5;
+		}
+
+		return false;
+	}
