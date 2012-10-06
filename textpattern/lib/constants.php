@@ -349,10 +349,44 @@ define('PARTIAL_VOLATILE', 1);
 
 define('PARTIAL_VOLATILE_VALUE', 2);
 
+/**
+ * Draft article status ID.
+ *
+ * @package Article
+ */
+
 define('STATUS_DRAFT', 1);
+
+/**
+ * Hidden article status ID.
+ *
+ * @package Article
+ */
+
 define('STATUS_HIDDEN', 2);
+
+/**
+ * Pending article status ID.
+ *
+ * @package Article
+ */
+
 define('STATUS_PENDING', 3);
+
+/**
+ * Live article status ID.
+ *
+ * @package Article
+ */
+
 define('STATUS_LIVE', 4);
+
+/**
+ * Sticky article status ID.
+ *
+ * @package Article
+ */
+
 define('STATUS_STICKY', 5);
 
 /**
