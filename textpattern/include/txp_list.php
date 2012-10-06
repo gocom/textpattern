@@ -15,13 +15,7 @@
 
 		require_privs('article');
 
-		$statuses = array(
-			STATUS_DRAFT   => gTxt('draft'),
-			STATUS_HIDDEN  => gTxt('hidden'),
-			STATUS_PENDING => gTxt('pending'),
-			STATUS_LIVE    => gTxt('live'),
-			STATUS_STICKY  => gTxt('sticky'),
-		);
+		$statuses = get_article_statuses();
 
 		$all_cats = getTree('root', 'article');
 		$all_authors = the_privileged('article.edit.own');
