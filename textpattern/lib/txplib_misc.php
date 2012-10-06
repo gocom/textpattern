@@ -5153,6 +5153,76 @@ eod;
 	}
 
 /**
+ * Parses a Textpack.
+ *
+ * This function takes a textpack and converts it into
+ * an array.
+ *
+ * @param   string      $textpack The textpack
+ * @param   string      $lang     The default language
+ * @param   string      $event    The default event
+ * @return  array|bool
+ * @package i18n
+ */
+
+	function parse_textpack($textpack, $lang = LANG, $event = 'common')
+	{
+		$out = array();
+
+		if (!$textpack)
+		{
+			return false;
+		}
+
+		$textpack = explode(n, $textpack);
+
+		foreach ($textpack as $line)
+		{
+			$line = trim($line);
+
+			// A line starting with #, not followed by @ is a simple comment
+
+			if (preg_match('/^#[^@]/', $line, $m))
+			{
+				continue;
+			}
+
+			// A line matching "#@language xx-xx" establishes the designated language for all subsequent lines
+
+			if (preg_match('/^#@language\s+(.+)$/', $line, $m))
+			{
+				$lang = trim($m[1]);
+				continue;
+			}
+
+			// A line matching "#@event_name" establishes the event value for all subsequent lines
+
+			if (preg_match('/^#@([a-zA-Z0-9_-]+)$/', $line, $m))
+			{
+				$event = trim($m[1]);
+				continue;
+			}
+
+			// Data lines match a "name => value" pattern. Some white space allowed.
+
+			if (preg_match('/^(\w+)\s*=>\s*(.+)$/', $line, $m))
+			{
+				if ($m[1] && $m[2] !== '')
+				{
+					$out[] = array(
+						'lang'  => $lang,
+						'name'  => $m[1],
+						'event' => $event,
+						'data'  => $m[2],
+					);	
+				}
+			}
+		}
+
+		return $out;
+	}
+
+/**
  * Installs localization strings from a Textpack.
  *
  * @param   string $textpack      The Textpack to install
