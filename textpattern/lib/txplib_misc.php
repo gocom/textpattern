@@ -2411,7 +2411,7 @@
 	{
 		$atts  = array();
 
-		if (preg_match_all('@(\w+)\s*=\s*(?:"((?:[^"]|"")*)"|\'((?:[^\']|\'\')*)\'|([^\s\'"/>]+))@s', $text, $match, PREG_SET_ORDER))
+		if (preg_match_all('@((?:\w+:)?\w+)\s*=\s*(?:"((?:[^"]|"")*)"|\'((?:[^\']|\'\')*)\'|([^\s\'"/>]+))@s', $text, $match, PREG_SET_ORDER))
 		{
 			foreach ($match as $m)
 			{
