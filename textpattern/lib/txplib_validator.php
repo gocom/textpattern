@@ -11,6 +11,9 @@
 
 /**
  * Main Validator class.
+ *
+ * @since   4.5.0
+ * @package Validator
  */
 
 class Validator
@@ -103,7 +106,8 @@ class Validator
  *
  * Defines a single validation rule.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class Constraint
@@ -197,7 +201,8 @@ class Constraint
 /**
  * Tests against a list of values.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class ChoiceConstraint extends Constraint
@@ -231,7 +236,8 @@ class ChoiceConstraint extends Constraint
 /**
  * Tests against existing section names.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class SectionConstraint extends ChoiceConstraint
@@ -259,7 +265,8 @@ class SectionConstraint extends ChoiceConstraint
 /**
  * Tests against existing or a blank category names.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class CategoryConstraint extends ChoiceConstraint
@@ -287,7 +294,8 @@ class CategoryConstraint extends ChoiceConstraint
 /**
  * Tests against existing form names.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class FormConstraint extends ChoiceConstraint
@@ -316,7 +324,8 @@ class FormConstraint extends ChoiceConstraint
 /**
  * Validates that a value is blank, defined as equal to a blank string or equal to null.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class BlankConstraint extends Constraint
@@ -349,7 +358,8 @@ class BlankConstraint extends Constraint
 /**
  * Validates that a value is true.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class TrueConstraint extends Constraint
@@ -382,7 +392,8 @@ class TrueConstraint extends Constraint
 /**
  * Validates that a value is false.
  *
- * @since 4.5.0
+ * @since   4.5.0
+ * @package Validator
  */
 
 class FalseConstraint extends Constraint
