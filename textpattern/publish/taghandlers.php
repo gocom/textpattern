@@ -1767,8 +1767,22 @@
 	{
 		extract(lAtts(array(
 			'item' => '',
-		),$atts));
-		return ($item) ? gTxt($item) : '';
+			'escape' => 'html',
+		), $atts, false));
+
+		unset(
+			$atts['item'],
+			$atts['escape']
+		);
+
+		$tags = array();
+
+		foreach ($atts as $name => $value)
+		{
+			$tags['{'.$name.'}'] = $value;
+		}
+
+		return ($item) ? gTxt($item, $tags, $escape) : '';
 	}
 
 // -------------------------------------------------------------
