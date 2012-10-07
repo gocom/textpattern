@@ -3320,9 +3320,13 @@
 	function file_download_format_info($file)
 	{
 		if (($unix_ts = @strtotime($file['created'])) > 0)
+		{
 			$file['created'] = $unix_ts;
+		}
 		if (($unix_ts = @strtotime($file['modified'])) > 0)
+		{
 			$file['modified'] = $unix_ts;
+		}
 
 		return $file;
 	}
@@ -3395,7 +3399,9 @@
 	function image_format_info($image)
 	{
 		if (($unix_ts = @strtotime($image['date'])) > 0)
+		{
 			$image['date'] = $unix_ts;
+		}
 
 		return $image;
 	}
@@ -3412,7 +3418,9 @@
 	function link_format_info($link)
 	{
 		if (($unix_ts = @strtotime($link['date'])) > 0)
+		{
 			$link['date'] = $unix_ts;
+		}
 
 		return $link;
 	}
