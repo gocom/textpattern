@@ -40,13 +40,16 @@ define('sp', '&#160;');
 
 define('a', '&#38;');
 
-/**
- * If set to TRUE, dumps debug log to the temp directory.
- *
- * @package Debug
- */
+if (!defined('TXP_DEBUG'))
+{
+	/**
+	 * If set to TRUE, dumps debug log to the temp directory.
+	 *
+	 * @package Debug
+	 */
 
-define('TXP_DEBUG', false);
+	define('TXP_DEBUG', false);
+}
 
 /**
  * Comment spam status.
