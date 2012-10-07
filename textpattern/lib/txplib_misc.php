@@ -3836,6 +3836,10 @@
 
 /**
  * Updates site's last modification date.
+ *
+ * @package Pref
+ * @example
+ * update_lastmod();
  */
 
 	function update_lastmod() {
@@ -3845,8 +3849,9 @@
 /**
  * Gets the site's last modification date.
  *
- * @param  int $unix_ts UNIX timestamp
- * @return int UNIX timestamp
+ * @param   int $unix_ts UNIX timestamp
+ * @return  int UNIX timestamp
+ * @package Pref
  */
 
 	function get_lastmod($unix_ts = NULL)
@@ -3870,9 +3875,10 @@
 /**
  * Sends and handles a lastmod header.
  *
- * @param  int|null $unix_ts The last modification date as a UNIX timestamp
- * @param  bool     $exit    If TRUE, terminates the script
- * @return array    Array of sent HTTP status and the lastmod header
+ * @param   int|null $unix_ts The last modification date as a UNIX timestamp
+ * @param   bool     $exit    If TRUE, terminates the script
+ * @return  array    Array of sent HTTP status and the lastmod header
+ * @package Pref
  */
 
 	function handle_lastmod($unix_ts = NULL, $exit = true) {

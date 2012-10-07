@@ -100,7 +100,7 @@ if (!defined('HELP_URL'))
  * Do not format text.
  *
  * @var     string
- * @package Filter
+ * @package TextFilter
  */
 
 define('LEAVE_TEXT_UNTOUCHED', '0');
@@ -109,7 +109,7 @@ define('LEAVE_TEXT_UNTOUCHED', '0');
  * Format text with Textile.
  *
  * @var     string
- * @package Filter
+ * @package TextFilter
  */
 
 define('USE_TEXTILE', '1');
@@ -118,7 +118,7 @@ define('USE_TEXTILE', '1');
  * Replace line breaks with HTML &lt;br /&gt; tag.
  *
  * @var     string
- * @package Filter
+ * @package TextFilter
  */
 
 define('CONVERT_LINEBREAKS', '2');

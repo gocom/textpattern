@@ -1,16 +1,16 @@
 <?php
 
 /**
-* Tools for page routing and handling article data.
-*
-* @since   4.5.0
-*/
+ * Tools for page routing and handling article data.
+ *
+ * @since   4.5.0
+ */
 
 /**
-* Build a query qualifier to remove non-frontpage articles from the result set
-*
-* @return string A SQL qualifier for a querys 'WHERE' part
-*/
+ * Build a query qualifier to remove non-frontpage articles from the result set
+ *
+ * @return string A SQL qualifier for a querys 'WHERE' part
+ */
 
 	function filterFrontPage()
 	{
@@ -41,14 +41,14 @@
 	}
 
 /**
-* Fill members of $thisarticle from a DB row assoc.
-*
-* Keep all the article tag-related values in one place,
-* in order to do easy bugfix and ease the addition of
-* new article tags.
-*
-* @param array $rs An assoc w/ one article's data from the DB
-*/
+ * Fill members of $thisarticle from a DB row assoc.
+ *
+ * Keep all the article tag-related values in one place,
+ * in order to do easy bugfix and ease the addition of
+ * new article tags.
+ *
+ * @param array $rs An assoc w/ one article's data from the DB
+ */
 
 	function populateArticleData($rs)
 	{
@@ -62,10 +62,10 @@
 	}
 
 /**
-* Convenience for those who prefer "SELECT * FROM textpattern"
-*
-* @param array $rs An assoc w/ one article's data from the DB
-*/
+ * Convenience for those who prefer "SELECT * FROM textpattern"
+ *
+ * @param array $rs An assoc w/ one article's data from the DB
+ */
 
 	function article_format_info($rs)
 	{
@@ -77,8 +77,8 @@
 	}
 
 /**
-* @return array
-*/
+ * @return array
+ */
 
 	function article_column_map()
 	{
@@ -116,15 +116,15 @@
 	}
 
 /**
-* Find an adjacent article relative to a provided threshold level
-*
-* @param scalar $threshold The value to compare against
-* @param string $s string Optional section restriction
-* @param string $type string Find lesser or greater neighbour? Possible values: '<' (previous, default) or '>' (next)
-* @param array $atts Attribute of article at threshold
-* @param string $threshold_type 'cooked': Use $threshold as SQL clause; 'raw': Use $threshold as an escapable scalar
-* @return array|string An array populated with article data, or the empty string in case of no matches
-*/
+ * Find an adjacent article relative to a provided threshold level.
+ *
+ * @param  scalar       $threshold       The value to compare against
+ * @param  string       $s               Optional section restriction
+ * @param  string       $type            Find lesser or greater neighbour? Possible values: '<' (previous, default) or '>' (next)
+ * @param  array        $atts            Attribute of article at threshold
+ * @param  string       $threshold_type 'cooked': Use $threshold as SQL clause; 'raw': Use $threshold as an escapable scalar
+ * @return array|string An array populated with article data, or the empty string in case of no matches
+ */
 
 	function getNeighbour($threshold, $s, $type, $atts = array(), $threshold_type = 'raw')
 	{
@@ -219,13 +219,13 @@
 	}
 
 /**
-* Find next and previous articles relative to a provided threshold level
-*
-* @param int $id The "pivot" article's id; use zero (0) to indicate $thisarticle
-* @param scalar $threshold The value to compare against if $id != 0
-* @param string $s string Optional section restriction if $id != 0
-* @return array An array populated with article data from the next and previous article
-*/
+ * Find next and previous articles relative to a provided threshold level
+ *
+ * @param  int    $id        The "pivot" article's id; use zero (0) to indicate $thisarticle
+ * @param  scalar $threshold The value to compare against if $id != 0
+ * @param  string $s         Optional section restriction if $id != 0
+ * @return array  An array populated with article data from the next and previous article
+ */
 
 	function getNextPrev($id = 0, $threshold = null, $s = '')
 	{
@@ -301,10 +301,13 @@
 	}
 
 /**
-* Date of the site's last modification
-*
-* @return string
-*/
+ * Gets the site's last modification date in format of
+ * Fri, 05 Oct 2012 14:55:49 GMT.
+ *
+ * @return  string
+ * @package Pref
+ */
+
 	function lastMod()
 	{
 		$last = safe_field("unix_timestamp(val)", "txp_prefs", "`name`='lastmod' and prefs_id=1");
@@ -312,11 +315,12 @@
 	}
 
 /**
-* Parse a string and replace any Textpattern tags with their actual value
-*
-* @param string $thing The raw string
-* @return string The parsed string
-*/
+ * Parse a string and replace any Textpattern tags with their actual value
+ *
+ * @param   string $thing The raw string
+ * @return  string The parsed string
+ * @package TagParser
+ */
 
 	function parse($thing)
 	{
@@ -391,11 +395,12 @@
 	}
 
 /**
-* Guesstimate whether a given function name may be a valid tag handler.
-*
-* @param string $tag function name
-* @return bool False if the function name is not a valid tag handler
-*/
+ * Guesstimate whether a given function name may be a valid tag handler.
+ *
+ * @param      string $tag function name
+ * @return     bool   False if the function name is not a valid tag handler
+ * @deprecated in 4x-doc-up
+ */
 
 	function maybe_tag($tag)
 	{
@@ -409,13 +414,15 @@
 	}
 
 /**
-* Parse a tag for attributes and hand over to the tag handler function.
-*
-* @param  string $tag The tag name without '<txp:'
-* @param  string $atts The attribute string
-* @param  string|null $thing The tag's content in case of container tags (optional)
-* @return string Parsed tag result
-*/
+ * Parse a tag for attributes and hand over to the tag handler function.
+ *
+ * @param   string      $tag   The tag name without '<txp:'
+ * @param   string      $atts  The attribute string
+ * @param   string|null $thing The tag's content in case of container tags (optional)
+ * @return  string      Parsed tag result
+ * @package TagParser
+ * @access  private
+ */
 
 	function processTags($tag, $atts, $thing = NULL)
 	{
@@ -485,10 +492,10 @@
 	}
 
 /**
-* Protection from those who'd bomb the site by GET.
-*
-* Origin of the infamous 'Nice try' message and an even more useful '503' http status.
-*/
+ * Protection from those who'd bomb the site by GET.
+ *
+ * Origin of the infamous 'Nice try' message and an even more useful '503' http status.
+ */
 
 	function bombShelter()
 	{
@@ -502,27 +509,43 @@
 	}
 
 /**
-* Check a named item's existence in DB table
-*
-* @param string $table	DB table name
-* @param string $val The name to look for
-* @param bool $debug
-* @return bool|string
-*/
+ * Checks a named item's existence in a database table.
+ *
+ * The given database table is prefixed with 'txp_'. As such
+ * this function can only be used with core database tables.
+ *
+ * @param   string      $table The database table name
+ * @param   string      $val   The name to look for
+ * @param   bool        $debug Dump the query
+ * @return  bool|string The item's name, or FALSE when it doesn't exist
+ * @package Filter
+ * @example
+ * if ($r = ckEx('section', 'about'))
+ * {
+ * 	echo "Section '{$r}' exists.";
+ * }
+ */
 
 	function ckEx($table, $val, $debug = false)
 	{
-		return safe_field("name", 'txp_'.$table, "`name` = '".doSlash($val)."' limit 1",$debug);
+		return safe_field("name", 'txp_'.$table, "`name` = '".doSlash($val)."' limit 1", $debug);
 	}
 
 /**
-* Check category existence
-*
-* @param string $type Category type {'article', 'file', 'link', 'image'}
-* @param string $val The category name to look for
-* @param bool $debug
-* @return bool|string
-*/
+ * Checks if the given category exist.
+ *
+ * @param   string      $type  The category type, either 'article', 'file', 'link', 'image'
+ * @param   string      $val   The category name to look for
+ * @param   bool        $debug Dump the query
+ * @return  bool|string The category's name, or FALSE when it doesn't exist
+ * @package Filter
+ * @see     ckEx()
+ * @example
+ * if ($r = ckCat('article', 'development'))
+ * {
+ * 	echo "Category '{$r}' exists.";
+ * }
+ */
 
 	function ckCat($type, $val, $debug = false)
 	{
@@ -530,12 +553,22 @@
 	}
 
 /**
-* Lookup article by ID
-*
-* @param int $val Article ID
-* @param bool $debug
-* @return array|bool
-*/
+ * Lookup an article by ID.
+ *
+ * This function takes an article's ID, and checks if it's
+ * been published. If it is, returns the section and the ID
+ * as an array. FALSE otherwise.
+ *
+ * @param   int        $val   The article ID
+ * @param   bool       $debug Dump the query
+ * @return  array|bool Array of ID and section on success, FALSE otherwise
+ * @package Filter
+ * @example
+ * if ($r = ckExID(36))
+ * {
+ * 	echo "Article #{$r['id']} is published, and belongs to the section {$r['section']}.";
+ * }
+ */
 
 	function ckExID($val, $debug = false)
 	{
@@ -543,12 +576,22 @@
 	}
 
 /**
-* Lookup article by URL title
-*
-* @param string $val	URL title
-* @param bool $debug
-* @return array|bool
-*/
+ * Lookup an article by URL title.
+ *
+ * This function takes an article's URL title, and checks if the article
+ * has been published. If it is, returns the section and the ID
+ * as an array. FALSE otherwise.
+ *
+ * @param   string     $val   The URL title
+ * @param   bool       $debug Dump the query
+ * @return  array|bool Array of ID and section on success, FALSE otherwise
+ * @package Filter
+ * @example
+ * if ($r = ckExID('my-article-title'))
+ * {
+ * 	echo "Article #{$r['id']} is published, and belongs to the section {$r['section']}.";
+ * }
+ */
 
 	function lookupByTitle($val, $debug = false)
 	{
@@ -556,13 +599,23 @@
 	}
 
 /**
-* Lookup live article by URL title and section
-*
-* @param  string $val     URL title
-* @param  string $section Section name
-* @param  bool   $debug
-* @return array|bool
-*/
+ * Lookup a published article by URL title and section.
+ *
+ * This function takes an article's URL title, and checks if the article
+ * has been published. If it is, returns the section and the ID
+ * as an array. FALSE otherwise.
+ *
+ * @param   string     $val     The URL title
+ * @param   string     $section The section name
+ * @param   bool       $debug   Dump the query
+ * @return  array|bool Array of ID and section on success, FALSE otherwise
+ * @package Filter
+ * @example
+ * if ($r = ckExID('my-article-title', 'my-section'))
+ * {
+ * 	echo "Article #{$r['id']} is published, and belongs to the section {$r['section']}.";
+ * }
+ */
 
 	function lookupByTitleSection($val, $section, $debug = false)
 	{
@@ -570,13 +623,14 @@
 	}
 
 /**
-* Lookup live article by ID and section
-*
-* @param  int    $id      Article ID
-* @param  string $section Section name
-* @param  bool   $debug
-* @return array|bool
-*/
+ * Lookup live article by ID and section.
+ *
+ * @param   int    $id      Article ID
+ * @param   string $section Section name
+ * @param   bool   $debug
+ * @return  array|bool
+ * @package Filter
+ */
 
 	function lookupByIDSection($id, $section, $debug = false)
 	{
@@ -585,12 +639,13 @@
 	}
 
 /**
-* Lookup live article by ID
-*
-* @param  int    $id    Article ID
-* @param  bool   $debug
-* @return array|bool
-*/
+ * Lookup live article by ID.
+ *
+ * @param   int       $id    Article ID
+ * @param   bool      $debug
+ * @return  array|bool
+ * @package Filter
+ */
 
 	function lookupByID($id, $debug = false)
 	{
@@ -598,13 +653,14 @@
 	}
 
 /**
-* Lookup live article by date and URL title
-*
-* @param  string     $when  date wildcard
-* @param  string     $title URL title
-* @param  bool       $debug
-* @return array|bool
-*/
+ * Lookup live article by date and URL title.
+ *
+ * @param   string     $when  date wildcard
+ * @param   string     $title URL title
+ * @param   bool       $debug
+ * @return  array|bool
+ * @package Filter
+ */
 
 	function lookupByDateTitle($when, $title, $debug = false)
 	{
@@ -612,11 +668,12 @@
 	}
 
 /**
-* Chop a request string into URL-decoded path parts
-*
-* @param  string $req Request string
-* @return array
-*/
+ * Chops a request string into URL-decoded path parts.
+ *
+ * @param   string $req Request string
+ * @return  array
+ * @package URL
+ */
 
 	function chopUrl($req)
 	{
@@ -638,13 +695,14 @@
 	}
 
 /**
-* Save and retrieve the individual article's attributes
-* plus article list attributes for next/prev tags
-*
-* @param  array $atts
-* @return array
-* @since  4.5.0
-*/
+ * Save and retrieve the individual article's attributes
+ * plus article list attributes for next/prev tags
+ *
+ * @param   array $atts
+ * @return  array
+ * @since   4.5.0
+ * @package TagParser
+ */
 
 	function filterAtts($atts = null)
 	{
@@ -775,7 +833,7 @@ class TagRegistry
 	}
 
 	/**
-	 * Checks if a tag is registered
+	 * Checks if a tag is registered.
 	 *
 	 * @param  string $tag The tag
 	 * @return bool   TRUE if a tag exists
