@@ -2488,10 +2488,14 @@
 
 	function eE($txt)
 	{
-		for ($i=0;$i<strlen($txt);$i++) {
-			$ent[] = "&#".ord(substr($txt,$i,1)).";";
+		for ($i = 0; $i < strlen($txt); $i++)
+		{
+			$ent[] = "&#".ord(substr($txt, $i, 1)).";";
 		}
-		if (!empty($ent)) return join('',$ent);
+		if (!empty($ent))
+		{
+			return join('', $ent);
+		}
 	}
 
 /**
