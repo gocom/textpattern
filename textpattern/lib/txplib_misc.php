@@ -4102,9 +4102,10 @@
 /**
  * Terminates normal page rendition and outputs an error page.
  *
- * @param string|array $msg    The error message
- * @param string       $status HTTP status code
- * @param string       $url    Redirects to the specified URL. Can be used with $status of 301, 302 and 307
+ * @param   string|array $msg    The error message
+ * @param   string       $status HTTP status code
+ * @param   string       $url    Redirects to the specified URL. Can be used with $status of 301, 302 and 307
+ * @package Tag
  */
 
 	function txp_die($msg, $status = '503', $url = '')
@@ -4112,7 +4113,11 @@
 		//Make it possible to call this function as a tag, e.g. in an article <txp:txp_die status="410" />
 		if (is_array($msg))
 		{
-			extract(lAtts(array('msg' => '', 'status' => '503', 'url' => ''), $msg));
+			extract(lAtts(array(
+				'msg' => '',
+				'status' => '503',
+				'url' => '',
+			), $msg));
 		}
 
 		$codes = array(
