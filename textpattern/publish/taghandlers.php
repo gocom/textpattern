@@ -294,6 +294,7 @@
 // -------------------------------------------------------------
 
 	register_tag('output_form');
+	register_tag('output_form', 'partial');
 
 	function output_form($atts, $thing = NULL)
 	{
