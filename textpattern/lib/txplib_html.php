@@ -15,7 +15,10 @@
 
 	function end_page()
 	{
-		global $txp_user, $event, $app_mode, $theme, $textarray_script;
+		global $txp_user, $event, $app_mode, $theme, $textarray_script, $microstart;
+
+		$microdiff = substr(getmicrotime() - (int) $microstart, 0, 6);
+		$memory_peak = is_callable('memory_get_peak_usage') ? ceil(memory_get_peak_usage(true)/1024) : '-';
 
 		if ($app_mode != 'async' && $event != 'tag')
 		{
@@ -24,6 +27,13 @@
 			callback_event('admin_side', 'body_end');
 			echo n.script_js('textpattern.textarray = '.json_encode($textarray_script)).n.
 			'</footer><!-- /txp-footer --></body>'.n.'</html>';
+			echo n.comment(gTxt('runtime').': '.$microdiff);
+			echo n.comment(sprintf('Memory: %sKb', $memory_peak));
+		}
+		else
+		{
+			header('X-Textpattern-Runtime: '.$microdiff);
+			header('X-Textpattern-Memory: '.$memory_peak);
 		}
 	}
 

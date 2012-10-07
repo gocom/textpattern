@@ -227,20 +227,6 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 
 	callback_event($event, $step, false);
 	end_page();
-
-	$microdiff = substr(getmicrotime() - $microstart,0,6);
-	$memory_peak = is_callable('memory_get_peak_usage') ? ceil(memory_get_peak_usage(true)/1024) : '-';
-
-	if ($app_mode != 'async')
-	{
-		echo n.comment(gTxt('runtime').': '.$microdiff);
-		echo n.comment(sprintf('Memory: %sKb', $memory_peak));
-	}
-	else
-	{
-		header('X-Textpattern-Runtime: '.$microdiff);
-		header('X-Textpattern-Memory: '.$memory_peak);
-	}
 }
 else
 {
