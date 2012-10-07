@@ -1,15 +1,18 @@
 <?php
 
 /*
-	This is Textpattern
+ * This is Textpattern
+ * Copyright 2005 by Dean Allen
+ * www.textpattern.com
+ * All rights reserved
+ * Use of this software indicates acceptance of the Textpattern license agreement
+ */
 
-	Copyright 2005 by Dean Allen
-	www.textpattern.com
-	All rights reserved
-
-	Use of this software indicates acceptance of the Textpattern license agreement
-
-*/
+/**
+ * Tag builder
+ *
+ * @ignore
+ */
 
 if (!defined('txpinterface'))
 {
