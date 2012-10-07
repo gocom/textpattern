@@ -522,6 +522,8 @@
  * Comment evaluator.
  *
  * Validates and filters comments. Keeps spam out.
+ *
+ * @package Comment
  */
 
 class comment_evaluation
