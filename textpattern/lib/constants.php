@@ -159,14 +159,29 @@ define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 define('REGEXP_UTF8', @preg_match('@\pL@u', 'q'));
 
 /**
- * NULL datetime for use in an SQL statement
+ * NULL datetime for use in an SQL statement.
  *
  * @package DB
  */
 
 define('NULLDATETIME', '\'0000-00-00 00:00:00\'');
 
+/**
+ * Permlink URL mode.
+ *
+ * @package    URL
+ * @deprecated ?
+ */
+
 define('PERMLINKURL', 0);
+
+/**
+ * Pagelink URL mode.
+ *
+ * @package    URL
+ * @deprecated ?
+ */
+
 define('PAGELINKURL', 1);
 
 if (!defined('EXTRA_MEMORY'))
