@@ -420,6 +420,12 @@
 	function processTags($tag, $atts, $thing = NULL)
 	{
 		global $production_status, $txptrace, $txptracelevel, $txp_current_tag, $txp_current_form;
+		static $registry = null;
+
+		if ($registry === null)
+		{
+			$registry = new TagRegistry();
+		}
 
 		if ($production_status !== 'live')
 		{
@@ -435,17 +441,20 @@
 				maxMemUsage("Form='$txp_current_form', Tag='$txp_current_tag'");
 			}
 		}
-	
-		if ($tag === 'link')
+
+		if($registry->is_registered($tag))
 		{
-			$tag = 'tpt_'.$tag;
+			$out = $registry->process($tag, splat($atts), $thing);
 		}
-	
-		if (maybe_tag($tag))
+
+		// unregistered tag
+		elseif (maybe_tag($tag))
 		{
 			$out = $tag(splat($atts), $thing);
+
+			trigger_error(gTxt('unregistered_tag'), E_USER_NOTICE);
 		}
-	
+
 		// deprecated, remove in crockery
 		elseif (isset($GLOBALS['pretext'][$tag]))
 		{
@@ -673,3 +682,107 @@
 
 		return lAtts($valid, $out, 0);
 	}
+
+/**
+ * Registers a new markup tag.
+ *
+ * @param   callback $callback The callback
+ * @param   string   $tag      The tag name
+ * @return  bool
+ * @package TagParser
+ * @since   4x-doc-up
+ */
+
+	function register_tag($callback, $tag = null)
+	{
+		static $registry = null;
+
+		if ($registry === null)
+		{
+			$registry = new TagRegistry();
+		}
+
+		if (!$registry->register($callback, $tag))
+		{
+			trigger_error(gTxt('unknown_callback_function', array('{function}' => callback_tostring($c['function']))), E_USER_WARNING);
+			return false;
+		}
+
+		return true;
+	}
+
+/**
+ * Registry for markup tags.
+ *
+ * @package TagParser
+ * @since   4x-doc-up
+ */
+
+class TagRegistry
+{
+	/**
+	 * Registered tags.
+	 *
+	 * @var array
+	 */
+
+	static private $tags = array();
+
+	/**
+	 * Registers a tag.
+	 *
+	 * @param  callback    $callback The tag callback
+	 * @param  string|null $tag      The tag name
+	 * @return bool
+	 */
+
+	public function register($callback, $tag = null)
+	{
+		if (!is_callable($callback))
+		{
+			return false;
+		}
+
+		if ($tag === null && is_string($callback))
+		{
+			$tag = $callback;
+		}
+
+		if (!$tag)
+		{
+			return false;
+		}
+
+		self::$tags[$tag] = $callback;
+		return true;
+	}
+
+	/**
+	 * Processes a tag by name.
+	 *
+	 * @param  string      $tag   The tag
+	 * @param  array       $atts  An array of Attributes
+	 * @param  string|null $thing The contained statement
+	 * @return string|null The tag's results
+	 */
+
+	public function process($tag, $atts, $thing)
+	{
+		if ($this->is_registered($tag))
+		{
+			return call_user_func(self::$tags[$tag], $atts, $thing);
+		}
+	}
+
+	/**
+	 * Checks if a tag is registered
+	 *
+	 * @param  string $tag The tag
+	 * @return bool   TRUE if a tag exists
+	 */
+
+	public function is_registered($tag)
+	{
+		return array_key_exists($tag, self::$tags);
+	}
+}

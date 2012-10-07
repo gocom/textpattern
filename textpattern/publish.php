@@ -832,6 +832,8 @@
 		}
 	}
 
+	register_tag('article');
+
 /**
  * Generates a context sentive article list.
  *
@@ -1274,6 +1276,8 @@
 			return $article;
 		}
 	}
+
+	register_tag('article_custom');
 
 /**
  * Article custom tag.

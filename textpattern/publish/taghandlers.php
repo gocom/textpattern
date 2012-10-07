@@ -10,6 +10,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('page_title');
+
 	function page_title($atts)
 	{
 		global $parentid, $thisarticle, $id, $q, $c, $context, $s, $pg, $sitename;
@@ -41,6 +43,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('css');
 
 	function css($atts)
 	{
@@ -75,6 +79,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('image');
 
 	function image($atts)
 	{
@@ -171,6 +177,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('thumbnail');
+
 	function thumbnail($atts)
 	{
 		global $thisimage;
@@ -261,6 +269,7 @@
 	}
 
 // -------------------------------------------------------------
+
 	function imageFetchInfo($where)
 	{
 		$rs = safe_row('*', 'txp_image', $where);
@@ -283,6 +292,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('output_form');
 
 	function output_form($atts, $thing = NULL)
 	{
@@ -307,6 +318,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('yield');
+
 	function yield()
 	{
 		global $yield;
@@ -317,6 +330,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('feed_link');
 
 	function feed_link($atts, $thing = NULL)
 	{
@@ -363,6 +378,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_feed_link');
+
 	function link_feed_link($atts)
 	{
 		global $c;
@@ -403,6 +420,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('linklist');
 
 	function linklist($atts, $thing = NULL)
 	{
@@ -533,7 +552,9 @@
 	}
 
 // -------------------------------------------------------------
-// NOTE: tpt_ prefix used because link() is a PHP function. See publish.php
+
+	register_tag('tpt_link', 'link');
+
 	function tpt_link($atts)
 	{
 		global $thislink;
@@ -551,6 +572,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('linkdesctitle');
 
 	function linkdesctitle($atts)
 	{
@@ -574,6 +597,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_name');
+
 	function link_name($atts)
 	{
 		global $thislink;
@@ -590,6 +615,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_url');
+
 	function link_url()
 	{
 		global $thislink;
@@ -599,6 +626,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('link_author');
 
 	function link_author($atts)
 	{
@@ -631,6 +660,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_description');
+
 	function link_description($atts)
 	{
 		global $thislink;
@@ -656,6 +687,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_date');
+
 	function link_date($atts)
 	{
 		global $thislink, $dateformat;
@@ -671,6 +704,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('link_category');
 
 	function link_category($atts)
 	{
@@ -697,6 +732,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('link_id');
+
 	function link_id()
 	{
 		global $thislink;
@@ -705,6 +742,7 @@
 	}
 
 // -------------------------------------------------------------
+
 	function link_format_info($link)
 	{
 		if (($unix_ts = @strtotime($link['date'])) > 0)
@@ -723,6 +761,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('email');
+
 	function email($atts, $thing = NULL)
 	{
 		extract(lAtts(array(
@@ -741,6 +782,8 @@
 		}
 		return '';
 	}
+
+	register_tag('password_protect');
 
 /**
  * Password protects a page.
@@ -799,6 +842,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('recent_articles');
 
 	function recent_articles($atts)
 	{
@@ -871,6 +916,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('recent_comments');
+
 	function recent_comments($atts, $thing = NULL)
 	{
 
@@ -940,6 +987,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('related_articles');
 
 	function related_articles($atts, $thing = NULL)
 	{
@@ -1042,6 +1091,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('popup');
+
 	function popup($atts)
 	{
 		global $s, $c, $permlink_mode;
@@ -1130,6 +1181,8 @@
 
 // -------------------------------------------------------------
 // output href list of site categories
+
+	register_tag('category_list');
 
 	function category_list($atts, $thing = NULL)
 	{
@@ -1252,6 +1305,8 @@
 // -------------------------------------------------------------
 // output href list of site sections
 
+	register_tag('section_list');
+
 	function section_list($atts, $thing = NULL)
 	{
 		global $sitename, $s, $thissection;
@@ -1343,6 +1398,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_input');
+
 	function search_input($atts) // input form for search queries
 	{
 		global $q, $permlink_mode, $doctype;
@@ -1392,6 +1450,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_term');
+
 	function search_term($atts)
 	{
 		global $q;
@@ -1410,6 +1471,8 @@
 
 // -------------------------------------------------------------
 // link to next article, if it exists
+
+	register_tag('link_to_next');
 
 	function link_to_next($atts, $thing = NULL)
 	{
@@ -1454,6 +1517,8 @@
 // -------------------------------------------------------------
 // link to previous article, if it exists
 
+	register_tag('link_to_prev');
+
 	function link_to_prev($atts, $thing = NULL)
 	{
 		global /** @noinspection PhpUnusedLocalVariableInspection */
@@ -1496,6 +1561,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('next_title');
+
 	function next_title()
 	{
 		global /** @noinspection PhpUnusedLocalVariableInspection */
@@ -1517,6 +1584,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('prev_title');
 
 	function prev_title()
 	{
@@ -1540,6 +1609,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('site_name');
+
 	function site_name()
 	{
 		return txpspecialchars($GLOBALS['sitename']);
@@ -1547,12 +1618,16 @@
 
 // -------------------------------------------------------------
 
+	register_tag('site_slogan');
+
 	function site_slogan()
 	{
 		return txpspecialchars($GLOBALS['site_slogan']);
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('link_to_home');
 
 	function link_to_home($atts, $thing = NULL)
 	{
@@ -1570,6 +1645,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('newer');
 
 	function newer($atts, $thing = NULL)
 	{
@@ -1626,6 +1703,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('older');
+
 	function older($atts, $thing = NULL)
 	{
 		global $thispage, $pretext, $m;
@@ -1680,6 +1759,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('text');
+
 	function text($atts)
 	{
 		extract(lAtts(array(
@@ -1689,6 +1771,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('article_id');
 
 	function article_id()
 	{
@@ -1701,6 +1785,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('article_url_title');
+
 	function article_url_title()
 	{
 		global $thisarticle;
@@ -1711,6 +1797,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_article_id');
 
 	function if_article_id($atts, $thing)
 	{
@@ -1729,6 +1817,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('posted');
 
 	function posted($atts)
 	{
@@ -1766,6 +1856,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('expires');
 
 	function expires($atts)
 	{
@@ -1809,6 +1901,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('if_expires');
+
 	function if_expires($atts, $thing)
 	{
 		global $thisarticle;
@@ -1817,6 +1911,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_expired');
 
 	function if_expired($atts, $thing)
 	{
@@ -1831,6 +1927,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('modified');
 
 	function modified($atts)
 	{
@@ -1869,6 +1967,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('comments_count');
+
 	function comments_count()
 	{
 		global $thisarticle;
@@ -1879,6 +1979,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comments_invite');
+
 	function comments_invite($atts)
 	{
 		global $thisarticle,$is_article_list;
@@ -1920,6 +2023,8 @@
 		return $invite_return;
 	}
 // -------------------------------------------------------------
+
+	register_tag('comments_form');
 
 	function comments_form($atts)
 	{
@@ -1971,6 +2076,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('comments_error');
+
 	function comments_error($atts)
 	{
 		extract(lAtts(array(
@@ -1990,6 +2097,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_comments_error');
+
 	function if_comments_error($atts, $thing)
 	{
 		$evaluator =& get_comment_evaluator();
@@ -2039,6 +2149,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comments');
+
 	function comments($atts)
 	{
 		global $thisarticle, $prefs;
@@ -2087,6 +2200,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comments_preview');
+
 	function comments_preview($atts)
 	{
 		global $has_comments_preview;
@@ -2128,12 +2244,18 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_comments_preview');
+
 	function if_comments_preview($atts, $thing)
 	{
 		return parse(EvalElse($thing, ps('preview') && checkCommentsAllowed(gps('parentid')) ));
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_permlink');
+
 	function comment_permlink($atts, $thing)
 	{
 		global $thisarticle, $thiscomment;
@@ -2156,6 +2278,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_id');
+
 	function comment_id()
 	{
 		global $thiscomment;
@@ -2166,6 +2291,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_name');
 
 	function comment_name($atts)
 	{
@@ -2202,6 +2329,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_email');
+
 	function comment_email()
 	{
 		global $thiscomment;
@@ -2212,6 +2342,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_web');
+
 	function comment_web()
 	{
 		global $thiscomment;
@@ -2232,6 +2365,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('comment_time');
+
 	function comment_time($atts)
 	{
 		global $thiscomment, $comments_dateformat;
@@ -2248,6 +2383,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_message');
+
 	function comment_message()
 	{
 		global $thiscomment;
@@ -2258,6 +2396,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('comment_anchor');
+
 	function comment_anchor()
 	{
 		global $thiscomment;
@@ -2269,6 +2410,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('author');
 
 	function author($atts)
 	{
@@ -2303,6 +2446,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('author_email');
+
 	function author_email($atts)
 	{
 		global $thisarticle;
@@ -2320,6 +2466,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_author');
 
 	function if_author($atts, $thing)
 	{
@@ -2341,6 +2489,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_article_author');
 
 	function if_article_author($atts, $thing)
 	{
@@ -2364,6 +2514,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('body');
+
 	function body()
 	{
 		global $thisarticle, $is_article_body;
@@ -2377,6 +2529,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('title');
+
 	function title($atts)
 	{
 		global $thisarticle, $prefs;
@@ -2392,6 +2547,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('excerpt');
+
 	function excerpt()
 	{
 		global $thisarticle, $is_article_body;
@@ -2405,6 +2563,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('category1');
 
 	function category1($atts, $thing = NULL)
 	{
@@ -2456,6 +2616,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('category2');
+
 	function category2($atts, $thing = NULL)
 	{
 		global $thisarticle, $s, $permlink_mode;
@@ -2505,6 +2667,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('category');
 
 	function category($atts, $thing = NULL)
 	{
@@ -2584,6 +2748,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('section');
+
 	function section($atts, $thing = NULL)
 	{
 		global $thisarticle, $s, $thissection;
@@ -2651,6 +2817,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('keywords');
+
 	function keywords()
 	{
 		global $thisarticle;
@@ -2660,6 +2829,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_keywords');
+
 	function if_keywords($atts, $thing = NULL)
 	{
 		global $thisarticle;
@@ -2677,6 +2849,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('if_article_image');
+
 	function if_article_image($atts, $thing='')
 	{
 	    global $thisarticle;
@@ -2686,6 +2860,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('article_image');
 
 	function article_image($atts)
 	{
@@ -2794,12 +2970,18 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_result_title');
+
 	function search_result_title($atts)
 	{
 		return permlink($atts, '<txp:title />');
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_result_excerpt');
+
 	function search_result_excerpt($atts)
 	{
 		global $thisarticle, $pretext;
@@ -2849,6 +3031,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_result_url');
+
 	function search_result_url($atts)
 	{
 		global $thisarticle;
@@ -2859,6 +3044,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_result_date');
+
 	function search_result_date($atts)
 	{
 		assert_article();
@@ -2866,6 +3054,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('search_result_count');
+
 	function search_result_count($atts)
 	{
 		global $thispage;
@@ -2878,6 +3069,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('image_index');
+
 	function image_index($atts)
 	{
 		global $s,$c,$p,$path_to_site;
@@ -2927,6 +3121,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('image_display');
+
 	function image_display($atts)
 	{
 		if (is_array($atts)) extract($atts);
@@ -2942,6 +3139,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('images');
+
 	function images($atts, $thing = NULL)
 	{
 		global $s, $c, $context, $p, $path_to_site, $thisimage, $thisarticle, $thispage, $pretext;
@@ -3123,6 +3323,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('image_info');
+
 	function image_info($atts) {
 		global $thisimage;
 
@@ -3184,6 +3387,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('image_url');
+
 	function image_url($atts, $thing = NULL)
 	{
 		global $thisimage;
@@ -3232,6 +3438,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('image_author');
+
 	function image_author($atts)
 	{
 		global $thisimage, $s;
@@ -3262,6 +3470,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('image_date');
+
 	function image_date($atts)
 	{
 		global $thisimage;
@@ -3307,6 +3518,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_thumbnail');
+
 	function if_thumbnail($atts, $thing)
 	{
 		global $thisimage;
@@ -3316,6 +3530,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_comments');
+
 	function if_comments($atts, $thing)
 	{
 		global $thisarticle;
@@ -3325,6 +3542,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_comments_allowed');
+
 	function if_comments_allowed($atts, $thing)
 	{
 		global $thisarticle;
@@ -3334,6 +3554,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_comments_disallowed');
+
 	function if_comments_disallowed($atts, $thing)
 	{
 		global $thisarticle;
@@ -3343,6 +3566,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_individual_article');
+
 	function if_individual_article($atts, $thing)
 	{
 		global $is_article_list;
@@ -3350,6 +3576,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_article_list');
+
 	function if_article_list($atts, $thing)
 	{
 		global $is_article_list;
@@ -3357,6 +3586,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('meta_keywords');
+
 	function meta_keywords()
 	{
 		global $id_keywords;
@@ -3366,6 +3598,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('meta_author');
+
 	function meta_author($atts)
 	{
 		global $id_author;
@@ -3383,6 +3618,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('permlink');
 
 	function permlink($atts, $thing = NULL)
 	{
@@ -3418,6 +3655,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('lang');
+
 	function lang()
 	{
 		return LANG;
@@ -3530,6 +3770,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('breadcrumb');
+
 	function breadcrumb($atts)
 	{
 		global $pretext,$sitename;
@@ -3596,6 +3838,8 @@
 
 //------------------------------------------------------------------------
 
+	register_tag('if_excerpt');
+
 	function if_excerpt($atts, $thing)
 	{
 		global $thisarticle;
@@ -3610,6 +3854,8 @@
 // Searches use default page. This tag allows you to use different templates if searching
 //--------------------------------------------------------------------------
 
+	register_tag('if_search');
+
 	function if_search($atts, $thing)
 	{
 		global $pretext;
@@ -3617,6 +3863,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_search_results');
 
 	function if_search_results($atts, $thing)
 	{
@@ -3634,6 +3882,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_category');
+
 	function if_category($atts, $thing)
 	{
 		global $c, $context;
@@ -3655,6 +3906,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_article_category');
 
 	function if_article_category($atts, $thing)
 	{
@@ -3693,6 +3946,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_first_category');
+
 	function if_first_category($atts, $thing)
 	{
 		global $thiscategory;
@@ -3701,6 +3957,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_last_category');
+
 	function if_last_category($atts, $thing)
 	{
 		global $thiscategory;
@@ -3709,6 +3968,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_section');
+
 	function if_section($atts, $thing)
 	{
 		global $pretext;
@@ -3728,6 +3990,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_article_section');
+
 	function if_article_section($atts, $thing)
 	{
 		global $thisarticle;
@@ -3743,6 +4008,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_first_section');
+
 	function if_first_section($atts, $thing)
 	{
 		global $thissection;
@@ -3751,6 +4019,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_last_section');
+
 	function if_last_section($atts, $thing)
 	{
 		global $thissection;
@@ -3759,6 +4030,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('php');
+
 	function php($atts, $thing)
 	{
 		global $is_article_body, $thisarticle, $prefs;
@@ -3786,6 +4060,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('custom_field');
+
 	function custom_field($atts)
 	{
 		global $is_article_body, $thisarticle, $prefs;
@@ -3811,6 +4088,9 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('if_custom_field');
+
 	function if_custom_field($atts, $thing)
 	{
 		global $thisarticle, $prefs;
@@ -3880,24 +4160,36 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('site_url');
+
 	function site_url()
 	{
 		return hu;
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('error_message');
+
 	function error_message()
 	{
 		return @$GLOBALS['txp_error_message'];
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('error_status');
+
 	function error_status()
 	{
 		return @$GLOBALS['txp_error_status'];
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_status');
+
 	function if_status($atts, $thing)
 	{
 		global $pretext;
@@ -3914,6 +4206,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('page_url');
+
 	function page_url($atts)
 	{
 		global $pretext;
@@ -3926,6 +4221,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_different');
+
 	function if_different($atts, $thing)
 	{
 		static $last;
@@ -3943,6 +4241,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_first_article');
+
 	function if_first_article($atts, $thing)
 	{
 		global $thisarticle;
@@ -3951,6 +4252,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_last_article');
+
 	function if_last_article($atts, $thing)
 	{
 		global $thisarticle;
@@ -3959,6 +4263,9 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_plugin');
+
 	function if_plugin($atts, $thing)
 	{
 		global $plugins, $plugins_ver;
@@ -3977,6 +4284,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_list');
 
 	function file_download_list($atts, $thing = NULL)
 	{
@@ -4121,6 +4430,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('file_download');
+
 	function file_download($atts, $thing = NULL)
 	{
 		global $thisfile;
@@ -4166,6 +4477,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_link');
 
 	function file_download_link($atts, $thing = NULL)
 	{
@@ -4240,6 +4553,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('file_download_size');
+
 	function file_download_size($atts)
 	{
 		global $thisfile;
@@ -4272,6 +4587,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('file_download_created');
+
 	function file_download_created($atts)
 	{
 		global $thisfile;
@@ -4290,6 +4607,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_modified');
 
 	function file_download_modified($atts)
 	{
@@ -4331,6 +4650,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('file_download_id');
+
 	function file_download_id()
 	{
 		global $thisfile;
@@ -4339,6 +4660,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_name');
 
 	function file_download_name($atts)
 	{
@@ -4353,6 +4676,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_category');
 
 	function file_download_category($atts)
 	{
@@ -4376,6 +4701,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_author');
 
 	function file_download_author($atts)
 	{
@@ -4408,6 +4735,8 @@
 
 //--------------------------------------------------------------------------
 
+	register_tag('file_download_downloads');
+
 	function file_download_downloads()
 	{
 		global $thisfile;
@@ -4416,6 +4745,8 @@
 	}
 
 //--------------------------------------------------------------------------
+
+	register_tag('file_download_description');
 
 	function file_download_description($atts)
 	{
@@ -4439,12 +4770,16 @@
 
 // -------------------------------------------------------------
 
+	register_tag('hide');
+
 	function hide()
 	{
 		return '';
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('rsd');
 
 	function rsd()
 	{
@@ -4453,6 +4788,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('variable');
 
 	function variable($atts, $thing = NULL)
 	{
@@ -4485,6 +4822,8 @@
 	}
 
 // -------------------------------------------------------------
+
+	register_tag('if_variable');
 
 	function if_variable($atts, $thing = NULL)
 	{
