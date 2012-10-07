@@ -848,6 +848,23 @@
 
 	function popTagLinks($type)
 	{
+		global $article_tags, 
+			$link_tags, 
+			$comment_tags, 
+			$comment_details_tags,
+			$comment_form_tags,
+			$search_result_tags,
+			$file_download_tags,
+			$category_tags,
+			$section_tags,
+			$page_article_tags,
+			$page_article_nav_tags,
+			$page_file_tags,
+			$page_nav_tags,
+			$page_xml_tags,
+			$page_misc_tags,
+			$page_file_tags;
+
 		include_once txpath.'/lib/taglib.php';
 
 		$arname = $type.'_tags';
