@@ -4,7 +4,7 @@
  * Textfilters.
  *
  * @since   4.6.0
- * @package Filter
+ * @package TextFilter
  */
 
 /**
@@ -17,6 +17,9 @@ require_once txpath.'/lib/classTextile.php';
  * Textfilter interface.
  *
  * This an interface to create a text filter.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 interface ITextfilter
@@ -50,6 +53,9 @@ interface ITextfilter
 
 /**
  * Core textfilter implementation for a base class, plain text, nl2br, and Textile.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class Textfilter implements ITextfilter
@@ -177,6 +183,9 @@ class Textfilter implements ITextfilter
 
 /**
  * Plain-text filter.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class PlainTextfilter extends Textfilter implements ITextfilter
@@ -209,6 +218,9 @@ class PlainTextfilter extends Textfilter implements ITextfilter
  * Nl2Br filter.
  *
  * This filter converts line breaks to HTML &lt;br /&gt; tags.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class Nl2BrTextfilter extends Textfilter implements ITextfilter
@@ -238,6 +250,9 @@ class Nl2BrTextfilter extends Textfilter implements ITextfilter
 
 /**
  * Textile filter.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class TextileTextfilter extends Textfilter implements ITextfilter
@@ -336,6 +351,9 @@ class TextileTextfilter extends Textfilter implements ITextfilter
 
 /**
  * TextfilterSet: A set of textfilters interfaces those to the core.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class TextfilterSet implements ArrayAccess, IteratorAggregate
@@ -532,6 +550,9 @@ class TextfilterSet implements ArrayAccess, IteratorAggregate
 
 /**
  * Constraint for Textfilters.
+ *
+ * @since   4.6.0
+ * @package TextFilter
  */
 
 class TextfilterConstraint extends Constraint
