@@ -1759,9 +1759,14 @@
 		return ($showalways) ? parse($thing) : '';
 	}
 
-// -------------------------------------------------------------
-
 	register_tag('text');
+
+/**
+ * Returns localized language strings.
+ *
+ * @param  array  $atts
+ * @return string
+ */
 
 	function text($atts)
 	{
