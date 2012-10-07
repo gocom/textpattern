@@ -3443,10 +3443,10 @@
  *
  * Exists for backwards compatibility.
  *
- * @return  bool
- * @access  private
- * @see     IS_WIN
- * @package System
+ * @return     bool
+ * @deprecated ?
+ * @see        IS_WIN
+ * @package    System
  */
 
 	function is_windows()
@@ -3459,10 +3459,10 @@
  *
  * Exists for backwards compatibility.
  *
- * @return  bool
- * @access  private
- * @see     IS_CGI
- * @package System
+ * @return     bool
+ * @deprecated ?
+ * @see        IS_CGI
+ * @package    System
  */
 
 	function is_cgi()
@@ -3475,10 +3475,10 @@
  *
  * Exists for backwards compatibility.
  *
- * @return  bool
- * @access  private
- * @see     IS_APACHE
- * @package System
+ * @return     bool
+ * @deprecated ?
+ * @see        IS_APACHE
+ * @package    System
  */
 
 	function is_mod_php()
