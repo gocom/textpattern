@@ -1326,7 +1326,7 @@
  * @access  private
  * @package URL
  * @example
- * 	makeOut('param1', 'param2', 'param3');
+ * makeOut('param1', 'param2', 'param3');
  */
 
 	function makeOut()
