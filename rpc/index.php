@@ -24,7 +24,16 @@ if (@ini_get('register_globals'))
 	die('Register_globals needs to be turned off.');
 }
 
+/**
+ * @ignore
+ */
+
 define('txpath', dirname(dirname(__FILE__)).'/textpattern');
+
+/**
+ * @ignore
+ */
+
 define('txpinterface','xmlrpc');
 
 require_once txpath.'/config.php';
@@ -42,20 +51,77 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 	$prefs = get_prefs();
 	extract($prefs);
 
-	if (!defined('LANG')) define("LANG", $language);
-	if (!defined('hu')) define("hu", 'http://'.$siteurl.'/');
-	if (!defined('txrpcpath')) define('txrpcpath', hu.'rpc/');
+	if (!defined('LANG'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("LANG", $language);
+	}
+	if (!defined('hu'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("hu", 'http://'.$siteurl.'/');
+	}
+	if (!defined('txrpcpath'))
+	{
+		/**
+		 * URL to the XML-RPC server.
+		 */
+	
+		define('txrpcpath', hu.'rpc/');
+	}
 
 	if (!empty($locale)) setlocale(LC_ALL, $locale);
 	$textarray = load_lang(LANG);
 
 #TODO: include txplib_html instead of duplicating?
 	// from txplib_html.php
-	if (!defined('t'))  define("t", "\t");
-	if (!defined('n'))  define("n", "\n");
-	if (!defined('br')) define("br", "<br />");
-	if (!defined('sp')) define("sp", "&#160;");
-	if (!defined('a'))  define("a", "&#38;");
+	
+	if (!defined('t'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("t", "\t");
+	}
+	if (!defined('n'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("n", "\n");
+	}
+	if (!defined('br'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("br", "<br />");
+	}
+	if (!defined('sp'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("sp", "&#160;");
+	}
+	if (!defined('a'))
+	{
+		/**
+		 * @ignore
+		 */
+
+		define("a", "&#38;");
+	}
 }
 
 require_once txpath.'/lib/txplib_wrapper.php';
@@ -73,7 +139,16 @@ function write_log()
 { // TODO: remove before official release?
 	global $HTTP_RAW_POST_DATA;
 
-	if (!defined('txpdmpfile')) define('txpdmpfile', 'txpxmlrpc.txt');
+	if (!defined('txpdmpfile'))
+	{
+		/**
+		 * Path to a dump file used for logs.
+		 *
+		 * @see write_log()
+		 */
+
+		define('txpdmpfile', 'txpxmlrpc.txt');
+	}
 
 	$fp = @fopen(dirname(__FILE__).DIRECTORY_SEPARATOR.'xmlrpclog','a');
 
