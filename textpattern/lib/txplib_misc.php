@@ -3027,7 +3027,15 @@
 
 		if (IS_WIN)
 		{
-			$guess = array(txpath.DS.'tmp', getenv('TMP'), getenv('TEMP'), getenv('SystemRoot').DS.'Temp', 'C:'.DS.'Temp', $path_to_site.DS.$img_dir);
+			$guess = array(
+				txpath.DS.'tmp',
+				getenv('TMP'),
+				getenv('TEMP'),
+				getenv('SystemRoot').DS.'Temp',
+				'C:'.DS.'Temp',
+				$path_to_site.DS.$img_dir
+			);
+
 			foreach ($guess as $k => $v)
 			{
 				if (empty($v))
@@ -3038,7 +3046,12 @@
 		}
 		else
 		{
-			$guess = array(txpath.DS.'tmp', '', DS.'tmp', $path_to_site.DS.$img_dir);
+			$guess = array(
+				txpath.DS.'tmp',
+				'',
+				DS.'tmp',
+				$path_to_site.DS.$img_dir
+			);
 		}
 
 		foreach ($guess as $dir)
