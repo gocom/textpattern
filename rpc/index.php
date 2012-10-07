@@ -1,14 +1,22 @@
 <?php
-/*
-XML-RPC Server for Textpattern 4.0.x
-http://txp.kusor.com/rpc-api
-(C)2005-2006 The Textpattern Development Team - http://textpattern.com
-@author Pedro Palazón - http://kusor.com
-*/
 
-#TODO: change error reporting to E_ALL, including E_NOTICE to detect subtle bugs?
+/**
+ * XML-RPC Server.
+ *
+ * This file contains XML-RPC Server for Textpattern 4.0.x.
+ *
+ * @link    http://txp.kusor.com/rpc-api
+ * @author  Pedro Palazón - http://kusor.com
+ * @package XML-RPC
+ */
+
+/*
+ * (C)2005-2006 The Textpattern Development Team - http://textpattern.com
+ */
+
+// TODO: change error reporting to E_ALL, including E_NOTICE to detect subtle bugs?
 error_reporting(E_ALL & ~E_NOTICE);
-#TODO: if display_errors is set to 0... who will ever see errors?
+// TODO: if display_errors is set to 0... who will ever see errors?
 ini_set("display_errors", "0");
 
 if (@ini_get('register_globals'))
@@ -57,10 +65,12 @@ require_once 'TXP_RPCServer.php';
 $server = new TXP_RPCServer();
 $server->serve();
 
-#TODO: remove before official release?
-// save some debug logs:
+/**
+ * Saves some debug logs.
+ */
+
 function write_log()
-{
+{ // TODO: remove before official release?
 	global $HTTP_RAW_POST_DATA;
 
 	if (!defined('txpdmpfile')) define('txpdmpfile', 'txpxmlrpc.txt');

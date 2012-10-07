@@ -1,17 +1,40 @@
 <?php
+
+/**
+ * XML-RPC Server.
+ *
+ * This file contains XML-RPC Server for Textpattern 4.0.x.
+ * Supports Blogger API v1, MovableTypeAPI and MetaWeblogAPI.
+ *
+ * @link    http://txp.kusor.com/rpc-api
+ * @author  Pedro Palazón - http://kusor.com
+ * @package XML-RPC
+ */
+
 /*
-XML-RPC Server for Textpattern 4.0.x
-http://txp.kusor.com/rpc-api
-(C)2005-2006 The Textpattern Development Team - http://textpattern.com
-@author Pedro Palazón - http://kusor.com
-*/
+ * (C)2005-2006 The Textpattern Development Team - http://textpattern.com
+ */
 
 if (!defined('txpath')) die('txpath is undefined.');
 
+/*
+ * Include
+ */
+
 require_once txpath.'/lib/txplib_html.php';
+
+/**
+ * XML-RPC server.
+ *
+ * @package XML-RPC
+ */
 
 class TXP_RPCServer extends IXR_IntrospectionServer
 {
+	/**
+	 * Constructor.
+	 */
+
 	function TXP_RPCServer()
 	{
 		global $enable_xmlrpc_server;
@@ -120,7 +143,7 @@ class TXP_RPCServer extends IXR_IntrospectionServer
 				array('array', 'string', 'string', 'string', 'int'),
 				'retrieves a given number of recent posts'
 			);
-#TODO: metaWeblog.newMediaObject (blogid, username, password, struct) returns struct
+			// TODO: metaWeblog.newMediaObject (blogid, username, password, struct) returns struct
 
 			// MovableType API[] - add as server capability
 			$this->capabilities['MovableType API'] = array(
@@ -173,8 +196,16 @@ class TXP_RPCServer extends IXR_IntrospectionServer
 		}
 	}
 
-	// Override serve method in order to keep requests logs too
-	// while dealing with unknown clients
+	/**
+	 * Serve a response to a method.
+	 *
+	 * Override serve method in order to keep requests logs too
+	 * while dealing with unknown clients.
+	 *
+	 * @param string $data The data to serve
+	 * @link  http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
+	 */
+
 	function serve($data = false)
 	{
 		if (!$data)
@@ -218,14 +249,14 @@ class TXP_RPCServer extends IXR_IntrospectionServer
 					break;
 
 				case 'iso-8859-1':
-#TODO: if utf8 conversion fails, throw: 32701 ---> parse error. unsupported encoding?
-#see: http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
+					// TODO: if utf8 conversion fails, throw: 32701 ---> parse error. unsupported encoding?
+					// see: http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php
 					// this will fail on parser if utf8_encode is unavailiable
 					$data = (function_exists('utf8_encode') && is_callable('utf8_encode'))? utf8_encode($HTTP_RAW_POST_DATA) : $HTTP_RAW_POST_DATA;
 					break;
 
 				default:
-#TODO: if utf8 conversion fails, throw: 32701 ---> parse error. unsupported encoding?
+					// TODO: if utf8 conversion fails, throw: 32701 ---> parse error. unsupported encoding?
 					// this will fail on parser if mb_convert_encoding is unavailiable
 					$data = (function_exists('mb_convert_encoding') && is_callable('mb_convert_encoding'))? mb_convert_encoding($HTTP_RAW_POST_DATA, 'utf-8', $encoding) : $HTTP_RAW_POST_DATA;
 					break;
@@ -273,7 +304,13 @@ EOD;
 		return $this->output($xml, $encoding);
 	}
 
-	// Override default utf-8 output, if needed
+	/**
+	 * Outputs a given XML packet to the client.
+	 *
+	 * @param string $xml The XML
+	 * @param string $enc The encoding, e.g. utf-8
+	 */
+
 	function output($xml, $enc = 'utf-8')
 	{
 		// Be kind with non-utf-8 capable clients
@@ -289,7 +326,7 @@ EOD;
 			}
 			else
 			{
-# TODO: shouldn't this throw an error instead of serving non-utf8 content as utf8?
+				// TODO: shouldn't this throw an error instead of serving non-utf8 content as utf8?
 				// if no decoding possible, serve contents as utf-8
 				$enc = 'utf-8';
 			}
@@ -305,8 +342,9 @@ EOD;
 		exit;
 	}
 
-//---------------------------------------------------------
-// Really Simple Discoverability 1.0 response
+/**
+ * Really Simple Discoverability 1.0 response.
+ */
 
 	function rsd()
 	{
@@ -337,8 +375,13 @@ EOD;
 		}
 	}
 
-//---------------------------------------------------------
-// Blogger API
+/**
+ * Posts a new article.
+ *
+ * @param      array $params
+ * @return     int|IXR_Error The new article's ID
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_newPost($params)
 	{
@@ -365,6 +408,14 @@ EOD;
 
 		return intval($rs);
 	}
+
+/**
+ * Edits an article.
+ *
+ * @param      array          $params
+ * @return     bool|IXR_Error TRUE on success
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_editPost($params)
 	{
@@ -397,6 +448,14 @@ EOD;
 
 		return true;
 	}
+
+/**
+ * Gets list of sections.
+ *
+ * @param      array          $params
+ * @return     array|IXR_Error
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_getUsersBlogs($params)
 	{
@@ -431,6 +490,14 @@ EOD;
 
 		return $sections;
 	}
+
+/**
+ * Gets an user's info.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error User details
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_getUserInfo($params)
 	{
@@ -474,6 +541,14 @@ EOD;
 		return $uinfo;
 	}
 
+/**
+ * Returns a page template's contents.
+ *
+ * @param      array        $params
+ * @return     string
+ * @subpackage BloggerAPI
+ */
+
 	function blogger_getTemplate($params)
 	{
 		list($appkey, $blogid, $username, $password, $templateType) = $params;
@@ -510,6 +585,14 @@ EOD;
 
 		return $rs;
 	}
+
+/**
+ * Updates or creates a page template.
+ *
+ * @param      array            $params
+ * @return     string|IXR_Error
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_setTemplate($params)
 	{
@@ -548,8 +631,13 @@ EOD;
 		return true;
 	}
 
-//---------------------------------------------------------
-// Blogger 2.0
+/**
+ * Gets a post.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error
+ * @subpackage BloggerAPIv2
+ */
 
 	function blogger_getPost($params)
 	{
@@ -579,6 +667,14 @@ EOD;
 		return $out;
 	}
 
+/**
+ * Deletes a post.
+ *
+ * @param      array          $params
+ * @return     bool|IXR_Error TRUE on success
+ * @subpackage BloggerAPIv2
+ */
+
 	function blogger_deletePost($params)
 	{
 		list($appkey, $postid, $username, $password, $publish) = $params;
@@ -600,6 +696,14 @@ EOD;
 
 		return $rs;
 	}
+
+/**
+ * Gets a list of articles from the given section usign Blogger API v2.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error List of articles
+ * @subpackage BloggerAPI
+ */
 
 	function blogger_getRecentPosts($params)
 	{
@@ -631,8 +735,13 @@ EOD;
 		return $out;
 	}
 
-//---------------------------------------------------------
-// metaWeblog API
+/**
+ * Gets a post contnets.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error
+ * @subpackage metaWeblog_API
+ */
 
 	function metaWeblog_getPost($params)
 	{
@@ -654,6 +763,14 @@ EOD;
 
 		return $this->_buildMetaWeblogStruct($rs, $txp);
 	}
+
+/**
+ * Posts a new article.
+ *
+ * @param      array         $params
+ * @return     int|IXR_Error The new article's ID
+ * @subpackage metaWeblogAPI
+ */
 
 	function metaWeblog_newPost($params)
 	{
@@ -677,9 +794,17 @@ EOD;
 			return new IXR_Error(201, gTxt('problem_creating_article'));
 		}
 
-#TODO: why "" quoted $rs?
+		// TODO: why "" quoted $rs?
 		return "$rs";
 	}
+
+/**
+ * Edits an article.
+ *
+ * @param      array          $params
+ * @return     bool|IXR_Error TRUE on success
+ * @subpackage metaWeblogAPI
+ */
 
 	function metaWeblog_editPost($params)
 	{
@@ -703,6 +828,14 @@ EOD;
 
 		return true;
 	}
+
+/**
+ * Gets list of categories.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error An array of categories on success
+ * @subpackage metaWeblogAPI
+ */
 
 	function metaWeblog_getCategories($params)
 	{
@@ -739,6 +872,14 @@ EOD;
 		return $cats;
 	}
 
+/**
+ * Gets a list of article from the given section.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error An array of categories on success
+ * @subpackage metaWeblogAPI
+ */
+
 	function metaWeblog_getRecentPosts($params)
 	{
 		list($blogid, $username, $password, $numberOfPosts) = $params;
@@ -768,8 +909,13 @@ EOD;
 		return $out;
 	}
 
-//---------------------------------------------------------
-// MovableType API
+/**
+ * Gets a list of recent article's titles from the given section.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error An array of categories on success
+ * @subpackage MovableTypeAPI
+ */
 
 	function mt_getRecentPostTitles($params)
 	{
@@ -808,6 +954,14 @@ EOD;
 		return $out;
 	}
 
+/**
+ * Gets a list of categories.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error An array of categories on success
+ * @subpackage MovableTypeAPI
+ */
+
 	function mt_getCategoryList($params)
 	{
 		list($blogid, $username, $password) = $params;
@@ -839,6 +993,14 @@ EOD;
 		return $cats;
 	}
 
+/**
+ * Returns list of supported Text Filters.
+ *
+ * @param      array           $params
+ * @return     array
+ * @subpackage MovableTypeAPI
+ */
+
 	function mt_supportedTextFilters($params)
 	{
 		$filters = array(
@@ -849,6 +1011,14 @@ EOD;
 
 		return $filters;
 	}
+
+/**
+ * Gets list of categories assigned to the given article.
+ *
+ * @param      array           $params
+ * @return     array|IXR_Error
+ * @subpackage MovableTypeAPI
+ */
 
 	function mt_getPostCategories($params)
 	{
@@ -879,7 +1049,7 @@ EOD;
 			{
 				$rs = $txp->getCategory($category);
 
-#TODO: remove?
+				// TODO: remove?
 				// if (!$rs) return new IXR_Error(212, gTxt('problem_retrieving_category_info'));
 
 				$ct['categoryId']   = $rs['id'];
@@ -897,6 +1067,15 @@ EOD;
 
 #TODO: explain what 'expecific' is ;)
 	// supported to avoid some client expecific behaviour
+
+	/**
+	 * Changes an article's status to live.
+	 *
+	 * @param      array          $params
+	 * @return     bool|IXR_Error TRUE on success
+	 * @subpackage MovableTypeAPI
+	 */
+
 	function mt_publishPost($params)
 	{
 		list($postid, $username, $password) = $params;
@@ -917,6 +1096,14 @@ EOD;
 
 		return true;
 	}
+
+/**
+ * Updates an article's categories.
+ *
+ * @param      array          $params
+ * @return     bool|IXR_Error TRUE on success
+ * @subpackage MovableTypeAPI
+ */
 
 	function mt_setPostCategories($params)
 	{
@@ -965,7 +1152,7 @@ EOD;
 
 	}
 
-#TODO ???
+	#TODO ???
 	// MediaObjects
 	/*
 	 metaWeblog.newMediaObject
@@ -976,7 +1163,12 @@ EOD;
 	 and String name (the name of the file). The type key (media type of the file) is currently ignored.
 	 */
 
-	//code refactoring for blogger_newPost & blogger_editPost
+	/**
+	 * Code refactoring for blogger_newPost & blogger_editPost-
+	 *
+	 * @ignore
+	 */
+
 	function _getBloggerContents($content)
 	{
 		$body = $content;
@@ -997,7 +1189,12 @@ EOD;
 		return $contents;
 	}
 
-	//code refactoring for metaWeblog_newPost & metaweblog_EditPost
+	/**
+	 * Code refactoring for metaWeblog_newPost and metaweblog_EditPost.
+	 *
+	 * @ignore
+	 */
+ 
 	function _getMetaWeblogContents($struct, $publish, $txp)
 	{
 		global $gmtoffset, $is_dst;
@@ -1092,9 +1289,14 @@ EOD;
 		return $contents;
 	}
 
-	// common code to metaWeblog_getPost and metaWeblog_getRecentPosts
-	// could not be this placed on a different file from taghandlers?
-	// remove if it is the case
+	/**
+	 * common code to metaWeblog_getPost and metaWeblog_getRecentPosts
+	 * could not be this placed on a different file from taghandlers?
+	 * remove if it is the case
+	 *
+	 * @ignore
+	 */
+
 	function _buildMetaWeblogStruct($rs, $txp)
 	{
 		global $permlink_mode, $is_dst, $gmtoffset;
