@@ -341,6 +341,10 @@ function get_language()
 		}
 		else
 		{
+			/**
+			 * @ignore
+			 */
+
 			function install_lang_key(&$value, $key)
 			{
 				extract(gpsa(array('lang_code','updating')));
