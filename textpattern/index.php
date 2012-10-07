@@ -71,6 +71,9 @@ $microstart = getmicrotime();
 
 if ($connected && safe_query("describe `".PFX."textpattern`"))
 {
+	$prefs = get_prefs();
+	extract($prefs);
+
 	/**
 	 * Database structure version.
 	 *
@@ -79,10 +82,7 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 	 * @see     txp_version
 	 */
 
-	$dbversion = safe_field('val', 'txp_prefs', "name = 'version'");
-	// global site prefs
-	$prefs = get_prefs();
-	extract($prefs);
+	$dbversion = $version;
 
 	if (empty($siteurl))
 	{
