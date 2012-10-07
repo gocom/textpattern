@@ -495,6 +495,8 @@
  * Protection from those who'd bomb the site by GET.
  *
  * Origin of the infamous 'Nice try' message and an even more useful '503' http status.
+ *
+ * @deprecated 4x-doc-up
  */
 
 	function bombShelter()

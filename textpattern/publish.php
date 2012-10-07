@@ -93,9 +93,6 @@
 	// add prefs to globals
 	extract($prefs);
 
-	// check the size of the url request
-	bombShelter();
-
 	// set a higher error level during initialization
 	set_error_level(@$production_status == 'live' ? 'testing' : @$production_status);
 
