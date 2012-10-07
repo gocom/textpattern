@@ -785,22 +785,6 @@
 		return $link;
 	}
 
-/**
- * Converts an email address into unicode entities.
- *
- * @param   string $txt The email address
- * @return  string HTML entities
- * @package Email
- */
-
-	function eE($txt)
-	{
-		for ($i=0;$i<strlen($txt);$i++) {
-			$ent[] = "&#".ord(substr($txt,$i,1)).";";
-		}
-		if (!empty($ent)) return join('',$ent);
-	}
-
 // -------------------------------------------------------------
 
 	register_tag('email');
