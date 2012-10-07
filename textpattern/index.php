@@ -64,17 +64,7 @@ header('Content-type: text/html; charset=utf-8');
 error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', 1);
 
-include_once txpath.'/lib/constants.php';
-include txpath.'/lib/txplib_publish.php';
-include txpath.'/lib/PasswordHash.php';
-include txpath.'/lib/txplib_misc.php';
-include txpath.'/lib/txplib_db.php';
-include txpath.'/lib/txplib_forms.php';
-include txpath.'/lib/txplib_html.php';
-include txpath.'/lib/txplib_theme.php';
-include txpath.'/lib/txplib_validator.php';
-include txpath.'/lib/txplib_textfilter.php';
-include txpath.'/lib/admin_config.php';
+include txpath.'/bootstrap.php';
 
 set_error_handler('adminErrorHandler', error_reporting());
 $microstart = getmicrotime();
@@ -177,7 +167,7 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 
 	$theme = theme::init();
 
-	include txpath.'/include/txp_auth.php';
+	include_once txpath.'/include/txp_auth.php';
 	doAuth();
 
 	// once more for global plus private prefs
@@ -224,7 +214,7 @@ if ($connected && safe_query("describe `".PFX."textpattern`"))
 	// init private theme
 
 	$theme = theme::init();
-	include txpath.'/lib/txplib_head.php';
+	//include txpath.'/lib/txplib_head.php';
 
 	require_privs($event);
 	callback_event($event, $step, true);
