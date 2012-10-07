@@ -307,7 +307,6 @@ EOS
 					extract($plugin);
 					$source = '';
 					if (isset($help_raw) && empty($plugin['allow_html_help'])) {
-						include_once txpath.'/lib/classTextile.php';
 						$textile = new Textile();
 						$help_source = $textile->TextileRestricted($help_raw, 0, 0);
 					} else {
@@ -370,7 +369,6 @@ EOS
 
 					if (isset($help_raw) && empty($plugin['allow_html_help'])) {
 							// default: help is in Textile format
-							include_once txpath.'/lib/classTextile.php';
 							$textile = new Textile();
 							$help = $textile->TextileRestricted($help_raw, 0, 0);
 					}

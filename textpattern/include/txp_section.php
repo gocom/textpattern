@@ -373,7 +373,6 @@ EOS
 		}
 
 		// Prevent non url chars on section names
-		include_once txpath.'/lib/classTextile.php';
 
 		$textile = new Textile();
 		$in['title'] = $textile->TextileThis($in['title'],1);

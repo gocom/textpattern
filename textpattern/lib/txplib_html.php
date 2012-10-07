@@ -848,7 +848,7 @@
 
 	function popTagLinks($type)
 	{
-		include txpath.'/lib/taglib.php';
+		include_once txpath.'/lib/taglib.php';
 
 		$arname = $type.'_tags';
 

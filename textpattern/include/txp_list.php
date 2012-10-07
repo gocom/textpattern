@@ -228,8 +228,6 @@
 				).
 				n.'</thead>';
 
-			include_once txpath.'/publish/taghandlers.php';
-
 			echo '<tbody>';
 
 			$validator = new Validator();

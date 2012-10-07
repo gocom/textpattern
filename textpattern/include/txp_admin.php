@@ -22,8 +22,6 @@
 	{
 		require_privs('admin');
 
-		include_once txpath.'/lib/txplib_admin.php';
-
 		$available_steps = array(
 			'admin_multi_edit'    => true,
 			'admin_change_pageby' => true,

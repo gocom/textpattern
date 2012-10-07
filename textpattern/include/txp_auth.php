@@ -35,8 +35,6 @@ function doAuth()
 	{
 		global $textarray_script;
 
-		include txpath.'/lib/txplib_head.php';
-
 		pagetop(gTxt('login'), $message);
 
 		$stay  = (cs('txp_login') and !gps('logout') ? 1 : 0);
@@ -215,8 +213,6 @@ EOSCR
 		{
 			sleep(3);
 
-			include_once txpath.'/lib/txplib_admin.php';
-
 			$message = ($p_userid) ? send_reset_confirmation_request($p_userid) : '';
 		}
 		elseif (gps('reset'))
@@ -233,8 +229,6 @@ EOSCR
 
 			if ($nonce and $confirm === pack('H*', substr(md5($nonce), 0, 10)).$name)
 			{
-				include_once txpath.'/lib/txplib_admin.php';
-
 				$message = reset_author_pass($name);
 			}
 		}

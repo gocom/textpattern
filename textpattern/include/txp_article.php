@@ -1023,7 +1023,6 @@ EOS
 	{
 		global $prefs;
 
-		include_once txpath.'/lib/classTextile.php';
 		$textile = new Textile($prefs['doctype']);
 
 		$incoming['Title_plain'] = $incoming['Title'];
@@ -1041,8 +1040,6 @@ EOS
 		# only ping for Live sites
 		if ($production_status !== 'live')
 			return;
-
-		include_once txpath.'/lib/IXRClass.php';
 
 		callback_event('ping');
 
@@ -1231,7 +1228,6 @@ EOS
 		}
 		else
 		{
-			include_once txpath.'/publish/taghandlers.php';
 			$url = permlinkurl_id($ID);
 		}
 		return '<span id="article_partial_article_view"><a href="'.$url.'" class="article-view">'.gTxt('view').'</a></span>';

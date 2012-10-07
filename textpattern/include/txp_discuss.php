@@ -269,8 +269,6 @@
 				).
 				n.'</thead>';
 
-			include_once txpath.'/publish/taghandlers.php';
-
 			echo '<tbody>';
 
 			while ($a = nextRow($rs))
