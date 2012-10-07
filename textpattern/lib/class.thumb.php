@@ -2,8 +2,8 @@
 
 /**
  * Tools for creating thumbnails.
- * @package Image
  *
+ * @package Image
  * @author  C. Erdmann
  * @link    http://www.cerdmann.de/thumb
  * @author  Robert Wetzlmayr
@@ -46,6 +46,8 @@ $verbose = false;
 
 /**
  * Creates thumbnails for larger images.
+ *
+ * @package Image
  */
 
 class wet_thumb
@@ -502,6 +504,8 @@ class wet_thumb
 
 /**
  * Wrapper for wet_thumb interfacing Textpattern.
+ *
+ * @package Image
  */
 
 class txp_thumb extends wet_thumb
