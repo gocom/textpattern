@@ -1247,6 +1247,7 @@ EOF;
  * @param  array  $list       The array
  * @param  string $wraptag    The HTML tag the list is wrapped in
  * @param  string $break      The HTML wrapping list items
+ * @param  string $class      The HTML class applied to $wraptag
  * @param  string $breakclass The HTML class applied to $break
  * @param  string $atts       The HTML attributes applied to $wraptag
  * @param  string $breakatts  The HTML attributes applied to $break
