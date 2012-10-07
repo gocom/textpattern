@@ -14,6 +14,8 @@
 
 // -------------------------------------------------------------
 
+	register_tag('txp_die');
+	register_tag('txp_die', 'die');
 	register_tag('page_title');
 
 	function page_title($atts)
