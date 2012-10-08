@@ -431,7 +431,7 @@
 
 		if ($registry === null)
 		{
-			$registry = new TagRegistry();
+			$registry = new TextpatternTagRegistry();
 		}
 
 		if ($production_status !== 'live')
@@ -759,7 +759,7 @@
 
 		if ($registry === null)
 		{
-			$registry = new TagRegistry();
+			$registry = new TextpatternTagRegistry();
 		}
 
 		if (!$registry->register($callback, $tag))
@@ -778,7 +778,7 @@
  * @since   4x-doc-up
  */
 
-class TagRegistry
+class TextpatternTagRegistry
 {
 	/**
 	 * Registered tags.
